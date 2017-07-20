@@ -70,15 +70,11 @@ body
 }
 .control-box	
 {
-	position: fixed;
-    bottom: 0px;
-    width: inherit;
-    /*height: 64px;*/
-    /*line-height: 64px;*/
+	position: relative;
     display: flex;
     flex-direction: row;
     z-index: 1;
-    background: white;
+    margin-top: 5px;
 }
 .container
 {
@@ -107,8 +103,8 @@ body
 {
 	border: 1px solid #ee6e73;
     text-align: center;
-    width: 32%;
-    font-size: 4vmin;
+    width: 33.33%;
+    background: white;
 }		
 .control-item:active
 {
@@ -237,19 +233,17 @@ body
 }
 #qtext
 {
-    text-transform: uppercase;
-    background: aliceblue;
-    display: inline-block;
-    padding: 8% 20% 8% 20%;
-    margin-top: 4%;
-    border-radius: 50px;
 }
 .options
 {
-	background: rgba(250, 235, 215, 0.58);
+	/*background: rgba(250, 235, 215, 0.58);
     margin-top: 5%;
     padding: 5% 0% 5% 0%;
-    border-radius: 50px;
+    border-radius: 50px;*/
+    text-align: left;
+    background: #f7f7f7;
+    margin-top: 3%;
+    padding: 2% 0% 2% 2%;
 }
 .correct_option
 {
@@ -323,26 +317,24 @@ body
     		<div id="test-area" class="col s12">
 											<div id="question-holder">
 														<div style="background: #d6d6d6;"><div id="timer"></div></div>
-														<div id="correct_counter" style="text-align: center;"></div>
-														<div id="qtext">abacus</div>
-														<div class="options" id="a">frame with balls for calculating</div>
-														<div class="options" id="b">frame with balls for calculating</div>
-														<div class="options" id="c">frame with balls for calculating</div>
-														<div class="options" id="d">frame with balls for calculating</div>
+														<div id="correct_counter" style="text-align: center;">CORRECT 0/0</div>
+														<div class="container-item">
+															<div id="qtext" class="question">censure</div>
+															
+														</div>
+														<i>
+															<div id="a" class="answer">expression of blame or disapproval a rebuke</div>
+															<div id="b" class="answer">expression of blame or disapproval a rebuke</div>
+															<div id="c" class="answer">expression of blame or disapproval a rebuke</div>
+															<div id="d" class="answer">expression of blame or disapproval a rebuke</div>
+
+															</i>
 											</div>    	
 
 
     	    </div>
     		<div id="learning-area" class="col s12">
 											<!-- contents  -->
-											<div id="container" class="">
-													<div class="container-item">
-														<div class="question">#anto</div>
-														<div class="line"></div>
-														<div class="answer">#answer</div>
-													</div>
-											</div>
-											<!-- bottom bar -->
 											<div class="control-box">
 												<div id="prev" class="control-item">Previous</div>
 												<div id="drop-down" class="control-item">
@@ -350,6 +342,14 @@ body
 												</div>
 												<div id="next" " class="control-item">Next</div>
 											</div>
+											<div id="container" class="">
+													<div class="container-item">
+														<div class="question">#anto</div>
+														<div class="line"></div>
+														<div class="answer">#answer</div>
+													</div>
+											</div>
+
 
     		</div>
   </div>
