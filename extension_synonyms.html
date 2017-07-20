@@ -6,7 +6,7 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 <style type="text/css">
 
-/*primary color:#AA66CC*/
+/*primary color:#e91e63*/
 
 ::-webkit-scrollbar {
   width: 2px;
@@ -60,8 +60,9 @@ body
 .title
 {
 	text-align: center;
-	font-size: 7vw;
+	font-size: 7vmin;
 	font-weight: 800;
+	width: 100%;
 }
 .control-box	
 {
@@ -92,7 +93,7 @@ body
     background: white;
     margin-top: 10px;
     margin-bottom: 10px;
-    font-size: 5vw;
+    font-size: 5.5vmin;
     padding-top: 10px;
     padding-bottom: 10px;
     text-align: left;
@@ -102,39 +103,41 @@ body
     transition: 0.5s all;
     opacity: 1;
     color: rgba(17, 17, 17, 0.79);
-    font-size: 3.5vw;
+    font-size: 4vmin;
 }
 
 .control-item
 {
-	border: 1px solid #AA66CC;
+	border: 1px solid #e91e63;
     text-align: center;
     width: 32%;
-    font-size: 4vw;
+    font-size: 4vmin;
 }		
 .control-item:active
 {
-	background-color: #AA66CC;
+	background-color: #e91e63;
 	color: white;
 }
 .down-arrow
 {
-	color: #AA66CC;
+	color: #e91e63;
 	font-size: 4.2vw;
 	text-shadow: 1px 1px 2px rgba(128, 128, 128, 0.52);
 }
 .menu-button
 {
 	text-align: right;
-    font-size: 8.5vw;
+    font-size: 8.5vmin;
     position: absolute;
-    right: -7px;
-    top: -7px;
+    right: 0px;
+    top: 0%;
     font-weight: bolder;
     transform: rotate(90deg);
     transform-origin: center;
-    color: #A6c;
+    color: #e91e63;
     transition: 0.5s all;
+    display: inline-block;
+    z-index: 99;
 }
 .menu-button:active
 {
@@ -142,9 +145,10 @@ body
 }
 .line
 {
-	        width: 90%;
-    background: rgba(170, 102, 204, 0.82);
+	width: 90%;
+    background: #e91e63;
     height: 2px;
+    margin-right: 5%;
     margin-top: 3px;
     margin-bottom: 3px;
 }
@@ -177,7 +181,7 @@ body
 {
 	position: relative;
     display: inline-block;
-    background: #AA66CC;
+    background: #e91e63;
     color: white;
     padding-left: 5%;
     padding-right: 5%;
@@ -218,17 +222,23 @@ body
 }
 .billboard
 {
-	    padding-bottom: 5px;
-    position: relative;
+	padding-bottom: 1%;
+    position: absolute;
     top: 0px;
     left: 0px;
+    flex-direction: row;
+    display: flex;
     width: 100%;
     z-index: 98;
     background: white;
+    box-shadow: 0px 3px 5px rgba(128, 128, 128, 0.3);
 }
 #question-holder
 {
-	font-size: 4vw;
+	    font-size: 4.4vmin;
+    overflow: auto;
+    height: 85%;
+    /* max-width: 1024; */
     text-align: center;
 }
 #qtext
@@ -260,30 +270,40 @@ body
 #timer{
 	background: #99CC00;
     width: 100%;
-    height: 0.3%;
+    height: 0.5vmin;
     transition: 2s all;
 }
 #pop-up-menu
 {
-	background: linear-gradient(rgb(247, 247, 247),rgb(249, 249, 249));
+	    background: linear-gradient(rgb(247, 247, 247),rgb(249, 249, 249));
     display: none;
-        margin-top: 5%;
+    margin-top: 9vmin;
     flex-direction: column;
     padding: 2% 5% 2% 5%;
     position: absolute;
-    right: 0px;
+    z-index: 99;
+    right: 2%;
     border-radius: 2px;
-    box-shadow: 1px 2px 7px rgba(210, 210, 210, 0.61);
+    box-shadow: 1px 2px 7px rgba(210, 210, 210, 0);
 }
 .menu-item
 {
     padding: 4% 0% 4% 0%;
     border-bottom: 1px solid #d4d4d4;
+    font-size: 4vmin;
     transition: 0.5s all;
 }
 .menu-item:active
 {
 	    background: #ececec;
+}
+.my-container
+{
+	display: block;
+    margin-top: 10vmin;
+    overflow: auto;
+    height: calc( 100% - 10vmin);
+    
 }
 </style>
 </head>
@@ -292,21 +312,22 @@ body
 <!-- app bar -->
 <div class="billboard">
 	<div class="title">Synonyms</div>
-	<div id="bar-menu-button" class="menu-button">...</div>
+</div>
+<!-- menu dots -->
+<div id="bar-menu-button" class="menu-button">...</div>
 	<div id="pop-up-menu" data-state="hidden">
 		<div onclick="showArea('learning-area','test-area')" class="menu-item">Learning Area</div>
 		<div onclick="showArea('test-area','learning-area')" class="menu-item">Quiz Area</div>
 	</div>
-</div>
 
 <!-- learning area -->
-<div id="learning-area" style="display: none;">
+<div id="learning-area" class="my-container" style="display: none;">
 			<!-- contents  -->
 		<div id="container" class="container">
 				<div class="container-item">
-					<div class="question">#synonyms</div>
+					<div class="question">#anto</div>
 					<div class="line"></div>
-					<div class="answer">#meaning</div>
+					<div class="answer">#answer</div>
 				</div>
 		</div>
 		<!-- bottom bar -->
@@ -320,7 +341,7 @@ body
 </div>
 
 <!-- test area -->
-<div id="test-area" style="display: block;">
+<div id="test-area" class="my-container">
 	 
 	 <div id="question-holder">
 	 		<div style="background: #d6d6d6;">
@@ -572,15 +593,15 @@ function getNRandomInts(min,max,n)
 
 var array=[];
 array.push("abacus|frame with balls for calculating");
-array.push("abate|to lessen to subside");
+array.push("abate|make (something) less intense");
 array.push("abdication|giving up control authority");
-array.push("aberration|a state or condition markedly different from the norm");
-array.push("abet|help/encourage someone (in doing wrong)");
-array.push("abeyance|suspended action");
-array.push("abhor|to hate to detest");
+array.push("aberration|a departure from what is normal");
+array.push("abet|help someone (in doing wrong)");
+array.push("abeyance|a state of temporary disuse or suspension");
+array.push("abhor|regard with disgust and hatred");
 array.push("abide|be faithful to endure");
-array.push("abject|of the most contemptible kind");
-array.push("abjure|promise or swear to give up");
+array.push("abject|(of a situation or condition) extremely unpleasant and degrading");
+array.push("abjure|solemnly renounce");
 array.push("abnegation|the denial and rejection of a doctrine or belief");
 array.push("abraded|rubbed off worn away by friction");
 array.push("abrogate|revoke formally");
@@ -599,7 +620,7 @@ array.push("adamant|kind of stone inflexible");
 array.push("admonish|scold or reprimand; take to task");
 array.push("admonitory|containing warning");
 array.push("adorn|add beauty decorate");
-array.push("adulteration|making unpure poorer in quality");
+array.push("adulteration|making something poorer in quality");
 array.push("adumbrate|describe roughly or give the main points or summary of");
 array.push("adverse|in an opposing direction");
 array.push("advocate|a person who pleads for a person, cause, or idea");
@@ -1892,7 +1913,6 @@ array.push("wanton|a lewd or lascivious person");
 array.push("warmonger|person who stirs up war");
 array.push("warrant|authority written order guarantee");
 array.push("wean|to turn away (from a habit)");
-array.push("weigh|measure hoe heavy smth is");
 array.push("welter|turmoil a bewildering jumble");
 array.push("wend|to go proceed");
 array.push("whimsical|full of odd and fanciful ideas");
@@ -1900,10 +1920,10 @@ array.push("wily|marked by skill in deception");
 array.push("wince|show bodily or mental pain");
 array.push("winsome|charming in a childlike or naive way");
 array.push("woo|try to win");
-array.push("writ|written order");
+array.push("writ|written command in the name of a court or other legal authority to act");
 array.push("yarn|tale story fibers for knitting");
 array.push("yoke|join with stable gear, as two draft animals");
-array.push("zephyr|a slight wind");
+array.push("zephyr|a soft gentle breeze");
 </script>
 
 

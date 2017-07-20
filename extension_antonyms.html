@@ -1,0 +1,982 @@
+<html><head>
+	<title>Antonyms</title>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+<style type="text/css">
+
+/*primary color:#e91e63*/
+
+::-webkit-scrollbar {
+  width: 2px;
+  height: 2px;
+}
+::-webkit-scrollbar-button {
+  width: 0px;
+  height: 0px;
+}
+::-webkit-scrollbar-thumb {
+  background: #e1e1e1;
+  border: 0px none #ffffff;
+  border-radius: 50px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #ffffff;
+}
+::-webkit-scrollbar-thumb:active {
+  background: #000000;
+}
+::-webkit-scrollbar-track {
+  background: #666666;
+  border: 0px none #ffffff;
+  border-radius: 50px;
+}
+::-webkit-scrollbar-track:hover {
+  background: #666666;
+}
+::-webkit-scrollbar-track:active {
+  background: #333333;
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+
+
+@font-face{
+    font-family: 'Font';
+    src: url(font.ttf);
+	}
+body
+{
+	font-family:'Roboto','Font', sans-serif;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+
+
+}
+.title
+{
+	text-align: center;
+	font-size: 7vmin;
+	font-weight: 800;
+	width: 100%;
+}
+.control-box	
+{
+	position: fixed;
+    bottom: 2px;
+    left: 0px;
+    right: 0px;
+    width: 100%;
+    padding-right: 2%;
+    padding-left: 2%;
+    display: flex;
+    flex-direction: row;
+    z-index: 1;
+    background: white;
+}
+.container
+{
+    position: relative;
+    text-align: center;
+    width: 100%;
+    height: 80%;
+    overflow: auto;
+    margin-top: 10px;
+}
+.container-item
+{
+	width: 90%;
+    background: white;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 5.5vmin;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align: left;
+}
+.answer
+{
+    transition: 0.5s all;
+    opacity: 1;
+    color: rgba(17, 17, 17, 0.79);
+    font-size: 4vmin;
+}
+
+.control-item
+{
+	border: 1px solid #e91e63;
+    text-align: center;
+    width: 32%;
+    font-size: 4vmin;
+}		
+.control-item:active
+{
+	background-color: #e91e63;
+	color: white;
+}
+.down-arrow
+{
+	color: #e91e63;
+	font-size: 4.2vw;
+	text-shadow: 1px 1px 2px rgba(128, 128, 128, 0.52);
+}
+.menu-button
+{
+	text-align: right;
+    font-size: 8.5vmin;
+    position: absolute;
+    right: 0px;
+    top: 0%;
+    font-weight: bolder;
+    transform: rotate(90deg);
+    transform-origin: center;
+    color: #e91e63;
+    transition: 0.5s all;
+    display: inline-block;
+    z-index: 99;
+}
+.menu-button:active
+{
+	background: rgba(232, 232, 232, 0.34);
+}
+.line
+{
+	width: 90%;
+    background: #e91e63;
+    height: 2px;
+    margin-right: 5%;
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
+
+#custom-drop-down-outer-parent
+{
+	position: absolute;
+	display: none;
+    width: 90%;
+    height: 90%;
+    margin-left: 5%;
+    margin-top: 2.5%;
+    background: rgba(245, 245, 245, 0.61);
+    overflow: hidden;
+    z-index: 99;
+}
+.custom-drop-down-outer {
+    background: #f5f5f5;
+    height: 80%;
+    width: 80%;
+    position: relative;
+    margin-left: 7.5%;
+    margin-top: 7.5%;
+    overflow: auto;
+    box-shadow: 2px 4px 10px rgba(128, 128, 128, 0.52);
+    border-radius: 2px;
+    padding: 2.5%;
+}
+.simple_button
+{
+	position: relative;
+    display: inline-block;
+    background: #e91e63;
+    color: white;
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-top: 2%;
+    padding-bottom: 2%;
+    margin-left: 40%;
+    margin-top: 10px;
+}
+.square {
+    float:left;
+    position: relative;
+    width: 30%;
+    padding-bottom: 30%; /* = width for a 1:1 aspect ratio */
+    margin:1.66%;
+    overflow:hidden;
+    background: white;
+    box-shadow: 1px 1px 1px rgba(128, 128, 128, 0.28);
+}
+
+.content {
+    position:absolute;
+    height:60%; /* = 100% - 2*10% padding */
+    width:90%; /* = 100% - 2*5% padding */
+    padding: 30% 5%;
+    text-align: center;
+}
+
+.question
+{
+	text-transform: uppercase;
+	font-weight: 500;
+	transition: 0.5s all;
+}
+.question:active
+{
+	    background: rgba(170, 102, 204, 0.26);
+
+}
+.billboard
+{
+	padding-bottom: 1%;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    flex-direction: row;
+    display: flex;
+    width: 100%;
+    z-index: 98;
+    background: white;
+    box-shadow: 0px 3px 5px rgba(128, 128, 128, 0.3);
+}
+#question-holder
+{
+	    font-size: 4.4vmin;
+    overflow: auto;
+    height: 85%;
+    /* max-width: 1024; */
+    text-align: center;
+}
+#qtext
+{
+    text-transform: uppercase;
+    background: aliceblue;
+    display: inline-block;
+    padding: 8% 20% 8% 20%;
+    margin-top: 4%;
+    border-radius: 50px;
+}
+.options
+{
+	background: rgba(250, 235, 215, 0.58);
+    margin-top: 5%;
+    padding: 5% 0% 5% 0%;
+    border-radius: 50px;
+}
+.correct_option
+{
+	background: #99CC00;
+	color: white;
+}
+.wrong_option
+{
+	background: #ec7964;
+	color: white;
+}
+#timer{
+	background: #99CC00;
+    width: 100%;
+    height: 0.5vmin;
+    transition: 2s all;
+}
+#pop-up-menu
+{
+	    background: linear-gradient(rgb(247, 247, 247),rgb(249, 249, 249));
+    display: none;
+    margin-top: 9vmin;
+    flex-direction: column;
+    padding: 2% 5% 2% 5%;
+    position: absolute;
+    z-index: 99;
+    right: 2%;
+    border-radius: 2px;
+    box-shadow: 1px 2px 7px rgba(210, 210, 210, 0);
+}
+.menu-item
+{
+    padding: 4% 0% 4% 0%;
+    border-bottom: 1px solid #d4d4d4;
+    font-size: 4vmin;
+    transition: 0.5s all;
+}
+.menu-item:active
+{
+	    background: #ececec;
+}
+.my-container
+{
+	display: block;
+    margin-top: 10vmin;
+    overflow: auto;
+    height: calc( 100% - 10vmin);
+    
+}
+</style>
+</head>
+<body id="body">
+
+<!-- app bar -->
+<div class="billboard">
+	<div class="title">Antonyms</div>
+</div>
+<!-- menu dots -->
+<div id="bar-menu-button" class="menu-button">...</div>
+	<div id="pop-up-menu" data-state="hidden">
+		<div onclick="showArea('learning-area','test-area')" class="menu-item">Learning Area</div>
+		<div onclick="showArea('test-area','learning-area')" class="menu-item">Quiz Area</div>
+	</div>
+
+<!-- learning area -->
+<div id="learning-area" class="my-container" style="display: none;">
+			<!-- contents  -->
+		<div id="container" class="container">
+				<div class="container-item">
+					<div class="question">#anto</div>
+					<div class="line"></div>
+					<div class="answer">#answer</div>
+				</div>
+		</div>
+		<!-- bottom bar -->
+		<div class="control-box">
+			<div id="prev" class="control-item">Previous</div>
+			<div id="drop-down" class="control-item">
+					<div><span id="position">1 of 20</span> <span class="down-arrow">▲</span></div>
+			</div>
+			<div id="next" " class="control-item">Next</div>
+		</div>
+</div>
+
+<!-- test area -->
+<div id="test-area" class="my-container">
+	 
+	 <div id="question-holder">
+	 		<div style="background: #d6d6d6;">
+	 			<div id="timer"></div>
+	 		</div>
+	 		<div id="correct_counter" style="text-align: center;"></div>
+	 		<div id="qtext">abacus</div>
+	 		<div class="options" id="a">frame with balls for calculating</div>
+	 		<div class="options" id="b">frame with balls for calculating</div>
+	 		<div class="options" id="c">frame with balls for calculating</div>
+	 		<div class="options" id="d">frame with balls for calculating</div>
+	 </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+<!-- pop up -->
+<div id="custom-drop-down-outer-parent">
+	<div id="custom-drop-down-outer" class="custom-drop-down-outer">
+		<div class="square">
+		    <div class="content">Page 1</div>
+		</div>
+	</div>
+	<div id="close_button" class="simple_button">Close</div>
+</div>
+
+<script type="text/javascript">
+var settings=
+{
+	"pageSize":10,
+	"shuffle":false,
+	"autoHideAnswer":true,
+	"currentPageIndex":0,
+	"maxPageIndex":0,
+	"isNewQuestion":true,
+	"correctCount":0,
+	"wrongCount":0
+};
+
+document.addEventListener("DOMContentLoaded",function()
+{
+	initItems();
+	addEvents();
+	loadNewQuestionInTestarea();
+});
+function showArea(showId,hideId)
+{
+	document.getElementById(showId).style.display="block";
+	document.getElementById(hideId).style.display="none";
+	toggleTopBarPopUp();
+}
+function toggleTopBarPopUp(argument)
+{
+			var div=document.getElementById('pop-up-menu');
+			if(div.getAttribute("data-state")=="hidden")
+			{
+				//show
+				div.style.display="inline-flex";
+				div.setAttribute("data-state","visible");
+			}else
+			{
+				//hide
+				div.style.display="none";
+				div.setAttribute("data-state","hidden");
+
+			}
+}
+function addEvents()
+{
+		document.getElementById('bar-menu-button').addEventListener("click",function()
+		{
+			//open drop down
+			toggleTopBarPopUp();
+		});
+		document.getElementById('drop-down').addEventListener("click",function()
+		{
+			//open drop down
+			document.getElementById('custom-drop-down-outer-parent').style.display="block";
+		});
+		document.getElementById('close_button').addEventListener("click",function()
+		{
+			//open drop down
+			document.getElementById('custom-drop-down-outer-parent').style.display="none";
+		});		
+
+		document.getElementById('next').addEventListener("click",function()
+		{
+				settings.currentPageIndex++;
+				if(settings.currentPageIndex>settings.maxPageIndex)
+					settings.currentPageIndex=settings.maxPageIndex;
+				loadPage(settings.currentPageIndex);						
+		});
+		
+		document.getElementById('prev').addEventListener("click",function()
+		{
+				settings.currentPageIndex--;
+				if(settings.currentPageIndex<0)
+					settings.currentPageIndex=0
+				loadPage(settings.currentPageIndex);		
+		});
+
+		document.getElementById('bar-menu-button').addEventListener("click",function()
+		{
+				//show menu
+		});
+
+
+}
+function loadNewQuestionInTestarea()
+{
+
+	settings.isNewQuestion=true;
+		var list=getNRandomInts(0,array.length-1,4);
+		var qtext=array[list[0]].split("|")[0].trim();
+		var answer=array[list[0]].split("|")[1].trim();
+		var options=[];
+		for (var i = 0; i < list.length; i++)
+		{
+			var pos=list[i];
+			options.push(array[list[i]].split("|")[1].trim());
+		}
+		options.sort(function(){0.5-Math.random()});
+
+		var correctIndex=options.indexOf(answer);
+
+		document.getElementById('qtext').innerHTML=qtext;
+		document.getElementById('a').innerHTML=options[0];
+		document.getElementById('a').setAttribute("onclick","checkAnswer(0,"+correctIndex+")");
+		document.getElementById('a').setAttribute("class","options");
+		document.getElementById('b').innerHTML=options[1];
+		document.getElementById('b').setAttribute("onclick","checkAnswer(1,"+correctIndex+")");
+		document.getElementById('b').setAttribute("class","options");
+		document.getElementById('c').innerHTML=options[2];
+		document.getElementById('c').setAttribute("onclick","checkAnswer(2,"+correctIndex+")");
+		document.getElementById('c').setAttribute("class","options");
+		document.getElementById('d').innerHTML=options[3];
+		document.getElementById('d').setAttribute("onclick","checkAnswer(3,"+correctIndex+")");
+		document.getElementById('d').setAttribute("class","options");
+		document.getElementById("timer").style.width="100%";
+}
+
+function checkAnswer(userAnswer,correctIndex)
+{
+	if(settings.isNewQuestion)
+	{
+		settings.isNewQuestion=false;
+		var ids=["a","b","c","d"];
+		if(userAnswer==correctIndex)
+		{
+			event.target.setAttribute("class","options correct_option");
+			settings.correctCount++;
+		}else{
+			event.target.setAttribute("class","options wrong_option");
+			settings.wrongCount++;
+			document.getElementById(ids[correctIndex]).setAttribute("class","options correct_option");
+		}
+
+		document.getElementById("timer").style.width="0%";
+		document.getElementById("correct_counter").innerHTML="CORRECT "+settings.correctCount+"/"+(settings.correctCount+settings.wrongCount);
+
+		setTimeout(function()
+		{
+			loadNewQuestionInTestarea();
+		},2000);
+	}
+}
+
+function initItems()
+{
+		var maxSize=array.length;
+		var numOfPages=maxSize/settings.pageSize;
+		console.log(numOfPages);	
+		settings.maxPageIndex=parseInt(numOfPages-1);
+		settings.currentPageIndex=0;
+		//custom drop down
+		var html="";
+		var parent=document.getElementById('custom-drop-down-outer');
+		for (var i = 0; i < numOfPages-1; i++)
+		{
+				// html+='<div class=item onclick=loadPage('+i+')>Page '+(i+1)+'</div>'
+				html+='<div class=square onclick=loadPage('+i+')>'
+	    		html+='<div class=content>Page '+(i+1)+'</div>'
+				html+='</div>'
+		}
+		parent.innerHTML=html;
+		loadPage(0);
+
+}
+
+function loadPage(pageNum)
+{
+	var maxSize=array.length;
+	var numOfPages=maxSize/settings.pageSize;
+
+	var parent=document.getElementById('container');
+	var html="";
+	var start=pageNum*settings.pageSize;
+	var end=start+settings.pageSize;
+	for (var i = start; i < end; i++)
+	{
+		var q=array[i].split("|")[0];
+		var a=array[i].split("|")[1];
+
+		html+='<div class=container-item onclick=handleClickOnItem()>';
+		html+='<div class=question>'+q+'</div>';
+		html+='<div class="line"></div>';
+		html+='<i><div class="answer">'+a+'</div></i>';
+		html+='</div>';
+	}
+	parent.innerHTML=html;
+	settings.currentPageIndex=pageNum;
+
+	//hide drop down
+	document.getElementById('custom-drop-down-outer-parent').style.display="none";
+	document.getElementById('position').innerHTML=(pageNum+1)+" of "+(parseInt(numOfPages));
+
+}
+function handleClickOnItem()
+{
+	 // var div=event.srcElement.parentElement.getElementsByClassName('answer')[0];
+	 // div.style.opacity=1;
+	 // setTimeout(function(){
+	 // 	div.style.opacity=0;
+	 // },5*1000);
+}
+function getRandomInt(min, max)
+{
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+function getNRandomInts(min,max,n)
+{
+	var randoms=[];
+	while(randoms.length!=n)
+	{
+		var num=getRandomInt(min,max);
+		if(randoms.indexOf(num)==-1)
+			randoms.push(num)
+	}
+	return randoms;
+}
+
+
+var array=[];
+array.push("abeyance|continuance");
+array.push("abjure|espouse");
+array.push("abjure|pledge");
+array.push("abrogate|institute");
+array.push("abrogate|enact");
+array.push("abstemious|indulgent");
+array.push("abstruse|obvious");
+array.push("acarpous|fecund");
+array.push("accolade|disapprobation");
+array.push("acerbity|sweetness");
+array.push("acquiescence|rebellion");
+array.push("acquit|convict");
+array.push("acrimonious|harmonious");
+array.push("adhere|detach");
+array.push("admonition|countenance");
+array.push("adroit|unskillful");
+array.push("adroit|awkward");
+array.push("adulterate|purify");
+array.push("adulteration|purification");
+array.push("adversity|prosperity");
+array.push("affiliation|dissociation");
+array.push("alacrity|reluctance");
+array.push("alacrity|slowness");
+array.push("alienate|harmonize");
+array.push("alleviate|exacerbate");
+array.push("alleviate|worsen");
+array.push("aloof|gregarious");
+array.push("altruism|miserliness");
+array.push("altruistic|selfish");
+array.push("amalgamate|isolate");
+array.push("amalgamate|separate");
+array.push("amass|separate");
+array.push("ambiguous|clear");
+array.push("amelioration|deterioration");
+array.push("amelioration|worsening");
+array.push("amenable|intractable");
+array.push("amicable|unfriendly");
+array.push("amorphous|structured");
+array.push("amorphous|definite");
+array.push("amplify|decrease");
+array.push("amplify|simplify");
+array.push("anathema|benediction");
+array.push("anathema|blessing");
+array.push("anathematize|bless");
+array.push("ancillary|principal");
+array.push("anemic|blooded");
+array.push("anodyne|presence");
+array.push("anomalous|usual");
+array.push("anomaly|regularity");
+array.push("anonymous|signed");
+array.push("antediluvian|modern");
+array.push("antipathy|fondness");
+array.push("antithesis|similarity");
+array.push("aplomb|confusion");
+array.push("apostate|loyalist");
+array.push("appease|agitate");
+array.push("apposite|inappropriate");
+array.push("apprehend|free");
+array.push("apropos|untimely");
+array.push("aptitude|talent");
+array.push("archaic|new");
+array.push("arrant|partial");
+array.push("arrhythmic|exhibiting regularity");
+array.push("artifice|sincerity");
+array.push("artifice|candor");
+array.push("artisan|laborer");
+array.push("artlessness|cunning");
+array.push("ascend|down");
+array.push("asceticism|indulgence");
+array.push("aseptic|contaminated");
+array.push("askew|straight");
+array.push("aspersions|flattery");
+array.push("asset|liability");
+array.push("assuage|worsen");
+array.push("assuaged|unsatisfied");
+array.push("asteroid|planet");
+array.push("astute|foolish");
+array.push("attenuate|thicken");
+array.push("atypical|normal");
+array.push("authentic|bogus");
+array.push("autonomous|dependent");
+array.push("avarice|generosity");
+array.push("avarice|altruism");
+array.push("aver|deny");
+array.push("aversion|affinity");
+array.push("avid|loath");
+array.push("awry|straight");
+array.push("baleful|beneficent");
+array.push("balm|irritant");
+array.push("banal|original");
+array.push("bane|blessing");
+array.push("baneful|salubrious");
+array.push("baneful|nonpoisonous");
+array.push("beatific|impish");
+array.push("bedizen|bare");
+array.push("belated|time");
+array.push("belittle|magnify");
+array.push("benevolent|miserly");
+array.push("benign|malignant");
+array.push("benignity|evilness");
+array.push("benison|curse");
+array.push("bent|ineptitude");
+array.push("berate|eulogize");
+array.push("berserk|sane");
+array.push("bestial|noble");
+array.push("billingsgate|acclaim");
+array.push("blanch|darken");
+array.push("bland|spicy");
+array.push("blandishment|criticism");
+array.push("blas|ardent");
+array.push("blithe|grave");
+array.push("boisterous|peaceful");
+array.push("bolster|undermine");
+array.push("bolster|of");
+array.push("bombast|speech");
+array.push("boorish|suave");
+array.push("boycott|patronize");
+array.push("brackish|sweetish");
+array.push("brindled|color");
+array.push("brook|tolerate");
+array.push("bucolic|urban");
+array.push("burnish|dull");
+array.push("cadge|earn");
+array.push("calligraphy|scribbling");
+array.push("callow|experienced");
+array.push("callow|sophisticated");
+array.push("calumniate|vindicate");
+array.push("camaraderie|animosity");
+array.push("candid|secretive");
+array.push("capacious|spacious");
+array.push("capitulation|resistance");
+array.push("capricious|steadfast");
+array.push("captious|tolerant");
+array.push("carnal|spiritual");
+array.push("carnivorous|vegetarian");
+array.push("carousal|sobriety");
+array.push("carping|acquiescent");
+array.push("carte|restriction");
+array.push("catalyze|inhibit");
+array.push("catholic|narrow");
+array.push("caucus|conspiracy");
+array.push("celerity|delay");
+array.push("celibate|married");
+array.push("censure|praise");
+array.push("centrifugal|centripetal");
+array.push("centripetal|centrifugal");
+array.push("cessation|beginning");
+array.push("chaffing|serious");
+array.push("chaotic|orderly");
+array.push("chary|foolhardy");
+array.push("chaste|impure");
+array.push("chaste|wanton");
+array.push("chasten|reward");
+array.push("chide|praise");
+array.push("chimerical|realistic");
+array.push("chimerical|fantastic");
+array.push("choleric|natured");
+array.push("choleric|coolheaded");
+array.push("churlish|polite");
+array.push("churlish|gracious");
+array.push("circuitous|direct");
+array.push("clandestine|overt");
+array.push("clemency|treatment");
+array.push("clich|novelty");
+array.push("coagulate|dissipate");
+array.push("cogent|unconvincing");
+array.push("cogent|fatuous");
+array.push("cognizance|ignorance");
+array.push("cognizant|ignorant");
+array.push("cognoscitive|unconscious");
+array.push("cohesion|independence");
+array.push("colloquial|polished");
+array.push("comatose|alert");
+array.push("comity|discord");
+array.push("commodious|limited");
+array.push("commodious|cramped");
+array.push("compatible|with");
+array.push("compendious|verbose");
+array.push("complacency|dissatisfaction");
+array.push("complaisance|churlishness");
+array.push("compliant|adamant");
+array.push("compound|separate");
+array.push("conciliate|quarrel");
+array.push("concur|dissent");
+array.push("condign|inadequate");
+array.push("condign|undeserved");
+array.push("condone|denounce");
+array.push("conduce|counteract");
+array.push("conform|to");
+array.push("conjecture|certainty");
+array.push("console|grief");
+array.push("contamination|'");
+array.push("contemplated|random");
+array.push("contiguity|remoteness");
+array.push("convivial|unsociable");
+array.push("conviviality|animosity");
+array.push("convoke|forgive");
+array.push("convoke|adjourn");
+array.push("corroborate|controvert");
+array.push("corroboration|certainty");
+array.push("cower|confront");
+array.push("coy|bold");
+array.push("cozen|honestly");
+array.push("crabbed|tempered");
+array.push("crass|refined");
+array.push("craven|brave");
+array.push("cryptic|candid");
+array.push("cudgel|caress");
+array.push("cupidity|generosity");
+array.push("cupidity|altruism");
+array.push("current|obsolete");
+array.push("cursory|detailed");
+array.push("cursory|thorough");
+array.push("curtail|lengthen");
+array.push("cynical|trusting");
+array.push("dank|dry");
+array.push("dastard|hero");
+array.push("dauntless|weak");
+array.push("dauntless|timid");
+array.push("debacle|success");
+array.push("debilitate|strengthen");
+array.push("debility|strength");
+array.push("debonair|awkward");
+array.push("decant|out");
+array.push("declivity|slope");
+array.push("decorous|improper");
+array.push("decorous|unseemly");
+array.push("decrepit|youthful");
+array.push("decry|condone");
+array.push("defalcate|properly");
+array.push("defection|joining");
+array.push("deference|contempt");
+array.push("defile|purify");
+array.push("delete|insert");
+array.push("deleterious|harmless");
+array.push("demise|birth");
+array.push("denunciation|eulogy");
+array.push("deposition|eroding");
+array.push("depravity|goodness");
+array.push("depredation|restoration");
+array.push("deranged|sane");
+array.push("derisive|laudatory");
+array.push("derogatory|praising");
+array.push("desecrate|consecrate");
+array.push("desiccate|inundate");
+array.push("desiccate|drench");
+array.push("despicable|esteem");
+array.push("destitute|affluent");
+array.push("destitute|wanton");
+array.push("desuetude|use");
+array.push("desultory|systematic");
+array.push("deterioration|improvement");
+array.push("devoid|of");
+array.push("devout|impious");
+array.push("diabolical|seraphic");
+array.push("diatribe|praise");
+array.push("differentiate|combine");
+array.push("diffidence|boldness");
+array.push("dilate|narrow");
+array.push("dilate|'");
+array.push("dilation|contraction");
+array.push("dilatory|expediting");
+array.push("dilettante|professional");
+array.push("diminution|appreciation");
+array.push("disabuse|deceive");
+array.push("disarm|guard");
+array.push("discern|overlook");
+array.push("disconsolate|joyous");
+array.push("discrete|continuous");
+array.push("disheveled|tidy");
+array.push("disingenuous|naive");
+array.push("disinterested|prejudiced");
+array.push("disjointed|connected");
+array.push("disjointed|orderly");
+array.push("disparage|eulogize");
+array.push("disputatious|conciliatory");
+array.push("disrupt|together");
+array.push("dissemble|honestly");
+array.push("dissipate|economize");
+array.push("dissonance|concord");
+array.push("dissonant|harmonious");
+array.push("dissuade|exhort");
+array.push("distend|diminish");
+array.push("divulge|secret");
+array.push("doff|don");
+array.push("doleful|merry");
+array.push("dolorous|happy");
+array.push("dolt|person");
+array.push("doltish|clever");
+array.push("dormant|alert");
+array.push("drivel|sense");
+array.push("droll|humorless");
+array.push("ductility|brittleness");
+array.push("dwindle|increase");
+array.push("eclectic|dogmatic");
+array.push("eclectic|uniform");
+array.push("effluvia|products");
+array.push("effrontery|shyness");
+array.push("effrontery|deference");
+array.push("egress|entrance");
+array.push("elated|crestfallen");
+array.push("elicit|stifle");
+array.push("emaciated|stout");
+array.push("emaciation|invigoration");
+array.push("emancipate|enslave");
+array.push("embellish|disfigure");
+array.push("eminent|notorious");
+array.push("emollient|irritating");
+array.push("endemic|pandemic");
+array.push("enervate|invigorate");
+array.push("enervate|fortify");
+array.push("enervate|strengthen");
+array.push("enigmatic|ambiguity");
+array.push("enigmatic|understood");
+array.push("enmity|affection");
+array.push("ennui|excitement");
+array.push("ensconce|uncover");
+array.push("ensemble|solo");
+array.push("ensue|precede");
+array.push("ephemeral|eternal");
+array.push("ephemeral|permanent");
+array.push("equable|stormy");
+array.push("equanimity|'");
+array.push("equanimity|agitation");
+array.push("equivocal|clear");
+array.push("erratic|consistent");
+array.push("ersatz|authentic");
+array.push("erudite|ignorant");
+array.push("eschew|welcome");
+array.push("esoteric|known");
+array.push("ethereal|tangible");
+array.push("eulogistic|critical");
+array.push("euphonious|strident");
+array.push("euphony|discord");
+array.push("euphoria|discomfort");
+array.push("evasive|frank");
+array.push("evince|conceal");
+array.push("exasperate|placate");
+array.push("excoriate|praise");
+array.push("excoriate|soothe");
+array.push("exculpate|guilt");
+array.push("exculpate|accuse");
+array.push("execrable|excellent");
+array.push("execrate|acclaim");
+array.push("exhort|dissuade");
+array.push("exhume|inter");
+array.push("exodus|entry");
+array.push("exonerate|accuse");
+array.push("exorbitant|moderate");
+array.push("expatiate|briefly");
+array.push("expunge|perpetuate");
+array.push("extant|destroyed");
+array.push("extemporaneous|rehearsed");
+array.push("extinguish|ignite");
+array.push("extirpate|implant");
+array.push("extraneous|essential");
+array.push("extrinsic|inherent");
+array.push("extrovert|introvert");
+array.push("factitious|spontaneous");
+array.push("factitious|genuine");
+array.push("fallacy|argument");
+array.push("fantastic|realistic");
+array.push("fatuous|sensible");
+array.push("fawning|arrogant");
+array.push("feasible|impractical");
+array.push("feasible|impracticable");
+array.push("feckless|strong");
+array.push("fecund|produce");
+array.push("felicity|misery");
+array.push("fell|propitious");
+array.push("ferrous|iron");
+array.push("fervid|restrained");
+array.push("fervid|listless");
+array.push("fetid|smell");
+array.push("fettered|liberated");
+array.push("fiasco|success");
+array.push("fickle|loyal");
+array.push("fidelity|treachery");
+array.push("flaccid|taut");
+array.push("flagrant|good");
+array.push("flamboyant|restrained");
+array.push("flaunt|hide");
+array.push("fledgling|experienced");
+array.push("flinch|extol");
+</script>
+
+
+</body></html>
