@@ -3,7 +3,46 @@
 	<meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 <style type="text/css">
+
+/*primary color:#AA66CC*/
+
+::-webkit-scrollbar {
+  width: 2px;
+  height: 2px;
+}
+::-webkit-scrollbar-button {
+  width: 0px;
+  height: 0px;
+}
+::-webkit-scrollbar-thumb {
+  background: #e1e1e1;
+  border: 0px none #ffffff;
+  border-radius: 50px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #ffffff;
+}
+::-webkit-scrollbar-thumb:active {
+  background: #000000;
+}
+::-webkit-scrollbar-track {
+  background: #666666;
+  border: 0px none #ffffff;
+  border-radius: 50px;
+}
+::-webkit-scrollbar-track:hover {
+  background: #666666;
+}
+::-webkit-scrollbar-track:active {
+  background: #333333;
+}
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+
 
 @font-face{
     font-family: 'Font';
@@ -11,7 +50,7 @@
 	}
 body
 {
-	font-family: 'Font', sans-serif;
+	font-family:'Roboto','Font', sans-serif;
 	display: flex;
 	flex-direction: column;
 	overflow: hidden;
@@ -26,14 +65,24 @@ body
 }
 .control-box	
 {
-		position: relative;
+	position: fixed;
+    bottom: 2px;
+    left: 0px;
+    right: 0px;
+    width: 100%;
+    padding-right: 2%;
+    padding-left: 2%;
+    display: flex;
+    flex-direction: row;
+    z-index: 1;
+    background: white;
 }
 .container
 {
     position: relative;
     text-align: center;
     width: 100%;
-    height: 85%;
+    height: 80%;
     overflow: auto;
     margin-top: 10px;
 }
@@ -50,20 +99,18 @@ body
 }
 .answer
 {
-	transition: 0.5s all;
-	opacity: 0;
+    transition: 0.5s all;
+    opacity: 1;
+    color: rgba(17, 17, 17, 0.79);
+    font-size: 3.5vw;
 }
 
 .control-item
 {
 	border: 1px solid #AA66CC;
-    padding: 5px;
-    margin-top: 10px;
     text-align: center;
-    width: calc(33% - 14px);
-    float: left;
-    margin-right: 2px;
-    font-size: 4vw;
+    width: 32%;
+    font-size: 3.6vw;
 }		
 .control-item:active
 {
@@ -78,22 +125,20 @@ body
 }
 .menu-button
 {
-	float: left;
-    width: 10%;
-    text-align: center;
-    font-size: 6.5vw;
+	text-align: right;
+    font-size: 8.5vw;
     position: absolute;
-    right: 0px;
-    top: 5px;
+    right: -7px;
+    top: -7px;
     font-weight: bolder;
+    transform: rotate(90deg);
+    transform-origin: center;
     color: #A6c;
     transition: 0.5s all;
-    border-radius: 2px;		
 }
 .menu-button:active
 {
-	background: #a6c;
-	color: white;
+	background: rgba(232, 232, 232, 0.34);
 }
 .line
 {
@@ -104,19 +149,42 @@ body
     margin-bottom: 3px;
 }
 
+#custom-drop-down-outer-parent
+{
+	position: absolute;
+	display: none;
+    width: 90%;
+    height: 90%;
+    margin-left: 5%;
+    margin-top: 2.5%;
+    background: rgba(245, 245, 245, 0.61);
+    overflow: hidden;
+    z-index: 99;
+}
 .custom-drop-down-outer {
     background: #f5f5f5;
-    display: none;
     height: 80%;
     width: 80%;
-    position: absolute;
-    z-index: 99;
-    margin-top: 10%;
-    margin-left: 5%;
+    position: relative;
+    margin-left: 7.5%;
+    margin-top: 7.5%;
     overflow: auto;
     box-shadow: 2px 4px 10px rgba(128, 128, 128, 0.52);
     border-radius: 2px;
     padding: 2.5%;
+}
+.simple_button
+{
+	position: relative;
+    display: inline-block;
+    background: #AA66CC;
+    color: white;
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-top: 2%;
+    padding-bottom: 2%;
+    margin-left: 40%;
+    margin-top: 10px;
 }
 .square {
     float:left;
@@ -158,37 +226,132 @@ body
     z-index: 98;
     background: white;
 }
+#question-holder
+{
+	font-size: 4vw;
+    text-align: center;
+}
+#qtext
+{
+    text-transform: uppercase;
+    background: aliceblue;
+    display: inline-block;
+    padding: 8% 20% 8% 20%;
+    margin-top: 4%;
+    border-radius: 50px;
+}
+.options
+{
+	background: rgba(250, 235, 215, 0.58);
+    margin-top: 5%;
+    padding: 5% 0% 5% 0%;
+    border-radius: 50px;
+}
+.correct_option
+{
+	background: #99CC00;
+	color: white;
+}
+.wrong_option
+{
+	background: #ec7964;
+	color: white;
+}
+#timer{
+	background: #99CC00;
+    width: 100%;
+    height: 0.3%;
+    transition: 2s all;
+}
+#pop-up-menu
+{
+	background: linear-gradient(rgb(247, 247, 247),rgb(249, 249, 249));
+    display: none;
+        margin-top: 5%;
+    flex-direction: column;
+    padding: 2% 5% 2% 5%;
+    position: absolute;
+    right: 0px;
+    border-radius: 2px;
+    box-shadow: 1px 2px 7px rgba(210, 210, 210, 0.61);
+}
+.menu-item
+{
+    padding: 4% 0% 4% 0%;
+    border-bottom: 1px solid #d4d4d4;
+    transition: 0.5s all;
+}
+.menu-item:active
+{
+	    background: #ececec;
+}
 </style>
 </head>
 <body id="body">
+
+<!-- app bar -->
 <div class="billboard">
-<!-- title -->
-<div class="title">Synonyms</div>
-<div class="menu-button">☰</div>
-
-<!-- menu items -->
-<div class="control-box">
-	<div id="prev" class="control-item">Previous</div>
-	<div id="drop-down" class="control-item">
-			<div><span id="position">1 of 20</span> <span class="down-arrow">▼</span></div>
+	<div class="title">Synonyms</div>
+	<div id="bar-menu-button" class="menu-button">...</div>
+	<div id="pop-up-menu" data-state="hidden">
+		<div onclick="showArea('learning-area','test-area')" class="menu-item">Learning Area</div>
+		<div onclick="showArea('test-area','learning-area')" class="menu-item">Quiz Area</div>
 	</div>
-	<div id="next" " class="control-item">Next</div>
 </div>
-</div>
-<!-- container  -->
-<div id="container" class="container">
-		<div class="container-item">
-			<div class="question">#synonyms</div>
-			<div class="line"></div>
-			<div class="answer">#meaning</div>
+
+<!-- learning area -->
+<div id="learning-area" style="display: none;">
+			<!-- contents  -->
+		<div id="container" class="container">
+				<div class="container-item">
+					<div class="question">#synonyms</div>
+					<div class="line"></div>
+					<div class="answer">#meaning</div>
+				</div>
 		</div>
+		<!-- bottom bar -->
+		<div class="control-box">
+			<div id="prev" class="control-item">Previous</div>
+			<div id="drop-down" class="control-item">
+					<div><span id="position">1 of 20</span> <span class="down-arrow">▲</span></div>
+			</div>
+			<div id="next" " class="control-item">Next</div>
+		</div>
+</div>
+
+<!-- test area -->
+<div id="test-area" style="display: block;">
+	 
+	 <div id="question-holder">
+	 		<div style="background: #d6d6d6;">
+	 			<div id="timer"></div>
+	 		</div>
+	 		<div id="correct_counter" style="text-align: center;"></div>
+	 		<div id="qtext">abacus</div>
+	 		<div class="options" id="a">frame with balls for calculating</div>
+	 		<div class="options" id="b">frame with balls for calculating</div>
+	 		<div class="options" id="c">frame with balls for calculating</div>
+	 		<div class="options" id="d">frame with balls for calculating</div>
+	 </div>
 
 </div>
 
-<div id="custom-drop-down-outer" class="custom-drop-down-outer">
-	<div class="square">
-	    <div class="content">Page 1</div>
+
+
+
+
+
+
+
+
+<!-- pop up -->
+<div id="custom-drop-down-outer-parent">
+	<div id="custom-drop-down-outer" class="custom-drop-down-outer">
+		<div class="square">
+		    <div class="content">Page 1</div>
+		</div>
 	</div>
+	<div id="close_button" class="simple_button">Close</div>
 </div>
 
 <script type="text/javascript">
@@ -198,21 +361,57 @@ var settings=
 	"shuffle":false,
 	"autoHideAnswer":true,
 	"currentPageIndex":0,
-	"maxPageIndex":0
+	"maxPageIndex":0,
+	"isNewQuestion":true,
+	"correctCount":0,
+	"wrongCount":0
 };
 
 document.addEventListener("DOMContentLoaded",function()
 {
 	initItems();
 	addEvents();
+	loadNewQuestionInTestarea();
 });
+function showArea(showId,hideId)
+{
+	document.getElementById(showId).style.display="block";
+	document.getElementById(hideId).style.display="none";
+	toggleTopBarPopUp();
+}
+function toggleTopBarPopUp(argument)
+{
+			var div=document.getElementById('pop-up-menu');
+			if(div.getAttribute("data-state")=="hidden")
+			{
+				//show
+				div.style.display="inline-flex";
+				div.setAttribute("data-state","visible");
+			}else
+			{
+				//hide
+				div.style.display="none";
+				div.setAttribute("data-state","hidden");
+
+			}
+}
 function addEvents()
 {
+		document.getElementById('bar-menu-button').addEventListener("click",function()
+		{
+			//open drop down
+			toggleTopBarPopUp();
+		});
 		document.getElementById('drop-down').addEventListener("click",function()
 		{
 			//open drop down
-			document.getElementById('custom-drop-down-outer').style.display="block";
+			document.getElementById('custom-drop-down-outer-parent').style.display="block";
 		});
+		document.getElementById('close_button').addEventListener("click",function()
+		{
+			//open drop down
+			document.getElementById('custom-drop-down-outer-parent').style.display="none";
+		});		
 
 		document.getElementById('next').addEventListener("click",function()
 		{
@@ -230,9 +429,72 @@ function addEvents()
 				loadPage(settings.currentPageIndex);		
 		});
 
+		document.getElementById('bar-menu-button').addEventListener("click",function()
+		{
+				//show menu
+		});
 
 
 }
+function loadNewQuestionInTestarea()
+{
+
+	settings.isNewQuestion=true;
+		var list=getNRandomInts(0,array.length-1,4);
+		var qtext=array[list[0]].split("|")[0].trim();
+		var answer=array[list[0]].split("|")[1].trim();
+		var options=[];
+		for (var i = 0; i < list.length; i++)
+		{
+			var pos=list[i];
+			options.push(array[list[i]].split("|")[1].trim());
+		}
+		options.sort(function(){0.5-Math.random()});
+
+		var correctIndex=options.indexOf(answer);
+
+		document.getElementById('qtext').innerHTML=qtext;
+		document.getElementById('a').innerHTML=options[0];
+		document.getElementById('a').setAttribute("onclick","checkAnswer(0,"+correctIndex+")");
+		document.getElementById('a').setAttribute("class","options");
+		document.getElementById('b').innerHTML=options[1];
+		document.getElementById('b').setAttribute("onclick","checkAnswer(1,"+correctIndex+")");
+		document.getElementById('b').setAttribute("class","options");
+		document.getElementById('c').innerHTML=options[2];
+		document.getElementById('c').setAttribute("onclick","checkAnswer(2,"+correctIndex+")");
+		document.getElementById('c').setAttribute("class","options");
+		document.getElementById('d').innerHTML=options[3];
+		document.getElementById('d').setAttribute("onclick","checkAnswer(3,"+correctIndex+")");
+		document.getElementById('d').setAttribute("class","options");
+		document.getElementById("timer").style.width="100%";
+}
+
+function checkAnswer(userAnswer,correctIndex)
+{
+	if(settings.isNewQuestion)
+	{
+		settings.isNewQuestion=false;
+		var ids=["a","b","c","d"];
+		if(userAnswer==correctIndex)
+		{
+			event.target.setAttribute("class","options correct_option");
+			settings.correctCount++;
+		}else{
+			event.target.setAttribute("class","options wrong_option");
+			settings.wrongCount++;
+			document.getElementById(ids[correctIndex]).setAttribute("class","options correct_option");
+		}
+
+		document.getElementById("timer").style.width="0%";
+		document.getElementById("correct_counter").innerHTML="CORRECT "+settings.correctCount+"/"+(settings.correctCount+settings.wrongCount);
+
+		setTimeout(function()
+		{
+			loadNewQuestionInTestarea();
+		},2000);
+	}
+}
+
 function initItems()
 {
 		var maxSize=array.length;
@@ -279,20 +541,34 @@ function loadPage(pageNum)
 	settings.currentPageIndex=pageNum;
 
 	//hide drop down
-	document.getElementById('custom-drop-down-outer').style.display="none";
+	document.getElementById('custom-drop-down-outer-parent').style.display="none";
 	document.getElementById('position').innerHTML=(pageNum+1)+" of "+(parseInt(numOfPages));
 
 }
 function handleClickOnItem()
 {
-	 var div=event.srcElement.parentElement.getElementsByClassName('answer')[0];
-	 div.style.opacity=1;
-	 setTimeout(function(){
-	 	div.style.opacity=0;
-	 },5*1000);
-
-	 
+	 // var div=event.srcElement.parentElement.getElementsByClassName('answer')[0];
+	 // div.style.opacity=1;
+	 // setTimeout(function(){
+	 // 	div.style.opacity=0;
+	 // },5*1000);
 }
+function getRandomInt(min, max)
+{
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+function getNRandomInts(min,max,n)
+{
+	var randoms=[];
+	while(randoms.length!=n)
+	{
+		var num=getRandomInt(min,max);
+		if(randoms.indexOf(num)==-1)
+			randoms.push(num)
+	}
+	return randoms;
+}
+
 
 var array=[];
 array.push("abacus|frame with balls for calculating");
