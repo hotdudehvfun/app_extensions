@@ -3,10 +3,14 @@
 	<meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.0/css/materialize.min.css">
+	
 <style type="text/css">
 
-/*primary color:#e91e63*/
+/*primary color:#ee6e73*/
 
 ::-webkit-scrollbar {
   width: 2px;
@@ -66,17 +70,11 @@ body
 }
 .control-box	
 {
-	position: fixed;
-    bottom: 2px;
-    left: 0px;
-    right: 0px;
-    width: 100%;
-    padding-right: 2%;
-    padding-left: 2%;
+	position: relative;
     display: flex;
     flex-direction: row;
     z-index: 1;
-    background: white;
+    margin-top: 5px;
 }
 .container
 {
@@ -89,38 +87,33 @@ body
 }
 .container-item
 {
-	width: 90%;
-    background: white;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    font-size: 5.5vmin;
-    padding-top: 10px;
-    padding-bottom: 10px;
     text-align: left;
+    border-bottom: 1px solid #d2d2d2;
+    padding-bottom: 2%;
+    padding-top: 10%;
 }
 .answer
 {
     transition: 0.5s all;
     opacity: 1;
     color: rgba(17, 17, 17, 0.79);
-    font-size: 4vmin;
 }
 
 .control-item
 {
-	border: 1px solid #e91e63;
+	border: 1px solid #ee6e73;
     text-align: center;
-    width: 32%;
-    font-size: 4vmin;
+    width: 33.33%;
+    background: white;
 }		
 .control-item:active
 {
-	background-color: #e91e63;
+	background-color: #ee6e73;
 	color: white;
 }
 .down-arrow
 {
-	color: #e91e63;
+	color: #ee6e73;
 	font-size: 4.2vw;
 	text-shadow: 1px 1px 2px rgba(128, 128, 128, 0.52);
 }
@@ -134,7 +127,7 @@ body
     font-weight: bolder;
     transform: rotate(90deg);
     transform-origin: center;
-    color: #e91e63;
+    color: #ee6e73;
     transition: 0.5s all;
     display: inline-block;
     z-index: 99;
@@ -146,7 +139,7 @@ body
 .line
 {
 	width: 90%;
-    background: #e91e63;
+    background: #ee6e73;
     height: 2px;
     margin-right: 5%;
     margin-top: 3px;
@@ -181,7 +174,7 @@ body
 {
 	position: relative;
     display: inline-block;
-    background: #e91e63;
+    background: #ee6e73;
     color: white;
     padding-left: 5%;
     padding-right: 5%;
@@ -235,27 +228,22 @@ body
 }
 #question-holder
 {
-	    font-size: 4.4vmin;
-    overflow: auto;
-    height: 85%;
-    /* max-width: 1024; */
     text-align: center;
+    margin-top: 2%;
 }
 #qtext
 {
-    text-transform: uppercase;
-    background: aliceblue;
-    display: inline-block;
-    padding: 8% 20% 8% 20%;
-    margin-top: 4%;
-    border-radius: 50px;
 }
 .options
 {
-	background: rgba(250, 235, 215, 0.58);
+	/*background: rgba(250, 235, 215, 0.58);
     margin-top: 5%;
     padding: 5% 0% 5% 0%;
-    border-radius: 50px;
+    border-radius: 50px;*/
+    text-align: left;
+    background: #f7f7f7;
+    margin-top: 3%;
+    padding: 2% 0% 2% 2%;
 }
 .correct_option
 {
@@ -268,9 +256,9 @@ body
 	color: white;
 }
 #timer{
-	background: #99CC00;
+	background: rgb(238, 110, 115);
     width: 100%;
-    height: 0.5vmin;
+    height: 1.5px;
     transition: 2s all;
 }
 #pop-up-menu
@@ -308,55 +296,77 @@ body
 </style>
 </head>
 <body id="body">
+<nav>
+    <div class="nav-wrapper">
+      <a href="#!" class="brand-logo">Antonyms</a>
+      
+    </div>
+  </nav>
 
-<!-- app bar -->
-<div class="billboard">
-	<div class="title">Antonyms</div>
-</div>
-<!-- menu dots -->
-<div id="bar-menu-button" class="menu-button">...</div>
-	<div id="pop-up-menu" data-state="hidden">
-		<div onclick="showArea('learning-area','test-area')" class="menu-item">Learning Area</div>
-		<div onclick="showArea('test-area','learning-area')" class="menu-item">Quiz Area</div>
-	</div>
+<div id="main">
+	<div class="wrapper">
+		<SECTION id="content">
+			<div class="container">
+			<div class="row" style="margin: auto;">
+			    <div class="col s12">
+			      <ul class="tabs">
+			        <li class="tab col s3"><a class="active"  href="#test-area">Quiz Area</a></li>
+			        <li class="tab col s3"><a href="#learning-area">Learning Area</a></li>
+			      </ul>
+			    </div>
+    		<div id="test-area" class="col s12">
+											<div id="question-holder">
+														<div style="background: #d6d6d6;"><div id="timer"></div></div>
+														<div id="correct_counter" style="text-align: center;">CORRECT 0/0</div>
+														<div class="container-item">
+															<div id="qtext" class="question">censure</div>
+															
+														</div>
+														<i>
+															<div id="a" class="answer">expression of blame or disapproval a rebuke</div>
+															<div id="b" class="answer">expression of blame or disapproval a rebuke</div>
+															<div id="c" class="answer">expression of blame or disapproval a rebuke</div>
+															<div id="d" class="answer">expression of blame or disapproval a rebuke</div>
 
-<!-- learning area -->
-<div id="learning-area" class="my-container" style="display: none;">
-			<!-- contents  -->
-		<div id="container" class="container">
-				<div class="container-item">
-					<div class="question">#anto</div>
-					<div class="line"></div>
-					<div class="answer">#answer</div>
-				</div>
-		</div>
-		<!-- bottom bar -->
-		<div class="control-box">
-			<div id="prev" class="control-item">Previous</div>
-			<div id="drop-down" class="control-item">
-					<div><span id="position">1 of 20</span> <span class="down-arrow">▲</span></div>
+															</i>
+											</div>    	
+
+
+    	    </div>
+    		<div id="learning-area" class="col s12">
+											<!-- contents  -->
+											<div class="control-box">
+												<div id="prev" class="control-item">Previous</div>
+												<div id="drop-down" class="control-item">
+														<div><span id="position">1 of 20</span> <span class="down-arrow">▲</span></div>
+												</div>
+												<div id="next" " class="control-item">Next</div>
+											</div>
+											<div id="container" class="">
+													<div class="container-item">
+														<div class="question">#anto</div>
+														<div class="line"></div>
+														<div class="answer">#answer</div>
+													</div>
+											</div>
+
+
+    		</div>
+  </div>
+                       
 			</div>
-			<div id="next" " class="control-item">Next</div>
-		</div>
+		</SECTION>
+
+	</div>
 </div>
 
-<!-- test area -->
-<div id="test-area" class="my-container">
-	 
-	 <div id="question-holder">
-	 		<div style="background: #d6d6d6;">
-	 			<div id="timer"></div>
-	 		</div>
-	 		<div id="correct_counter" style="text-align: center;"></div>
-	 		<div id="qtext">abacus</div>
-	 		<div class="options" id="a">frame with balls for calculating</div>
-	 		<div class="options" id="b">frame with balls for calculating</div>
-	 		<div class="options" id="c">frame with balls for calculating</div>
-	 		<div class="options" id="d">frame with balls for calculating</div>
-	 </div>
-
+<!-- menu dots -->
+<!-- <div id="bar-menu-button" class="menu-button">...</div> -->
+<!-- pop up menu -->
+<div id="pop-up-menu" data-state="hidden">
+	<div onclick="showArea('learning-area','test-area')" class="menu-item">Learning Area</div>
+	<div onclick="showArea('test-area','learning-area')" class="menu-item">Quiz Area</div>
 </div>
-
 
 
 
@@ -418,11 +428,11 @@ function toggleTopBarPopUp(argument)
 }
 function addEvents()
 {
-		document.getElementById('bar-menu-button').addEventListener("click",function()
-		{
-			//open drop down
-			toggleTopBarPopUp();
-		});
+		// document.getElementById('bar-menu-button').addEventListener("click",function()
+		// {
+		// 	//open drop down
+		// 	toggleTopBarPopUp();
+		// });
 		document.getElementById('drop-down').addEventListener("click",function()
 		{
 			//open drop down
@@ -450,10 +460,10 @@ function addEvents()
 				loadPage(settings.currentPageIndex);		
 		});
 
-		document.getElementById('bar-menu-button').addEventListener("click",function()
-		{
-				//show menu
-		});
+		// document.getElementById('bar-menu-button').addEventListener("click",function()
+		// {
+		// 		//show menu
+		// });
 
 
 }
@@ -554,7 +564,7 @@ function loadPage(pageNum)
 
 		html+='<div class=container-item onclick=handleClickOnItem()>';
 		html+='<div class=question>'+q+'</div>';
-		html+='<div class="line"></div>';
+		// html+='<div class="line"></div>';
 		html+='<i><div class="answer">'+a+'</div></i>';
 		html+='</div>';
 	}
@@ -978,5 +988,6 @@ array.push("fledgling|experienced");
 array.push("flinch|extol");
 </script>
 
-
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.0/js/materialize.min.js"></script>
 </body></html>
