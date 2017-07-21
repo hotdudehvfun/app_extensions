@@ -61,20 +61,13 @@ body
 
 
 }
-.title
-{
-	text-align: center;
-	font-size: 7vmin;
-	font-weight: 800;
-	width: 100%;
-}
+
 .control-box	
 {
 	position: relative;
-    display: flex;
-    flex-direction: row;
     z-index: 1;
     margin-top: 5px;
+    text-align: center;
 }
 .container
 {
@@ -101,10 +94,14 @@ body
 
 .control-item
 {
-	border: 1px solid #ee6e73;
+    border: 1px solid #ee6e73;
     text-align: center;
-    width: 33.33%;
+    width: 25%;
     background: white;
+    display: inline-block;
+    border-radius: 50px;
+    min-width: 90px;
+    max-width: 250px;
 }		
 .control-item:active
 {
@@ -114,13 +111,13 @@ body
 .down-arrow
 {
 	color: #ee6e73;
-	font-size: 4.2vw;
+	
 	text-shadow: 1px 1px 2px rgba(128, 128, 128, 0.52);
 }
 .menu-button
 {
 	text-align: right;
-    font-size: 8.5vmin;
+    
     position: absolute;
     right: 0px;
     top: 0%;
@@ -210,8 +207,6 @@ body
 }
 .question:active
 {
-	    background: rgba(170, 102, 204, 0.26);
-
 }
 .billboard
 {
@@ -278,7 +273,6 @@ body
 {
     padding: 4% 0% 4% 0%;
     border-bottom: 1px solid #d4d4d4;
-    font-size: 4vmin;
     transition: 0.5s all;
 }
 .menu-item:active
@@ -296,9 +290,16 @@ body
 </style>
 </head>
 <body id="body">
-<nav>
-    <div class="nav-wrapper">
-      <a href="#!" class="brand-logo">Synonyms</a>
+<nav style="background: white;    box-shadow: 0px 1px 10px rgba(128, 128, 128, 0.36);">
+    <div class="">
+      <div class="row">
+      	<div class="col s12">
+			      <ul class="tabs">
+			        <li class="tab col s3"><a class="active"  href="#test-area">Quiz Area</a></li>
+			        <li class="tab col s3"><a href="#learning-area">Learning Area</a></li>
+			      </ul>
+		</div>	
+      </div>
       
     </div>
   </nav>
@@ -308,12 +309,6 @@ body
 		<SECTION id="content">
 			<div class="container">
 			<div class="row" style="margin: auto;">
-			    <div class="col s12">
-			      <ul class="tabs">
-			        <li class="tab col s3"><a class="active"  href="#test-area">Quiz Area</a></li>
-			        <li class="tab col s3"><a href="#learning-area">Learning Area</a></li>
-			      </ul>
-			    </div>
     		<div id="test-area" class="col s12">
 											<div id="question-holder">
 														<div style="background: #d6d6d6;"><div id="timer"></div></div>
@@ -329,20 +324,22 @@ body
 															<div id="d" class="answer">expression of blame or disapproval a rebuke</div>
 
 															</i>
-											</div>    	
+											</div>    	
 
 
     	    </div>
+    	    </div>
+    	    <div class="row" style="margin:auto;">
     		<div id="learning-area" class="col s12">
 											<!-- contents  -->
 											<div class="control-box">
-												<div id="prev" class="control-item">Previous</div>
-												<div id="drop-down" class="control-item">
+													<div id="prev" class="control-item">Previous</div>
+													<div id="drop-down" class="control-item">
 														<div><span id="position">1 of 20</span> <span class="down-arrow">▲</span></div>
-												</div>
-												<div id="next" " class="control-item">Next</div>
+													</div>
+													<div id="next" class="control-item">Next</div>
 											</div>
-											<div id="container" class="">
+											<div id="container" style="width: 100%;height: 85%;overflow: auto;">
 													<div class="container-item">
 														<div class="question">#anto</div>
 														<div class="line"></div>
@@ -351,6 +348,7 @@ body
 											</div>
 
 
+    		</div>
     		</div>
   </div>
                        
