@@ -3,3 +3,17 @@ body
 	margin: 0px;
 	overflow: hidden;
 }
+canvas
+{
+	background:linear-gradient(#4CAF50,#CDDC39);	
+}
+
+.animate
+{
+	transition: 1s all;
+	position: absolute;
+	z-index: 99;
+	width: 100%;
+	text-align: center;
+	color: white;
+}
