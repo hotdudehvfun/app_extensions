@@ -1,0 +1,336 @@
+<!DOCTYPE>
+<html>
+<head>
+	<title>Word Series</title>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <style type="text/css">
+    /*primary color: #5AC8FA*/
+    
+	*
+	{
+		font-family: "Roboto","sans-serif";
+		  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+	}   
+    body
+    {
+    	margin: 0px; 
+    	overflow: hidden;
+    }
+    .heading
+    {
+    	text-align: center;
+    }
+    .half_line
+    {
+    	width: 50%;
+    	height: 2px;
+    	background: #5AC8FA;
+    	margin-left: 25%;
+    	position:relative;
+    }
+    ._25_line
+    {
+    	width: 25%;
+    	height: 2px;
+    	background: #5AC8FA;
+    	margin-left: 37.5%;
+    	position:relative;
+    }
+
+    #qtext
+    {
+    	text-align: center;
+    	margin-top:5%; 
+    }
+    .option
+    {
+	    padding: 2% 3% 2% 3%;
+	    border-radius: 50px;
+	    background: #ececec;
+	    display: inline-table;
+	    margin-top: 5%;
+	    margin-left: 10%;
+	    margin-right: 10%;
+	    color: #111;
+	    width: 10%;
+	    transition: 0.5s all;
+	}
+	.correct
+	{
+		background: #9C0;
+		color: white;		
+	}
+	.wrong
+	{
+		background: #ec7964;
+		color: white;
+	}
+    .option-container
+    {
+    	    text-align: center;
+    		margin-top: 5%;
+    }
+    .explanation-holder
+    {
+    	transition: 0.5s all;
+    	width: 100%;
+    	height: 0px;
+    	overflow-x: hidden;
+    	overflow-y: auto;
+    }
+    </style>
+</head>
+<body>
+<h2 class="heading">Word Series</h2>
+<div class="half_line"></div>
+<div id="qtext">
+</div>
+<div class="explanation-holder" id="explanation-holder">
+</div>
+<div class="option-container">
+	<div class="option" id="a"></div>
+	<div class="option" id="b"></div>
+	<div class="option" id="c"></div>
+	<div class="option" id="d"></div>
+</div>
+
+<div id="next-button" style="
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    bottom: 5px;
+">
+	<div class="option" style="
+    margin: 0px;
+    background: #5AC8FA;
+    color: white;
+">Next</div>
+</div>
+
+<script type="text/javascript">
+/*word series
+	length 1 to 4
+	series length 3 to 5
+
+rule 1
+	size 1
+	length 3 - 5
+	simple addition/subtraction to corresponding letter
+*/
+
+var isNewQuestion;
+document.addEventListener("DOMContentLoaded",function()
+{
+	rule1();
+	addEventListeners();
+});
+
+function addEventListeners(argument)
+{
+	document.getElementById('next-button').setAttribute('onclick',"rule1();");
+}
+
+var LEVEL_EASY=3,LEVEL_MEDIUM=4,LEVEL_HARD=5;
+// rule 1: simple addition/subtraction corresponding to next word position AT BU _ _
+const A=65,Z=90;
+
+var explanation={};
+function rule1()
+{
+    
+	  var letter_series=[];
+
+	  var shouldChangeConstantSum=getRandomInt(1,2); //1==yes 2==no
+
+	  var single_word_length=getRandomInt(1,5);
+	  var series_length=getRandomInt(4,5); //last one is answer
+
+	  for (var i = 0; i < series_length; i++)
+	  {
+	  	letter_series[i]=[];
+	  }
+
+	  //first random word
+	  for (var i = 0; i < single_word_length; i++)
+	  {
+	  	letter_series[0][i]=getRandomInt(A,Z);
+	  }
+
+	  var constant_sums=[];
+	  //generate series
+	  for (var i = 1; i < series_length; i++)
+	  {
+	  	constant_sums[i-1]=[];
+	  		for (var j = 0; j < single_word_length; j++)
+	  		{
+	  			var constant_sum=getRandomInt(3,7);//different 
+				if(getRandomInt(1,2)==2) //add or subtract series
+				{
+					constant_sum*=-1; //1==add 2==subtract 
+				}	  
+	  			letter_series[i][j]=letter_series[i-1][j]+constant_sum;
+	  			constant_sums[i-1].push(constant_sum);
+	  			if(letter_series[i][j]>Z)
+	  			{
+	  				letter_series[i][j]-=26;
+	  			}
+	  			if(letter_series[i][j]<A)
+	  			{
+	  				letter_series[i][j]+=26;
+	  			}
+	  		}
+	  }
+
+	  explanation.series=letter_series;
+	  explanation.constant_sums=constant_sums;
+
+
+	  //change num to char
+	  for (var i =0; i < series_length; i++)
+	  {
+	  		for (var j = 0; j < single_word_length; j++)
+	  		{
+	  			letter_series[i][j]=String.fromCharCode(letter_series[i][j]);
+	  		}
+	  }
+	  
+
+
+	  var options=[];
+	  for (var k = 0; k <=3; k++)
+	  {
+	  	  options[k]=[];
+		  for (var i = 0; i < single_word_length; i++)
+		  {
+		  	options[k].push(String.fromCharCode(getRandomInt(A,Z)));
+		  }	
+	  }	  
+
+	  var qtext="";
+	  for (var i = 0; i < series_length-1; i++)
+	  {
+	  	qtext+=letter_series[i]+"&nbsp;&nbsp;&nbsp;";	  	
+	  }
+	  for (var i = 0; i < single_word_length; i++)
+	  {
+	  	qtext+=" _ ";
+	  }
+
+
+	  var correctIndex=getRandomInt(0,3);
+	  options[correctIndex]=letter_series[series_length-1];
+
+	 				 var flag=0;
+					if(options[0]==options[1]||options[0]==options[2]||options[0]==options[3])
+					{
+						flag=1;
+					}
+					if(options[1]==options[2]||options[1]==options[3])
+					{
+						flag=1;
+					}
+					if(options[2]==options[3])
+					{
+						flag=1;
+					}
+					if(flag==1)
+					{
+						console.log("duplicate options at ");
+					}
+
+        //create json string
+        correct=(correctIndex);
+
+        qtext=qtext.replace(/,/g,"");  
+        document.getElementById("qtext").innerHTML=qtext;
+        document.getElementById('a').innerHTML=options[0].toString().replace(/,/g,"");
+        document.getElementById('b').innerHTML=options[1].toString().replace(/,/g,"");
+        document.getElementById('c').innerHTML=options[2].toString().replace(/,/g,"");
+        document.getElementById('d').innerHTML=options[3].toString().replace(/,/g,"");
+
+		document.getElementById('a').setAttribute("onclick", "checkAnswer('a',"+correct+");" );
+		document.getElementById('a').setAttribute("class", "option" );
+		document.getElementById('b').setAttribute("onclick", "checkAnswer('b',"+correct+");" );
+		document.getElementById('b').setAttribute("class", "option" );
+		document.getElementById('c').setAttribute("onclick", "checkAnswer('c',"+correct+");" );
+		document.getElementById('c').setAttribute("class", "option" );
+		document.getElementById('d').setAttribute("onclick", "checkAnswer('d',"+correct+");" );
+		document.getElementById('d').setAttribute("class", "option" );
+
+		document.getElementById('explanation-holder').style.height=0;
+
+
+		isNewQuestion=true;
+}
+function checkAnswer(userAnswer,correctIndex)
+{
+	if(isNewQuestion)
+	{
+		isNewQuestion=false;
+		var abcd=["a","b","c","d"];
+		document.getElementById('a').setAttribute("class","option");
+		document.getElementById('b').setAttribute("class","option");
+		document.getElementById('c').setAttribute("class","option");
+		document.getElementById('d').setAttribute("class","option");
+		if(userAnswer==abcd[correctIndex])
+		{
+			document.getElementById(userAnswer).setAttribute("class","option correct");
+		}else
+		{
+			document.getElementById(userAnswer).setAttribute("class","option wrong");
+			document.getElementById(abcd[correctIndex]).setAttribute("class","option correct");
+
+		}
+		showExplanation("rule1");
+	}
+}
+
+function showExplanation(rule)
+{
+	// body...
+	console.log(explanation);
+	var div=document.getElementById('explanation-holder');
+	div.style.height="40%";
+	var html="";
+	for (var i = 0; i < explanation.series.length; i++) 
+	{
+		var singleWord=explanation.series[i];
+		html+="<div style='text-align:center; margin-top:2%'>"+singleWord+"</div>";
+		html+="<div style='text-align:center'>";
+		if(i<explanation.constant_sums.length)
+		{
+			for (var j = 0; j < explanation.constant_sums[i].length; j++)
+		{
+			var sum=explanation.constant_sums[i][j];
+			console.log(sum);
+			var text=""+sum;
+			if(sum>0)
+				text="+"+sum;
+
+			html+="<span>["+text+"]</span>";
+		}	
+		}
+		
+		html+="</div>";
+	}
+	div.innerHTML="<div class=_25_line></div>"+html;
+
+}
+
+
+function getRandomInt(min, max)
+{
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+</script>
+</body>
+</html>
