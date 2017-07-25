@@ -1,0 +1,381 @@
+<!DOCTYPE>
+<html>
+<head>
+	<title>Missing Sequence</title>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <style type="text/css">
+    /*primary color: #5AC8FA*/
+    
+	*
+	{
+		font-family: "Roboto","sans-serif";
+		  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+	}   
+    body
+    {
+    	margin: 0px; 
+    	overflow: hidden;
+    }
+    .heading
+    {
+    	text-align: center;
+    }
+    .half_line
+    {
+    	width: 50%;
+    	height: 2px;
+    	background: #5AC8FA;
+    	margin-left: 25%;
+    	position:relative;
+    }
+    ._25_line
+    {
+    	width: 25%;
+    	height: 2px;
+    	background: #5AC8FA;
+    	margin-left: 37.5%;
+    	position:relative;
+    }
+
+    #qtext
+    {
+    	text-align: center;
+    	margin-top:5%; 
+    }
+    .option
+    {
+	    padding: 2% 3% 2% 3%;
+	    border-radius: 50px;
+	    background: #ececec;
+	    display: inline-table;
+	    margin-top: 5%;
+	    margin-left: 10%;
+	    margin-right: 10%;
+	    color: #111;
+	    width: 10%;
+	    transition: 0.5s all;
+	}
+	.correct
+	{
+		background: #9C0;
+		color: white;		
+	}
+	.wrong
+	{
+		background: #ec7964;
+		color: white;
+	}
+    .option-container
+    {
+    	    text-align: center;
+    		margin-top: 5%;
+    }
+    .explanation-holder
+    {
+    	transition: 0.5s all cubic-bezier(.45,.64,.03,.98);
+    	width: 100%;
+    	height: 0px;
+    	overflow-x: hidden;
+    	overflow-y: auto;
+    	margin-top: 1%;
+    }
+    .fab
+    {
+	margin: 0px;
+    background: #5AC8FA;
+    color: white;
+    width: initial;
+    border-radius: 50px;
+    padding: 10%;
+    display: inline-block;
+    box-shadow: 1px 1px 1px rgba(130, 130, 130, 0.51);
+    }
+    </style>
+</head>
+<body>
+<h2 class="heading">Missing Sequence</h2>
+<div class="half_line"></div>
+<div id="qtext">
+</div>
+<div class="explanation-holder" id="explanation-holder">
+</div>
+<div class="option-container">
+	<div class="option" id="a"></div>
+	<div class="option" id="b"></div>
+	<div class="option" id="c"></div>
+	<div class="option" id="d"></div>
+</div>
+
+<div id="next-button" style="
+    position: absolute;
+    bottom: 2%;
+    right: 3%;
+">
+	<div class="fab" style=""><svg xmlns="http://www.w3.org/2000/svg" fill="#fff" height="24" viewBox="0 0 24 24" width="24">
+    <path d="M0 0h24v24H0z" fill="none"/>
+    <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+</svg></div>
+</div>
+
+<script type="text/javascript">
+/*word series
+	length 1 to 4
+	series length 3 to 5
+
+rule 1
+	size 1
+	length 3 - 5
+	simple addition/subtraction to corresponding letter
+*/
+
+var isNewQuestion;
+document.addEventListener("DOMContentLoaded",function()
+{
+	rule1();
+	addEventListeners();
+});
+
+function addEventListeners(argument)
+{
+	document.getElementById('next-button').setAttribute('onclick',"rule1();");
+}
+
+var LEVEL_EASY=3,LEVEL_MEDIUM=4,LEVEL_HARD=5;
+// rule 1: simple addition/subtraction corresponding to next word position AT BU _ _
+var explanation={};
+const A=65,Z=90;
+var starting_char_array=[97,112];
+function rule1()
+{
+    
+	   //  pattern  1: common group and shuffled
+	   //  pattern  2: series rule: 'a'bcd 'b'cda 'c'dab 'd'abc
+	   //  pattern  3: simple repetitions:  abcd abcd abcd abcd
+	   //  patter   4: ever char is double in next group abbc/ccba/aabc
+	 var single_word_length=getRandomInt(3,4);
+	 var total_groups=getRandomInt(4,6);
+	 var series_length=single_word_length*total_groups;
+	 var start_char=starting_char_array[getRandomInt(0,1)];
+
+	 var array=[];
+	 var single_group=[];
+	
+	var answer=[];
+	var tempSingle;
+	var pattern=getRandomInt(1,4);
+	console.log("patter="+pattern);
+	var explanation_array=[];
+	switch(pattern)
+	{
+		case 1:
+			//generate a common group
+			for (var j = 0; j < single_word_length; j++)
+	 		{
+	 			single_group[j]=String.fromCharCode(start_char+j);
+	 		}
+
+	 		//rule same group but shuffled
+			for (var i = 0; i < total_groups; i++)
+			{
+				single_group.sort( function(){return 0.5 - Math.random();} );
+				tempSingle=single_group.slice();				
+				var tempIndex=getRandomInt(0,tempSingle.length-1);
+				answer.push(single_group[tempIndex]);
+				tempSingle[tempIndex]="_";
+				console.log(single_group);
+				array[i]=(tempSingle.join(""));
+			}
+			explanation.msg="Each character is only once in single group";
+		break;
+
+		case 2:
+			//generate first group
+			start_char=98;//getRandomInt(97,97+10);
+			var differentIncrementForEachGroup=[];
+			for (var j = 0; j < single_word_length; j++)
+	 		{
+	 			single_group[j]=String.fromCharCode(start_char+j);
+	 			differentIncrementForEachGroup[j]=getRandomInt(1,3);
+	 		}
+	 		single_group.sort( function(){return 0.5 - Math.random();} );	 		
+	 		//rule: series group
+			for (var i = 0; i < total_groups; i++)
+			{	
+				
+				//increment each char by random int
+				for (var j = 0; j < single_word_length; j++)
+				{
+					single_group[j]=String.fromCharCode(single_group[j].charCodeAt(0)+differentIncrementForEachGroup[j]);
+				}	
+				
+				tempSingle=single_group.slice();
+				var tempIndex=getRandomInt(0,tempSingle.length-1);
+				answer.push(single_group[tempIndex]);
+				tempSingle[tempIndex]="_";
+				array[i]=(tempSingle.join(""));
+				
+				explanation_array.push(single_group.slice());
+			}
+			explanation.msg="Each character of single group is in series with next group corresponding character";
+		break;
+		
+		case 3:
+			//rule: same group simple repeations
+			for (var j = 0; j < single_word_length; j++)
+	 		{
+	 			single_group[j]=String.fromCharCode(start_char+j);
+	 		}
+
+	 		
+			for (var i = 0; i < total_groups; i++)
+			{
+				explanation_array.push(single_group.slice());
+				tempSingle=single_group.slice();				
+				var tempIndex=getRandomInt(0,tempSingle.length-1);
+				answer.push(single_group[tempIndex]);
+				tempSingle[tempIndex]="_";
+				console.log(single_group);
+				array[i]=(tempSingle.join(""));
+			}
+			explanation.msg="Simple repetition of one group";
+		break;
+		case 4:
+				 //  patter   4: each char is double in next group abbc/ccba/aabc
+				 for (var j = 0; j < single_word_length; j++)
+	 			 {
+	 				single_group[j]=String.fromCharCode(start_char+j);
+	 			 }
+	 			 single_group.sort(function(){return 0.5-Math.random()});
+	 			 
+	 			 //lets repeat random position
+	 			 single_group[0]=single_group[1];
+	 		
+				for (var i = 0; i < total_groups; i++)
+				{
+					//increment each char by 1
+					for (var j = 0; j < single_word_length; j++)
+					{
+						single_group[j]=String.fromCharCode(single_group[j].charCodeAt(0)+1);
+					}
+					single_group.sort(function(){return 0.5-Math.random()});	
+					explanation_array.push(single_group.slice());
+					tempSingle=single_group.slice();				
+					var tempIndex=getRandomInt(0,tempSingle.length-1);
+					answer.push(single_group[tempIndex]);
+					tempSingle[tempIndex]="_";
+					console.log(single_group);
+					array[i]=(tempSingle.join(""));
+				}
+				explanation.msg="One character is twice in every group";
+			break;	 
+
+	}
+	explanation.explanation_array=explanation_array;
+
+	//generate options
+	var options=[];
+	for (var i = 0; i <= 3; i++)
+	{
+		options[i]=[];
+		for (var j = 0; j < total_groups; j++)
+		{
+			options[i][j]=(String.fromCharCode(start_char+getRandomInt(0,single_word_length)));
+		}
+	}
+	
+	var correctIndex=getRandomInt(0,3);
+	options[correctIndex]=answer;
+
+	 				 var flag=0;
+					if(options[0]==options[1]||options[0]==options[2]||options[0]==options[3])
+					{
+						flag=1;
+					}
+					if(options[1]==options[2]||options[1]==options[3])
+					{
+						flag=1;
+					}
+					if(options[2]==options[3])
+					{
+						flag=1;
+					}
+					if(flag==1)
+					{
+						console.log("duplicate options");
+					}
+
+        //create json string
+        correct=(correctIndex);
+        document.getElementById("qtext").innerHTML=""+array.join("");
+        document.getElementById('a').innerHTML=options[0].toString().replace(/,/g,"");
+        document.getElementById('b').innerHTML=options[1].toString().replace(/,/g,"");
+        document.getElementById('c').innerHTML=options[2].toString().replace(/,/g,"");
+        document.getElementById('d').innerHTML=options[3].toString().replace(/,/g,"");
+
+		document.getElementById('a').setAttribute("onclick", "checkAnswer('a',"+correct+");" );
+		document.getElementById('a').setAttribute("class", "option" );
+		document.getElementById('b').setAttribute("onclick", "checkAnswer('b',"+correct+");" );
+		document.getElementById('b').setAttribute("class", "option" );
+		document.getElementById('c').setAttribute("onclick", "checkAnswer('c',"+correct+");" );
+		document.getElementById('c').setAttribute("class", "option" );
+		document.getElementById('d').setAttribute("onclick", "checkAnswer('d',"+correct+");" );
+		document.getElementById('d').setAttribute("class", "option" );
+
+		document.getElementById('explanation-holder').style.height=0;
+		isNewQuestion=true;
+}
+function checkAnswer(userAnswer,correctIndex)
+{
+	if(isNewQuestion)
+	{
+		isNewQuestion=false;
+		var abcd=["a","b","c","d"];
+		document.getElementById('a').setAttribute("class","option");
+		document.getElementById('b').setAttribute("class","option");
+		document.getElementById('c').setAttribute("class","option");
+		document.getElementById('d').setAttribute("class","option");
+		if(userAnswer==abcd[correctIndex])
+		{
+			document.getElementById(userAnswer).setAttribute("class","option correct");
+		}else
+		{
+			document.getElementById(userAnswer).setAttribute("class","option wrong");
+			document.getElementById(abcd[correctIndex]).setAttribute("class","option correct");
+
+		}
+		showExplanation();
+	}
+}
+
+function showExplanation()
+{
+	// body...
+	console.log(explanation);
+	var div=document.getElementById('explanation-holder');
+	div.style.height="40%";
+	var html="";
+	html+="<div class=_25_line></div>";
+	html+="<div style='text-align:center;font-size:90%;'>"+explanation.msg+"</div>";
+	html+="<div style='text-align:center; margin-top:2%'>"+explanation.explanation_array.join("/").replace(/,/g,"")+"</div>";
+	div.innerHTML=html;
+
+
+}
+
+
+function getRandomInt(min, max)
+{
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+</script>
+</body>
+</html>
