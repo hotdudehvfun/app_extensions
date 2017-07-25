@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <script type="text/javascript" src="hammer.js"></script>
     <style type="text/css">
     /*primary color: #5AC8FA*/
     
@@ -86,7 +87,7 @@
     	height: 0px;
     	overflow-x: hidden;
     	overflow-y: auto;
-    	margin-top: 1%;
+    	margin-top: 5%;
     }
     .fab
     {
@@ -106,15 +107,14 @@
 <div class="half_line"></div>
 <div id="qtext">
 </div>
-<div class="explanation-holder" id="explanation-holder">
-</div>
 <div class="option-container">
 	<div class="option" id="a"></div>
 	<div class="option" id="b"></div>
 	<div class="option" id="c"></div>
 	<div class="option" id="d"></div>
 </div>
-
+<div class="explanation-holder" id="explanation-holder">
+</div>
 <div id="next-button" style="
     position: absolute;
     bottom: 2%;
@@ -172,7 +172,7 @@ function rule1()
 	var answer=[];
 	var tempSingle;
 	var pattern=getRandomInt(1,4);
-	console.log("patter="+pattern);
+	//console.log("patter="+pattern);
 	var explanation_array=[];
 	switch(pattern)
 	{
@@ -193,6 +193,7 @@ function rule1()
 				tempSingle[tempIndex]="_";
 				console.log(single_group);
 				array[i]=(tempSingle.join(""));
+				explanation_array.push(single_group.slice());
 			}
 			explanation.msg="Each character is only once in single group";
 		break;
@@ -272,7 +273,7 @@ function rule1()
 					var tempIndex=getRandomInt(0,tempSingle.length-1);
 					answer.push(single_group[tempIndex]);
 					tempSingle[tempIndex]="_";
-					console.log(single_group);
+					//console.log(single_group);
 					array[i]=(tempSingle.join(""));
 				}
 				explanation.msg="One character is twice in every group";
@@ -367,15 +368,18 @@ function showExplanation()
 	html+="<div style='text-align:center;font-size:90%;'>"+explanation.msg+"</div>";
 	html+="<div style='text-align:center; margin-top:2%'>"+explanation.explanation_array.join("/").replace(/,/g,"")+"</div>";
 	div.innerHTML=html;
-
-
 }
-
-
 function getRandomInt(min, max)
 {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+
+//swipe to next
+new Hammer(document.getElementsByTagName('body')[0]).on('swipeleft swiperight', function(ev)
+{
+	rule1();
+});
 </script>
+
 </body>
 </html>
