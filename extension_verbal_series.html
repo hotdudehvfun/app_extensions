@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+        <script type="text/javascript" src="hammer.js"></script>
     <style type="text/css">
     /*primary color: #5AC8FA*/
     
@@ -23,7 +24,7 @@
     body
     {
     	margin: 0px; 
-    	overflow: hidden;
+    	overflow-x: hidden;
     }
     .heading
     {
@@ -82,6 +83,7 @@
     .explanation-holder
     {
     	transition: 0.5s all;
+    	text-align: center;
     	width: 100%;
     	height: 0px;
     	overflow-x: hidden;
@@ -94,15 +96,14 @@
 <div class="half_line"></div>
 <div id="qtext">
 </div>
-<div class="explanation-holder" id="explanation-holder">
-</div>
 <div class="option-container">
 	<div class="option" id="a"></div>
 	<div class="option" id="b"></div>
 	<div class="option" id="c"></div>
 	<div class="option" id="d"></div>
 </div>
-
+<div class="explanation-holder" id="explanation-holder">
+</div>
 <div id="next-button" style="
     position: absolute;
     width: 100%;
@@ -149,8 +150,6 @@ function rule1()
     
 	  var letter_series=[];
 
-	  var shouldChangeConstantSum=getRandomInt(1,2); //1==yes 2==no
-
 	  var single_word_length=getRandomInt(1,5);
 	  var series_length=getRandomInt(4,5); //last one is answer
 
@@ -160,38 +159,50 @@ function rule1()
 	  }
 
 	  //first random word
+	  var constant_sums=[];
+	  var progressive=[];
 	  for (var i = 0; i < single_word_length; i++)
 	  {
 	  	letter_series[0][i]=getRandomInt(A,Z);
+
+	  	//starting num
+	  	constant_sums[i]=getRandomInt(1,3);
+		progressive[i]=getRandomInt(0,1);
+	  	//add or subtract series
+	  	if(getRandomInt(1,2)==2) 
+		{
+			constant_sums[i]*=-1; //1==add 2==subtract 
+			progressive[i]*=-1;
+		}
+		//what to add each time 
+	  	
 	  }
 
-	  var constant_sums=[];
+	  console.log("first word="+letter_series[0]);
+	  var diffArray=[];
 	  //generate series
 	  for (var i = 1; i < series_length; i++)
 	  {
-	  	constant_sums[i-1]=[];
+	  		diffArray[i-1]=[];
 	  		for (var j = 0; j < single_word_length; j++)
-	  		{
-	  			var constant_sum=getRandomInt(3,7);//different 
-				if(getRandomInt(1,2)==2) //add or subtract series
-				{
-					constant_sum*=-1; //1==add 2==subtract 
-				}	  
-	  			letter_series[i][j]=letter_series[i-1][j]+constant_sum;
-	  			constant_sums[i-1].push(constant_sum);
+	  		{				  
+	  			letter_series[i][j]=letter_series[i-1][j]+constant_sums[j];
+	  			constant_sums[j]+=progressive[j];
+	  			diffArray[i-1].push(constant_sums[j])
+
 	  			if(letter_series[i][j]>Z)
 	  			{
-	  				letter_series[i][j]-=26;
+	  				letter_series[i][j]=A+(Z-letter_series[i][j])+1;
 	  			}
 	  			if(letter_series[i][j]<A)
 	  			{
-	  				letter_series[i][j]+=26;
+	  				letter_series[i][j]=Z-(A-letter_series[i][j])+1;
 	  			}
 	  		}
 	  }
 
 	  explanation.series=letter_series;
-	  explanation.constant_sums=constant_sums;
+	  explanation.diffArray=diffArray;
 
 
 	  //change num to char
@@ -204,17 +215,30 @@ function rule1()
 	  }
 	  
 
-
 	  var options=[];
-	  for (var k = 0; k <=3; k++)
-	  {
-	  	  options[k]=[];
-		  for (var i = 0; i < single_word_length; i++)
+	  //answer
+	  options[0]=letter_series[series_length-1];
+	  //generate options until all are unique
+	  var loopControl=true;
+	  while(loopControl)
+	  {	  	 
+		  for (var i = 1; i <=3; i++)
 		  {
-		  	options[k].push(String.fromCharCode(getRandomInt(A,Z)));
-		  }	
-	  }	  
-
+		  	options[i]=[];
+		   	for (var j = 0; j < single_word_length; j++)
+		  	{
+		  		options[i].push(String.fromCharCode(getRandomInt(A,Z)));
+		  	}	
+		  }
+		  console.log("checking");
+		  if(hasDuplicates(options)==false)
+		  {
+		  	console.log("no duplicates"+options);		  	
+		  	loopControl=false;
+		  }
+	  }	
+	  options.sort(function(){return 0.5 - Math.random();});
+	  var correctIndex=options.indexOf(letter_series[series_length-1]);
 	  var qtext="";
 	  for (var i = 0; i < series_length-1; i++)
 	  {
@@ -224,28 +248,6 @@ function rule1()
 	  {
 	  	qtext+=" _ ";
 	  }
-
-
-	  var correctIndex=getRandomInt(0,3);
-	  options[correctIndex]=letter_series[series_length-1];
-
-	 				 var flag=0;
-					if(options[0]==options[1]||options[0]==options[2]||options[0]==options[3])
-					{
-						flag=1;
-					}
-					if(options[1]==options[2]||options[1]==options[3])
-					{
-						flag=1;
-					}
-					if(options[2]==options[3])
-					{
-						flag=1;
-					}
-					if(flag==1)
-					{
-						console.log("duplicate options at ");
-					}
 
         //create json string
         correct=(correctIndex);
@@ -267,9 +269,19 @@ function rule1()
 		document.getElementById('d').setAttribute("class", "option" );
 
 		document.getElementById('explanation-holder').style.height=0;
-
-
 		isNewQuestion=true;
+}
+function hasDuplicates(arr)
+{
+	var sorted_arr = arr.slice().sort();
+	for (var i = 0; i < arr.length - 1; i++)
+	{
+	    if (sorted_arr[i + 1] == sorted_arr[i])
+	    {
+	        return true;
+	    }
+	}
+	return false;
 }
 function checkAnswer(userAnswer,correctIndex)
 {
@@ -299,38 +311,42 @@ function showExplanation(rule)
 	// body...
 	console.log(explanation);
 	var div=document.getElementById('explanation-holder');
-	div.style.height="40%";
+	div.style.height="100%";
 	var html="";
+	var pos=1;
 	for (var i = 0; i < explanation.series.length; i++) 
 	{
-		var singleWord=explanation.series[i];
+		var singleWord=explanation.series[i].toString().split(",").join("");
 		html+="<div style='text-align:center; margin-top:2%'>"+singleWord+"</div>";
 		html+="<div style='text-align:center'>";
-		if(i<explanation.constant_sums.length)
-		{
-			for (var j = 0; j < explanation.constant_sums[i].length; j++)
-		{
-			var sum=explanation.constant_sums[i][j];
-			console.log(sum);
-			var text=""+sum;
-			if(sum>0)
-				text="+"+sum;
-
-			html+="<span>["+text+"]</span>";
-		}	
-		}
-		
+			for (var j = 0; j < explanation.diffArray[pos-1].length; j++)
+			{
+					var text=" ( "+(explanation.diffArray[pos-1][j])+" ) ";
+					html+="<span>"+text+"</span>";
+			}	
 		html+="</div>";
 	}
-	div.innerHTML="<div class=_25_line></div>"+html;
+	div.innerHTML="<br><br> Explanation <div class=_25_line></div>"+html;
 
 }
 
+
+function differenceBetweenAlphabets(a,b)
+{
+	var diff=-a+b;
+}
 
 function getRandomInt(min, max)
 {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+//swipe to next
+new Hammer(document.getElementsByTagName('body')[0]).on('swipeleft swiperight', function(ev)
+{
+	rule1();
+});
 </script>
+
+
 </body>
 </html>
