@@ -1,0 +1,977 @@
+<!DOCTYPE>
+<html>
+<head>
+	<title>Missing Number</title>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <script type="text/javascript" src="hammer.js"></script>
+    <style type="text/css">
+    /*primary color: #4CD964*/
+    
+	*
+	{
+		font-family: "Roboto","sans-serif";
+		line-height: 160%;
+		  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+	}
+	table
+	{
+		border-collapse:collapse;
+        border: 1px solid #4CD964;
+        border-radius: 3px;
+	}
+	th,td {
+	}
+	th {
+		font-weight: normal;
+		-webkit-font-smoothing: antialiased;
+		padding: 1em;
+		color: rgba(0,0,0,0.45);
+		text-shadow: 0 0 1px rgba(0,0,0,0.1);
+		font-size: 1.5em;
+	}
+	 td {
+		color: #111;
+		padding: 0.7em 1em 0.7em 1.15em;
+	}
+	tr {
+		-webkit-transition: background 0.3s, box-shadow 0.3s;
+		-moz-transition: background 0.3s, box-shadow 0.3s;
+		transition: background 0.3s, box-shadow 0.3s;
+	}
+
+    body
+    {
+    	margin: 0px; 
+    	overflow-x: hidden;
+    }
+    .heading
+    {
+    	text-align: center;
+    }
+    .half_line
+    {
+    	width: 50%;
+    	height: 2px;
+    	background: #4CD964;
+    	margin-left: 25%;
+    	position:relative;
+    }
+    ._25_line
+    {
+    	width: 25%;
+    	height: 2px;
+    	background: #4CD964;
+    	margin-left: 37.5%;
+    	position:relative;
+    }
+
+    #qtext
+    {
+    	text-align: center;
+    	margin-top:5%; 
+    	padding: 0% 2% 0% 2%;
+    	line-height: 160%;
+    }
+    .option
+    {
+	    padding: 2% 3% 2% 3%;
+	    border-radius: 50px;
+	    background: #ececec;
+	    display: inline-table;
+	    margin-top: 5%;
+	    margin-left: 10%;
+	    margin-right: 10%;
+	    color: #111;
+	    width: 30%;
+	    max-width: 200px;
+	    transition: 0.5s all;
+	}
+	.correct
+	{
+		background: #9C0;
+		color: white;		
+	}
+	.wrong
+	{
+		background: #ec7964;
+		color: white;
+	}
+    .option-container
+    {
+    	    text-align: center;
+    		margin-top: 5%;
+    }
+    .explanation-holder
+    {
+transition: 0.5s all cubic-bezier(.45,.64,.03,.98);
+    width: 94%;
+    height: 0px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    margin-top: 5%;
+    padding: 0% 3% 0% 3%;
+    }
+    .fab
+    {
+	margin: 0px;
+    background: #4CD964;
+    color: white;
+    width: initial;
+    border-radius: 50px;
+    padding: 10%;
+    display: inline-block;
+    box-shadow: 1px 1px 1px rgba(130, 130, 130, 0.51);
+    }
+    </style>
+</head>
+<body>
+<h2 class="heading">Missing Number</h2>
+<div class="half_line"></div>
+<div id="qtext">
+</div>
+<div class="option-container">
+	<div class="option" id="a"></div>
+	<div class="option" id="b"></div>
+	<div class="option" id="c"></div>
+	<div class="option" id="d"></div>
+</div>
+<div class="explanation-holder" id="explanation-holder">
+</div>
+<div id="next-button" style="
+    position: fixed;
+    bottom: 2%;
+    right: 3%;
+    display: inline-block;
+">
+	<div class="fab" style=""><svg xmlns="http://www.w3.org/2000/svg" fill="#fff" height="24" viewBox="0 0 24 24" width="24">
+    <path d="M0 0h24v24H0z" fill="none"/>
+    <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+</svg></div>
+</div>
+
+<script type="text/javascript">
+/*word series
+	length 1 to 4
+	series length 3 to 5
+
+rule 1
+	size 1
+	length 3 - 5
+	simple addition/subtraction to corresponding letter
+*/
+
+var isNewQuestion;
+document.addEventListener("DOMContentLoaded",function()
+{
+	changeRule();
+	addEventListeners();
+});
+
+function addEventListeners(argument)
+{
+	document.getElementById('next-button').setAttribute('onclick',"changeRule();");
+}
+
+var explanation={};
+var ROW_MAJOR=1,COL_MAJOR=2;
+var LEVEL_EASY=3,LEVEL_MEDIUM=4,LEVEL_HARD=5;
+var matrix=[];
+// rule 1: row/col sum in only last row/col 
+function rule1()
+{
+      var col=4,row=4;
+      for (var i = 0; i <row; i++)
+      {
+        matrix[i]=[];
+          for (var j = 0; j < col; j++)
+          {
+            matrix[i][j]=0;        
+          }
+      }
+
+      var dir=getRandomInt(ROW_MAJOR,COL_MAJOR);
+      var level=getRandomInt(LEVEL_EASY,LEVEL_HARD);
+      var range_min=1,range_max=10;
+      if(level==LEVEL_EASY)
+      {
+          range_min=1; range_max=30;
+      }else if(level==LEVEL_MEDIUM)
+      {
+          range_min=32; range_max=60;
+      }else
+      {
+          range_min=70; range_max=150;
+      }
+      if(dir===ROW_MAJOR)
+      {
+        //sum of row in right side
+        //fill matrix
+        for (var i = 0; i <row; i++)
+          {
+                var sum=0;
+              for (var j = 0; j < col-1; j++)
+              {
+                var cellNum=getRandomInt(range_min,range_max);
+                matrix[i][j]=cellNum;
+                sum+=cellNum; 
+              }
+              matrix[i][col-1]=sum;
+          }
+        
+      }else
+      {
+          //sum of col in bottom
+          for (var j = 0; j < col; j++)
+          {  
+            var sum=0;
+            for (var i = 0; i <row-1; i++)
+            {
+               var cellNum=getRandomInt(range_min,range_max);
+                matrix[i][j]=cellNum;
+                sum+=cellNum;              
+            }      
+            matrix[row-1][j]=sum;
+          }
+          
+      }
+      	
+      	//fill question mark
+        var mark_row=getRandomInt(0,row-1);
+        var mark_col=getRandomInt(0,col-1);
+        var answer=matrix[mark_row][mark_col];        
+        matrix[mark_row][mark_col]="?";
+        var options=[];
+        options[0]=answer+getRandomInt(1,5);
+        options[1]=answer;
+        options[2]=answer+getRandomInt(6,8);
+        options[3]=answer+getRandomInt(9,12);
+
+        options.sort(function(){return 0.5-Math.random();});
+        var correct=options.indexOf(answer);
+        
+        //create json object
+        /*<table border='1'>
+        <tr> <td>1</td> <td>12</td><td>1</td></tr>
+        <tr> <td>1</td>  <td>1</td> <td>1</td> </tr>
+        <tr>  <td>1</td>  <td>1</td>  <td>1</td> </tr>
+        <tr>  <td>1</td>  <td>1</td>  <td>1</td></tr>
+        </table>*/
+        var qtext="<table align=center border='1'>";
+         for (var i = 0; i <row; i++)
+          {
+            qtext+="<tr>"
+              for (var j = 0; j < col; j++)
+              {
+                qtext+="<td>"+matrix[i][j]+"</td>";
+                //console.log(matrix[i][j]);      
+              }
+              qtext+="</tr>";
+          }
+          qtext+="</table>";          
+
+
+
+        //create json string
+        var type=["","coloumn","row"];
+          explanation.msg="<br>";
+          explanation.msg+="Sum of each "+type[dir]+" is in last "+ type[dir];
+		document.getElementById("qtext").innerHTML=qtext;
+        document.getElementById('a').innerHTML=(options[0]+"");
+        document.getElementById('b').innerHTML=(options[1]+"");
+        document.getElementById('c').innerHTML=(options[2]+"");
+        document.getElementById('d').innerHTML=(options[3]+"");
+
+		document.getElementById('a').setAttribute("onclick", "checkAnswer('a',"+correct+");" );
+		document.getElementById('a').setAttribute("class", "option" );
+		document.getElementById('b').setAttribute("onclick", "checkAnswer('b',"+correct+");" );
+		document.getElementById('b').setAttribute("class", "option" );
+		document.getElementById('c').setAttribute("onclick", "checkAnswer('c',"+correct+");" );
+		document.getElementById('c').setAttribute("class", "option" );
+		document.getElementById('d').setAttribute("onclick", "checkAnswer('d',"+correct+");" );
+		document.getElementById('d').setAttribute("class", "option" );
+		document.getElementById('explanation-holder').style.height=0;
+		isNewQuestion=true;
+}
+
+
+// rule 2: select any two col or row and add to get left col or row
+function rule2()
+{
+    
+      var col=3,row=3;
+      for (var i = 0; i <row; i++)
+      {
+        matrix[i]=[];
+          for (var j = 0; j < col; j++)
+          {
+            matrix[i][j]=0;        
+          }
+      }
+
+      
+      var dir=getRandomInt(ROW_MAJOR,COL_MAJOR);
+      var level=getRandomInt(LEVEL_EASY,LEVEL_HARD);
+      var range_min=1,range_max=10;
+      if(level==LEVEL_EASY)
+      {
+          range_min=1; range_max=30;
+      }else if(level==LEVEL_MEDIUM)
+      {
+          range_min=32; range_max=60;
+      }else
+      {
+          range_min=70; range_max=150;
+      }
+      if(dir===ROW_MAJOR)
+      {
+        //sum any two row into left row
+        //fill matrix
+        var list=[0,1,2];
+        list.sort(() => Math.random() * 2 - 1);
+        //now add row at 0 and 1 into 2 
+        //list[0]th row
+        console.log(list);
+        for (var j=0;j<col;j++)
+        {          
+          var cellNum=getRandomInt(range_min,range_max);
+          matrix[list[0]][j]=cellNum;
+        }
+        //list[1]th row
+        for (var j=0;j<col;j++)
+        {          
+          var cellNum=getRandomInt(range_min,range_max);
+          matrix[list[1]][j]=cellNum;
+        }
+        //list[2]th =list[0]+list[1] row
+        for (var j=0;j<col;j++)
+        {          
+          matrix[list[2]][j]=matrix[list[0]][j]+matrix[list[1]][j];
+        }
+
+      }else
+      {
+        var list=[0,1,2];
+        list.sort(() => Math.random() * 2 - 1);
+        //now add col at 0 and 1 into 2 
+        //list[0]th col
+        console.log(list);
+        for (var i=0;i<row;i++)
+        {          
+          var cellNum=getRandomInt(range_min,range_max);
+          matrix[i][list[0]]=cellNum;
+          
+          cellNum=getRandomInt(range_min,range_max);
+          matrix[i][list[1]]=cellNum;
+
+          matrix[i][list[2]]=matrix[i][list[0]]+matrix[i][list[1]];
+        }
+          
+      }
+      	//fill question mark
+        var mark_row=getRandomInt(0,row-1);
+        var mark_col=getRandomInt(0,col-1);
+        var answer=matrix[mark_row][mark_col];        
+        matrix[mark_row][mark_col]="?";
+        var options=[];
+        options[0]=answer+getRandomInt(1,4);
+        options[1]=answer;
+        options[2]=answer+getRandomInt(5,7);
+        options[3]=answer+getRandomInt(7,10);
+
+        options.sort(function(){return 0.5 - Math.random();});
+        var correct=options.indexOf(answer);
+        //create json object
+        /*<table border='1'>
+        <tr> <td>1</td> <td>12</td><td>1</td></tr>
+        <tr> <td>1</td>  <td>1</td> <td>1</td> </tr>
+        <tr>  <td>1</td>  <td>1</td>  <td>1</td> </tr>
+        <tr>  <td>1</td>  <td>1</td>  <td>1</td></tr>
+        </table>*/
+        var qtext="<table align=center border='1'>";
+         for (var i = 0; i <row; i++)
+          {
+            qtext+="<tr>"
+              for (var j = 0; j < col; j++)
+              {
+                qtext+="<td>"+matrix[i][j]+"</td>";
+                //console.log(matrix[i][j]);      
+
+              }
+              qtext+="</tr>";
+          }
+          qtext+="</table>";
+
+        //create json string
+	      var type=["","row","coloumn"];
+	      explanation.msg="<br>";
+	      explanation.msg+="Sum of "+type[dir]+" "+(list[0]+1)+" and "+type[dir]+" "+(list[1]+1)+" is in "+(list[2]+1)+" "+type[dir];
+		document.getElementById("qtext").innerHTML=qtext;
+        document.getElementById('a').innerHTML=(options[0]+"");
+        document.getElementById('b').innerHTML=(options[1]+"");
+        document.getElementById('c').innerHTML=(options[2]+"");
+        document.getElementById('d').innerHTML=(options[3]+"");
+
+		document.getElementById('a').setAttribute("onclick", "checkAnswer('a',"+correct+");" );
+		document.getElementById('a').setAttribute("class", "option" );
+		document.getElementById('b').setAttribute("onclick", "checkAnswer('b',"+correct+");" );
+		document.getElementById('b').setAttribute("class", "option" );
+		document.getElementById('c').setAttribute("onclick", "checkAnswer('c',"+correct+");" );
+		document.getElementById('c').setAttribute("class", "option" );
+		document.getElementById('d').setAttribute("onclick", "checkAnswer('d',"+correct+");" );
+		document.getElementById('d').setAttribute("class", "option" );
+		document.getElementById('explanation-holder').style.height=0;
+		isNewQuestion=true;
+
+}
+// rule 3: row/col sum is constamt
+function rule3()
+{
+    
+      var col=3,row=3;
+      for (var i = 0; i <row; i++)
+      {
+        matrix[i]=[];
+          for (var j = 0; j < col; j++)
+          {
+            matrix[i][j]=0;        
+          }
+      }      
+      var dir=getRandomInt(ROW_MAJOR,COL_MAJOR);
+      var range_min=10,range_max=20;
+      var sum=getRandomInt(45,80);
+      if(dir===ROW_MAJOR)
+      {      
+          //choose constant sum
+          for (var j=0;j<=1;j++)
+          {          
+            var cellNum=getRandomInt(range_min,range_max);
+            matrix[0][j]=cellNum;
+            
+            cellNum=getRandomInt(range_min,range_max);
+            matrix[1][j]=cellNum;
+            
+            cellNum=getRandomInt(range_min,range_max);
+            matrix[2][j]=cellNum;
+          }
+          matrix[0][2]=sum - (matrix[0][0]+matrix[0][1]);
+          matrix[1][2]=sum - (matrix[1][0]+matrix[1][1]);
+          matrix[2][2]=sum - (matrix[2][0]+matrix[2][1]);
+          
+      }else
+      {
+          for (var i=0;i<=1;i++)
+          {          
+            var cellNum=getRandomInt(range_min,range_max);
+            matrix[i][0]=cellNum;
+            
+            cellNum=getRandomInt(range_min,range_max);
+            matrix[i][1]=cellNum;
+            
+            cellNum=getRandomInt(range_min,range_max);
+            matrix[i][2]=cellNum;
+          }
+          matrix[2][0]=sum - (matrix[0][0]+matrix[1][0]);
+          matrix[2][1]=sum - (matrix[0][1]+matrix[1][1]);
+          matrix[2][2]=sum - (matrix[0][2]+matrix[1][2]);
+          
+      }
+      //fill question mark
+        var mark_row=getRandomInt(0,row-1);
+        var mark_col=getRandomInt(0,col-1);
+        var answer=matrix[mark_row][mark_col];        
+        matrix[mark_row][mark_col]="?";
+        var options=[];
+        options[0]=answer;
+        options[1]=answer+getRandomInt(1,4);
+        options[2]=answer+getRandomInt(5,7);
+        options[3]=answer+getRandomInt(8,10);
+
+        options.sort(function(){return 0.5 - Math.random();});
+        var correct=options.indexOf(answer);
+
+
+        //create json object
+        /*<table border='1'>
+        <tr> <td>1</td> <td>12</td><td>1</td></tr>
+        <tr> <td>1</td>  <td>1</td> <td>1</td> </tr>
+        <tr>  <td>1</td>  <td>1</td>  <td>1</td> </tr>
+        <tr>  <td>1</td>  <td>1</td>  <td>1</td></tr>
+        </table>*/
+        var qtext="<table align=center border='1'>";
+         for (var i = 0; i <row; i++)
+          {
+            qtext+="<tr>"
+              for (var j = 0; j < col; j++)
+              {
+                qtext+="<td>"+matrix[i][j]+"</td>";
+                //console.log(matrix[i][j]);      
+
+              }
+              qtext+="</tr>";
+          }
+          qtext+="</table>";
+
+        //create json string
+	      var type=["","row","coloumn"];
+	      explanation.msg="<br>";
+	      explanation.msg+="Sum of each "+type[dir]+" is "+sum;
+		document.getElementById("qtext").innerHTML=qtext;
+        document.getElementById('a').innerHTML=(options[0]+"");
+        document.getElementById('b').innerHTML=(options[1]+"");
+        document.getElementById('c').innerHTML=(options[2]+"");
+        document.getElementById('d').innerHTML=(options[3]+"");
+
+		document.getElementById('a').setAttribute("onclick", "checkAnswer('a',"+correct+");" );
+		document.getElementById('a').setAttribute("class", "option" );
+		document.getElementById('b').setAttribute("onclick", "checkAnswer('b',"+correct+");" );
+		document.getElementById('b').setAttribute("class", "option" );
+		document.getElementById('c').setAttribute("onclick", "checkAnswer('c',"+correct+");" );
+		document.getElementById('c').setAttribute("class", "option" );
+		document.getElementById('d').setAttribute("onclick", "checkAnswer('d',"+correct+");" );
+		document.getElementById('d').setAttribute("class", "option" );
+		document.getElementById('explanation-holder').style.height=0;
+		isNewQuestion=true;
+
+
+}
+
+
+// rule 4: row/col multiply any two = left row/col
+function rule4()
+{
+    
+      var col=3,row=3;
+      for (var i = 0; i <row; i++)
+      {
+        matrix[i]=[];
+          for (var j = 0; j < col; j++)
+          {
+            matrix[i][j]=0;        
+          }
+      }
+      
+      var dir=getRandomInt(ROW_MAJOR,COL_MAJOR);
+      var range_min=1,range_max=10;
+      if(dir===ROW_MAJOR)
+      {
+        //sum any two row into left row
+        //fill matrix
+        var list=[0,1,2];
+        list.sort(() => Math.random() * 2 - 1);
+        //now add row at 0 and 1 into 2 
+        //list[0]th row
+        console.log(list);
+        for (var j=0;j<col;j++)
+        {          
+          var cellNum=getRandomInt(range_min,range_max);
+          matrix[list[0]][j]=cellNum;
+
+          cellNum=getRandomInt(range_min,range_max);
+          matrix[list[1]][j]=cellNum;
+
+          matrix[list[2]][j]=matrix[list[0]][j]*matrix[list[1]][j];
+        }
+        
+      }else
+      {
+        var list=[0,1,2];
+        list.sort(() => Math.random() * 2 - 1);
+        // col0 * col1 = col2;
+        //list[0]th col
+        console.log(list);
+        for (var i=0;i<row;i++)
+        {          
+          var cellNum=getRandomInt(range_min,range_max);
+          matrix[i][list[0]]=cellNum;
+          
+          cellNum=getRandomInt(range_min,range_max);
+          matrix[i][list[1]]=cellNum;
+
+          matrix[i][list[2]]=matrix[i][list[0]]*matrix[i][list[1]];
+        }
+          
+      }
+      //fill question mark
+        var mark_row=getRandomInt(0,row-1);
+        var mark_col=getRandomInt(0,col-1);
+        var answer=matrix[mark_row][mark_col];        
+        matrix[mark_row][mark_col]="?";
+        var options=[];
+        options[0]=answer;
+        options[1]=answer+getRandomInt(1,3);
+        options[2]=answer+getRandomInt(4,6);
+        options[3]=answer+getRandomInt(7,10);
+        var correct=options.indexOf(answer);
+        //create json object
+        /*<table border='1'>
+        <tr> <td>1</td> <td>12</td><td>1</td></tr>
+        <tr> <td>1</td>  <td>1</td> <td>1</td> </tr>
+        <tr>  <td>1</td>  <td>1</td>  <td>1</td> </tr>
+        <tr>  <td>1</td>  <td>1</td>  <td>1</td></tr>
+        </table>*/
+        var qtext="<table align=center border='1'>";
+         for (var i = 0; i <row; i++)
+          {
+            qtext+="<tr>"
+              for (var j = 0; j < col; j++)
+              {
+                qtext+="<td>"+matrix[i][j]+"</td>";
+                //console.log(matrix[i][j]);      
+
+              }
+              qtext+="</tr>";
+          }
+          qtext+="</table>";
+
+        //create json string
+        var type=["","row","coloumn"];
+	      explanation.msg="<br>";
+explanation.msg+="Multiply "+type[dir]+" "+(list[0]+1)+" and "+type[dir]+" "+(list[1]+1)+" to get "+ type[dir]+" "+(list[2]+1);
+		document.getElementById("qtext").innerHTML=qtext;
+        document.getElementById('a').innerHTML=(options[0]+"");
+        document.getElementById('b').innerHTML=(options[1]+"");
+        document.getElementById('c').innerHTML=(options[2]+"");
+        document.getElementById('d').innerHTML=(options[3]+"");
+
+		document.getElementById('a').setAttribute("onclick", "checkAnswer('a',"+correct+");" );
+		document.getElementById('a').setAttribute("class", "option" );
+		document.getElementById('b').setAttribute("onclick", "checkAnswer('b',"+correct+");" );
+		document.getElementById('b').setAttribute("class", "option" );
+		document.getElementById('c').setAttribute("onclick", "checkAnswer('c',"+correct+");" );
+		document.getElementById('c').setAttribute("class", "option" );
+		document.getElementById('d').setAttribute("onclick", "checkAnswer('d',"+correct+");" );
+		document.getElementById('d').setAttribute("class", "option" );
+		document.getElementById('explanation-holder').style.height=0;
+		isNewQuestion=true;
+
+}
+
+// rule 5: series add constant num to previous row/col
+function rule5()
+{
+    
+      var col=getRandomInt(3,4);
+      var row=col;
+      for (var i = 0; i <row; i++)
+      {
+        matrix[i]=[];
+          for (var j = 0; j < col; j++)
+          {
+            matrix[i][j]=0;        
+          }
+      }
+
+      
+      var dir=getRandomInt(ROW_MAJOR,COL_MAJOR);
+      var range_min=10,range_max=20;
+      var level=getRandomInt(LEVEL_EASY,LEVEL_HARD);
+      var range_min=1,range_max=10;
+      if(level==LEVEL_EASY)
+      {
+          range_min=1; range_max=30;
+      }else if(level==LEVEL_MEDIUM)
+      {
+          range_min=32; range_max=60;
+      }else
+      {
+          range_min=70; range_max=150;
+      }
+      var constNum=getRandomInt(5,20);
+      if(Math.random()>0.5)
+      		constNum*=-1;
+      if(dir===ROW_MAJOR)
+      {      
+           for (var i = 0; i <row; i++)
+            {
+              matrix[i][0]=getRandomInt(range_min,range_max);
+              for (var j = 1; j < col; j++)
+              {
+                  matrix[i][j]=matrix[i][j-1]+constNum;
+              }
+            
+            }
+          
+      }else
+      {
+          for (var j = 0; j < col; j++)
+          {
+              matrix[0][j]=getRandomInt(range_min,range_max);
+          }
+          for (var i = 1; i <row ; i++)
+          {
+            for (var j = 0; j < col; j++)
+            {
+                matrix[i][j]=matrix[i-1][j]+constNum;
+            }
+          }
+          
+      }
+      //fill question mark
+        var mark_row=getRandomInt(0,row-1);
+        var mark_col=getRandomInt(0,col-1);
+        var answer=matrix[mark_row][mark_col];        
+        matrix[mark_row][mark_col]="?";
+        var options=[];
+		options[0]=answer;
+        options[1]=answer+getRandomInt(1,3);
+        options[2]=answer+getRandomInt(4,6);
+        options[3]=answer+getRandomInt(7,10);
+        var correct=options.indexOf(answer);
+
+
+        //create json object
+        /*<table border='1'>
+        <tr> <td>1</td> <td>12</td><td>1</td></tr>
+        <tr> <td>1</td>  <td>1</td> <td>1</td> </tr>
+        <tr>  <td>1</td>  <td>1</td>  <td>1</td> </tr>
+        <tr>  <td>1</td>  <td>1</td>  <td>1</td></tr>
+        </table>*/
+        var qtext="<table align=center border='1'>";
+         for (var i = 0; i <row; i++)
+          {
+            qtext+="<tr>"
+              for (var j = 0; j < col; j++)
+              {
+                qtext+="<td>"+matrix[i][j]+"</td>";
+                //console.log(matrix[i][j]);      
+
+              }
+              qtext+="</tr>";
+          }
+          qtext+="</table>";
+
+        //create json string
+        var type=["","row","coloumn"];
+	      explanation.msg="<br>";
+		explanation.msg+="Add "+constNum+" to each "+type[dir]+" number get next number";
+		document.getElementById("qtext").innerHTML=qtext;
+        document.getElementById('a').innerHTML=(options[0]+"");
+        document.getElementById('b').innerHTML=(options[1]+"");
+        document.getElementById('c').innerHTML=(options[2]+"");
+        document.getElementById('d').innerHTML=(options[3]+"");
+
+		document.getElementById('a').setAttribute("onclick", "checkAnswer('a',"+correct+");" );
+		document.getElementById('a').setAttribute("class", "option" );
+		document.getElementById('b').setAttribute("onclick", "checkAnswer('b',"+correct+");" );
+		document.getElementById('b').setAttribute("class", "option" );
+		document.getElementById('c').setAttribute("onclick", "checkAnswer('c',"+correct+");" );
+		document.getElementById('c').setAttribute("class", "option" );
+		document.getElementById('d').setAttribute("onclick", "checkAnswer('d',"+correct+");" );
+		document.getElementById('d').setAttribute("class", "option" );
+		document.getElementById('explanation-holder').style.height=0;
+		isNewQuestion=true;
+}
+
+
+// rule 6: series add increasing num to previous row/col
+function rule6(direction)
+{
+      var col=4,row=4;
+      for (var i = 0; i <row; i++)
+      {
+          matrix[i]=[];
+          for (var j = 0; j < col; j++)
+          {
+            matrix[i][j]=0;        
+          }
+      }
+
+      
+      var dir=getRandomInt(ROW_MAJOR,COL_MAJOR);
+      var range_min=10,range_max=20;
+      var level=getRandomInt(LEVEL_EASY,LEVEL_HARD);
+      var range_min=1,range_max=10;
+      if(level==LEVEL_EASY)
+      {
+          range_min=1; range_max=30;
+      }else if(level==LEVEL_MEDIUM)
+      {
+          range_min=32; range_max=60;
+      }else
+      {
+          range_min=70; range_max=150;
+      }
+      
+      var constNum=getRandomInt(5,10);
+      var increasingNum=getRandomInt(2,5);
+      if(Math.random()>0.5)
+      {
+      	constNum*=-1;
+      	increasingNum*=-1;
+      }
+      var tempConstNum=constNum;
+      if(dir===ROW_MAJOR)
+      {      
+           for (var i = 0; i <row; i++)
+            {
+              constNum=tempConstNum;
+              matrix[i][0]=getRandomInt(range_min,range_max);
+              for (var j = 1; j < col; j++)
+              {
+                  matrix[i][j]=matrix[i][j-1]+constNum;
+                  constNum+=increasingNum;
+              }
+            
+            }
+          
+      }else
+      {
+          for (var j = 0; j < col; j++)
+          {
+              matrix[0][j]=getRandomInt(range_min,range_max);
+          }
+          for (var i = 1; i <row ; i++)
+          {          	
+            for (var j = 0; j < col; j++)
+            {
+                matrix[i][j]=matrix[i-1][j]+constNum;
+            }
+            constNum+=increasingNum;
+          }
+          
+      }
+      //fill question mark
+        var mark_row=getRandomInt(0,row-1);
+        var mark_col=getRandomInt(0,col-1);
+        var answer=matrix[mark_row][mark_col];        
+        matrix[mark_row][mark_col]="?";
+        var options=[];
+        options[0]=answer;
+        options[1]=answer+getRandomInt(1,4);
+        options[2]=answer+getRandomInt(5,6);
+        options[3]=answer+getRandomInt(7,10);
+        var correct=options.indexOf(answer);
+        //create json object
+        /*<table border='1'>
+        <tr> <td>1</td> <td>12</td><td>1</td></tr>
+        <tr> <td>1</td>  <td>1</td> <td>1</td> </tr>
+        <tr>  <td>1</td>  <td>1</td>  <td>1</td> </tr>
+        <tr>  <td>1</td>  <td>1</td>  <td>1</td></tr>
+        </table>*/
+        var qtext="<table align=center border='1'>";
+         for (var i = 0; i <row; i++)
+          {
+            qtext+="<tr>"
+              for (var j = 0; j < col; j++)
+              {
+                qtext+="<td>"+matrix[i][j]+"</td>";
+                //console.log(matrix[i][j]);      
+              }
+              qtext+="</tr>";
+          }
+          qtext+="</table>";
+
+        //create json string
+		var type=["","row","coloumn"];
+	      explanation.msg="<br><br>Increasing series rule is applied here in "+type[dir]+"!";
+		explanation.msg+="<br>In a "+type[dir]+" first add "+tempConstNum+" and then add "+increasingNum+" to previous number get next number";
+		explanation.msg+="<br>Series<br>";
+		var start=tempConstNum;
+		for (var i = 0; i < col-1; i++)
+		{
+			explanation.msg+=start+"<br>";
+			start+=increasingNum;
+		}
+
+		document.getElementById("qtext").innerHTML=qtext;
+        document.getElementById('a').innerHTML=(options[0]+"");
+        document.getElementById('b').innerHTML=(options[1]+"");
+        document.getElementById('c').innerHTML=(options[2]+"");
+        document.getElementById('d').innerHTML=(options[3]+"");
+
+		document.getElementById('a').setAttribute("onclick", "checkAnswer('a',"+correct+");" );
+		document.getElementById('a').setAttribute("class", "option" );
+		document.getElementById('b').setAttribute("onclick", "checkAnswer('b',"+correct+");" );
+		document.getElementById('b').setAttribute("class", "option" );
+		document.getElementById('c').setAttribute("onclick", "checkAnswer('c',"+correct+");" );
+		document.getElementById('c').setAttribute("class", "option" );
+		document.getElementById('d').setAttribute("onclick", "checkAnswer('d',"+correct+");" );
+		document.getElementById('d').setAttribute("class", "option" );
+		document.getElementById('explanation-holder').style.height=0;
+		isNewQuestion=true;
+}
+function checkAnswer(userAnswer,correctIndex)
+{
+	if(isNewQuestion)
+	{
+		isNewQuestion=false;
+		var abcd=["a","b","c","d"];
+		document.getElementById('a').setAttribute("class","option");
+		document.getElementById('b').setAttribute("class","option");
+		document.getElementById('c').setAttribute("class","option");
+		document.getElementById('d').setAttribute("class","option");
+		if(userAnswer==abcd[correctIndex])
+		{
+			document.getElementById(userAnswer).setAttribute("class","option correct");
+		}else
+		{
+			document.getElementById(userAnswer).setAttribute("class","option wrong");
+			document.getElementById(abcd[correctIndex]).setAttribute("class","option correct");
+
+		}
+		showExplanation();
+	}
+}
+
+function showExplanation()
+{
+	// body...
+	console.log(explanation);
+	var div=document.getElementById('explanation-holder');
+	div.style.height="100%";
+	var html="";
+	html+="<div class=_25_line></div>";
+	html+="<div style='text-align:center'>Explanation</div>";
+
+	html+="<div style='text-align:center;font-size:90%;'>"+explanation.msg+"</div>";
+	div.innerHTML=html;
+}
+function getRandomInt(min, max)
+{
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+function isInt(n)
+{
+   return n % 1 === 0;
+}
+
+//swipe to next
+new Hammer(document.getElementsByTagName('body')[0]).on('swipeleft swiperight', function(ev)
+{
+	changeRule();
+});
+
+function changeRule()
+{
+	var rule=getRandomInt(1,6);
+	switch(rule)
+	{
+		case 1: rule1();
+		break;
+		case 2: rule2();
+		break;
+		case 3: rule3();
+		break;
+		case 4: rule4();
+		break;
+		case 5: rule5();
+		break;
+		case 6: rule6();
+		break;
+	}
+
+
+}
+</script>
+
+</body>
+</html>
