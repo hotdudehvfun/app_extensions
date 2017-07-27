@@ -2,16 +2,23 @@
   "extensions": [
     {
       "icon": "school",
+      "icon_color": "#4CD964",
+      "title": "Missing Number",
+      "subtitle": "Find missing number in a matrix",
+      "url": "https://hotdudehvfun.github.io/app_extensions/extension_missing_number.html"
+    }
+    ,{
+      "icon": "school",
       "icon_color": "#e91e63",
       "title": "Verbal Series",
-      "subtitle": "Learn opposite meaning words",
+      "subtitle": "Find next series in a word/letter series",
       "url": "https://hotdudehvfun.github.io/app_extensions/extension_verbal_series.html"
     },
     {
       "icon": "school",
       "icon_color": "#e91e63",
       "title": "Missing Sequence",
-      "subtitle": "Learn opposite meaning words",
+      "subtitle": "A sequence is given, you have to find missing letters.",
       "url": "https://hotdudehvfun.github.io/app_extensions/extension_gap_sequence.html"
     },
     {
@@ -29,8 +36,8 @@
       "url": "https://hotdudehvfun.github.io/app_extensions/extension_synonyms.html"
     },
     {
-      "icon": "school",
-      "icon_color": "#e91e63",
+      "icon": "lightbulb_outline",
+      "icon_color": "#FFC107",
       "title": "Idioms and Phrases",
       "subtitle": "Learn idioms and phrasal verbs",
       "url": "https://hotdudehvfun.github.io/app_extensions/extension_maxims.html"
