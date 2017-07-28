@@ -1,0 +1,314 @@
+<!DOCTYPE>
+<html>
+<head>
+	<title>Calendar</title>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <script type="text/javascript" src="hammer.js"></script>
+    <style type="text/css">
+    /*primary color: #FE9900*/
+    
+	*
+	{
+		font-family: "Roboto","sans-serif";
+		  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+	}   
+    body
+    {
+    	margin: 0px; 
+    	overflow: hidden;
+    }
+    .heading
+    {
+    	text-align: center;
+    }
+    .half_line
+    {
+    	width: 50%;
+    	height: 2px;
+    	background: #FE9900;
+    	margin-left: 25%;
+    	position:relative;
+    }
+    ._25_line
+    {
+    	width: 25%;
+    	height: 2px;
+    	background: #FE9900;
+    	margin-left: 37.5%;
+    	position:relative;
+    }
+
+    #qtext
+    {
+    	text-align: center;
+    	margin-top:5%; 
+    	padding: 0% 2% 0% 2%;
+    }
+    .option
+    {
+	    padding: 2% 3% 2% 3%;
+	    border-radius: 50px;
+	    background: #ececec;
+	    display: inline-table;
+	    margin-top: 5%;
+	    margin-left: 10%;
+	    margin-right: 10%;
+	    color: #111;
+	    width: 10%;
+	    transition: 0.5s all;
+	}
+	.correct
+	{
+		background: #9C0;
+		color: white;		
+	}
+	.wrong
+	{
+		background: #ec7964;
+		color: white;
+	}
+    .option-container
+    {
+    	    text-align: center;
+    		margin-top: 5%;
+    }
+    .explanation-holder
+    {
+    	transition: 0.5s all cubic-bezier(.45,.64,.03,.98);
+    	width: 100%;
+    	height: 0px;
+    	overflow-x: hidden;
+    	overflow-y: auto;
+    	margin-top: 5%;
+    }
+    .fab
+    {
+	margin: 0px;
+    background: #FE9900;
+    color: white;
+    width: initial;
+    border-radius: 50px;
+    padding: 10%;
+    display: inline-block;
+    box-shadow: 1px 1px 1px rgba(130, 130, 130, 0.51);
+    }
+    </style>
+</head>
+<body>
+<h2 class="heading">Calendar</h2>
+<div class="half_line"></div>
+<div id="qtext">
+</div>
+<div class="option-container">
+	<div class="option" id="a"></div>
+	<div class="option" id="b"></div>
+	<div class="option" id="c"></div>
+	<div class="option" id="d"></div>
+</div>
+<div class="explanation-holder" id="explanation-holder">
+</div>
+<div id="next-button" style="
+    position: absolute;
+    bottom: 2%;
+    right: 3%;
+">
+	<div class="fab" style=""><svg xmlns="http://www.w3.org/2000/svg" fill="#fff" height="24" viewBox="0 0 24 24" width="24">
+    <path d="M0 0h24v24H0z" fill="none"/>
+    <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+</svg></div>
+</div>
+
+<script type="text/javascript">
+/*word series
+	length 1 to 4
+	series length 3 to 5
+
+rule 1
+	size 1
+	length 3 - 5
+	simple addition/subtraction to corresponding letter
+*/
+
+var isNewQuestion;
+document.addEventListener("DOMContentLoaded",function()
+{
+	rule1();
+	addEventListeners();
+});
+
+function addEventListeners(argument)
+{
+	document.getElementById('next-button').setAttribute('onclick',"rule1();");
+}
+
+var explanation={};
+var days=["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+var monthNames=[];
+monthNames.push("January");
+monthNames.push("February");
+monthNames.push("March");
+monthNames.push("April");
+monthNames.push("May");
+monthNames.push("June");
+monthNames.push("July");
+monthNames.push("August");
+monthNames.push("September");
+monthNames.push("October");
+monthNames.push("November");
+monthNames.push("December");
+
+function rule1()
+{
+    
+	  //What was the day of the week on 28th May, 2006?
+	  var year=getRandomInt(1900,2000);
+	  var month=getRandomInt(0,11);
+	  var date=getRandomInt(1,28);
+	  var d = new Date();
+		d.setFullYear(year); //1900-1999
+		d.setMonth(month); //0-11
+		d.setDate(date); //1-31
+		
+		var answer=d.getDay(); //0-6 index
+		var temp=answer;
+		var options=[];
+		for (var i =1; i <=4; i++)
+		{
+			options[i-1]=days[answer];
+			answer++;
+			if(answer>=7)
+				answer=0;
+		}
+		options.sort(() => Math.random() * 2 - 1);
+        //create json string
+        correct=options.indexOf(days[temp]);
+        var qtext="What was the day of the week on "+monthNames[d.getMonth()]+" "+d.getDate()+", "+year+" ?";
+        document.getElementById("qtext").innerHTML=qtext;
+        document.getElementById('a').innerHTML=options[0];
+        document.getElementById('b').innerHTML=options[1];
+        document.getElementById('c').innerHTML=options[2];
+        document.getElementById('d').innerHTML=options[3];
+
+		document.getElementById('a').setAttribute("onclick", "checkAnswer('a',"+correct+");" );
+		document.getElementById('a').setAttribute("class", "option" );
+		document.getElementById('b').setAttribute("onclick", "checkAnswer('b',"+correct+");" );
+		document.getElementById('b').setAttribute("class", "option" );
+		document.getElementById('c').setAttribute("onclick", "checkAnswer('c',"+correct+");" );
+		document.getElementById('c').setAttribute("class", "option" );
+		document.getElementById('d').setAttribute("onclick", "checkAnswer('d',"+correct+");" );
+		document.getElementById('d').setAttribute("class", "option" );
+		document.getElementById('explanation-holder').style.height=0;
+		isNewQuestion=true;
+}
+
+
+function rule2()
+{
+    
+	  //if it was sunday on may 29 1994 then, What was the day of the week on 28th May, 2006?
+
+	  var qtext="";
+	  var year=getRandomInt(1900,1990); //+5
+	  var month=getRandomInt(0,4); //+7
+	  var date=getRandomInt(1,15); //+15
+	  var d = new Date();
+	  d.setFullYear(year); 
+	  d.setMonth(month); 
+	  d.setDate(date); 
+		
+	  qtext="If it was "+days[d.getDay()]+" on "+ monthNames[d.getMonth()]+" "+d.getDate()+" "+year+" then, ";
+	  d.setFullYear(year+getRandomInt(1,5));
+	  d.setMonth(month+getRandomInt(1,7));
+	  d.setDate(date+getRandomInt(1,15));
+
+	  qtext+="What was the day of the week on "+monthNames[d.getMonth()]+" "+d.getDate()+", "+d.getFullYear()+" ?";
+
+		var answer=d.getDay(); //0-6 index
+		var temp=answer;
+		var options=[];
+		for (var i =1; i <=4; i++)
+		{
+			options[i-1]=days[answer];
+			answer++;
+			if(answer>=7)
+				answer=0;
+		}
+		options.sort(() => Math.random() * 2 - 1);
+
+        //create json string
+        correct=options.indexOf(days[temp]);
+        document.getElementById("qtext").innerHTML=qtext;
+        document.getElementById('a').innerHTML=options[0];
+        document.getElementById('b').innerHTML=options[1];
+        document.getElementById('c').innerHTML=options[2];
+        document.getElementById('d').innerHTML=options[3];
+
+		document.getElementById('a').setAttribute("onclick", "checkAnswer('a',"+correct+");" );
+		document.getElementById('a').setAttribute("class", "option" );
+		document.getElementById('b').setAttribute("onclick", "checkAnswer('b',"+correct+");" );
+		document.getElementById('b').setAttribute("class", "option" );
+		document.getElementById('c').setAttribute("onclick", "checkAnswer('c',"+correct+");" );
+		document.getElementById('c').setAttribute("class", "option" );
+		document.getElementById('d').setAttribute("onclick", "checkAnswer('d',"+correct+");" );
+		document.getElementById('d').setAttribute("class", "option" );
+		document.getElementById('explanation-holder').style.height=0;
+		isNewQuestion=true;
+}
+function checkAnswer(userAnswer,correctIndex)
+{
+	if(isNewQuestion)
+	{
+		isNewQuestion=false;
+		var abcd=["a","b","c","d"];
+		document.getElementById('a').setAttribute("class","option");
+		document.getElementById('b').setAttribute("class","option");
+		document.getElementById('c').setAttribute("class","option");
+		document.getElementById('d').setAttribute("class","option");
+		if(userAnswer==abcd[correctIndex])
+		{
+			document.getElementById(userAnswer).setAttribute("class","option correct");
+		}else
+		{
+			document.getElementById(userAnswer).setAttribute("class","option wrong");
+			document.getElementById(abcd[correctIndex]).setAttribute("class","option correct");
+
+		}
+		//showExplanation();
+	}
+}
+
+function showExplanation()
+{
+	// body...
+	console.log(explanation);
+	var div=document.getElementById('explanation-holder');
+	div.style.height="40%";
+	var html="";
+	html+="<div class=_25_line></div>";
+	html+="<div style='text-align:center;font-size:90%;'>"+explanation.msg+"</div>";
+	html+="<div style='text-align:center; margin-top:2%'>"+explanation.explanation_array.join("/").replace(/,/g,"")+"</div>";
+	div.innerHTML=html;
+}
+function getRandomInt(min, max)
+{
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+//swipe to next
+new Hammer(document.getElementsByTagName('body')[0]).on('swipeleft swiperight', function(ev)
+{
+	getRandomInt(1,2)==1?rule1():rule2();
+});
+</script>
+
+</body>
+</html>
