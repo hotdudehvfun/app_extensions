@@ -33,7 +33,7 @@
       "icon_color": "#e91e63",
       "title": "Synonyms",
       "subtitle": "Learn similar meaning words",
-      "url": "https://hotdudehvfun.github.io/app_extensions/extension_synonyms.html"
+      "url": "https://hotdudehvfun.github.io/app_extensions/extension_synonyms_version2.html"
     },
     {
       "icon": "lightbulb_outline",
