@@ -33,7 +33,7 @@ function initLetters()
 {
 	var totalLetters=25;	
 	var speed=[0.1,0.2,0.5,0.7];
-	var size=[3,5,6,8];
+	var size=[3,4,5,6];
 	var layers=4;
 	lettersList=[];	
 	for (var j = 0; j < layers; j++)
@@ -45,7 +45,7 @@ function initLetters()
 			letter.char="⚫";//String.fromCharCode(getRandomInt(97,122));
 			letter.isRequired=false;
 			letter.speed=speed[j];
-			letter.color="black";
+			letter.color="#555";
 			letter.x=getRandomInt(0,canvas.width);
 			letter.y=getRandomInt(0,canvas.height);
 			letter.size=size[j];
