@@ -32,6 +32,7 @@ function initCanvas()
 	canvas=document.getElementById('canvas');
 	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight;
+	canvas.style.opacity=1;
 	context=canvas.getContext("2d");
 	if(context==undefined||context==null)	
 	{
