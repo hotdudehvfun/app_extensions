@@ -45,7 +45,7 @@ function initLetters()
 			letter.char=String.fromCharCode(getRandomInt(97,122));
 			letter.isRequired=false;
 			letter.speed=speed[j];
-			letter.color="white";
+			letter.color="#111";
 			letter.x=getRandomInt(0,canvas.width);
 			letter.y=getRandomInt(0,canvas.height);
 			letter.size=size[j];
