@@ -310,6 +310,7 @@ function rule1(dir)
         
 
 }
+var id1,id2;
 function changeQtext(char)
 {
     console.log(char);
@@ -323,7 +324,9 @@ function changeQtext(char)
 
     var items=document.getElementsByClassName("shuffle");
     var pos=0;
-    var id=setInterval(function()
+    clearInterval(id1);
+    clearInterval(id2);
+    id1=setInterval(function()
     {
         for (var i = 0; i < items.length; i++)
         {
@@ -331,7 +334,7 @@ function changeQtext(char)
             if(span.getAttribute("data-flag")!="true")
                 span.innerHTML=String.fromCharCode(getRandomInt(65,90));
         }
-        setTimeout(function()
+        id2=setTimeout(function()
         {
             if(pos<char.length)
             {
@@ -340,7 +343,7 @@ function changeQtext(char)
             }
             pos++;            
             if(pos==char.length)
-                clearInterval(id);
+                clearInterval(id2);
             
         },50);
 
