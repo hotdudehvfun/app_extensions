@@ -1,605 +1,395 @@
-<html><head>
-	<title>Antonyms</title>
-	<meta charset="utf-8">
+<!DOCTYPE>
+<html>
+<head>
+    <title>Antonyms</title>
+    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.0/css/materialize.min.css">
-	
-<style type="text/css">
-
-/*primary color:#ee6e73*/
-
-::-webkit-scrollbar {
-  width: 2px;
-  height: 2px;
-}
-::-webkit-scrollbar-button {
-  width: 0px;
-  height: 0px;
-}
-::-webkit-scrollbar-thumb {
-  background: #e1e1e1;
-  border: 0px none #ffffff;
-  border-radius: 50px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #ffffff;
-}
-::-webkit-scrollbar-thumb:active {
-  background: #000000;
-}
-::-webkit-scrollbar-track {
-  background: #666666;
-  border: 0px none #ffffff;
-  border-radius: 50px;
-}
-::-webkit-scrollbar-track:hover {
-  background: #666666;
-}
-::-webkit-scrollbar-track:active {
-  background: #333333;
-}
-::-webkit-scrollbar-corner {
-  background: transparent;
-}
-
-
-
-@font-face{
-    font-family: 'Font';
-    src: url(font.ttf);
-	}
-body
-{
-	font-family:'Roboto','Font', sans-serif;
-	display: flex;
-	flex-direction: column;
-	overflow: hidden;
-
-
-}
-.title
-{
-	text-align: center;
-	font-size: 7vmin;
-	font-weight: 800;
-	width: 100%;
-}
-.control-box	
-{
-	position: relative;
-    display: flex;
-    flex-direction: row;
-    z-index: 1;
-    margin-top: 5px;
-}
-.container
-{
-    position: relative;
-    text-align: center;
-    width: 100%;
-    height: 80%;
-    overflow: auto;
-    margin-top: 10px;
-}
-.container-item
-{
-    text-align: left;
-    border-bottom: 1px solid #d2d2d2;
-    padding-bottom: 2%;
-    padding-top: 10%;
-}
-.answer
-{
-    transition: 0.5s all;
-    opacity: 1;
-    color: rgba(17, 17, 17, 0.79);
-}
-
-.control-item
-{
-	border: 1px solid #ee6e73;
-    text-align: center;
-    width: 33.33%;
-    background: white;
-}		
-.control-item:active
-{
-	background-color: #ee6e73;
-	color: white;
-}
-.down-arrow
-{
-	color: #ee6e73;
-	font-size: 4.2vw;
-	text-shadow: 1px 1px 2px rgba(128, 128, 128, 0.52);
-}
-.menu-button
-{
-	text-align: right;
-    font-size: 8.5vmin;
-    position: absolute;
-    right: 0px;
-    top: 0%;
-    font-weight: bolder;
-    transform: rotate(90deg);
-    transform-origin: center;
-    color: #ee6e73;
-    transition: 0.5s all;
-    display: inline-block;
-    z-index: 99;
-}
-.menu-button:active
-{
-	background: rgba(232, 232, 232, 0.34);
-}
-.line
-{
-	width: 90%;
-    background: #ee6e73;
-    height: 2px;
-    margin-right: 5%;
-    margin-top: 3px;
-    margin-bottom: 3px;
-}
-
-#custom-drop-down-outer-parent
-{
-	position: absolute;
-	display: none;
-    width: 90%;
-    height: 90%;
-    margin-left: 5%;
-    margin-top: 2.5%;
-    background: rgba(245, 245, 245, 0.61);
-    overflow: hidden;
-    z-index: 99;
-}
-.custom-drop-down-outer {
-    background: #f5f5f5;
-    height: 80%;
-    width: 80%;
-    position: relative;
-    margin-left: 7.5%;
-    margin-top: 7.5%;
-    overflow: auto;
-    box-shadow: 2px 4px 10px rgba(128, 128, 128, 0.52);
-    border-radius: 2px;
-    padding: 2.5%;
-}
-.simple_button
-{
-	position: relative;
-    display: inline-block;
-    background: #ee6e73;
-    color: white;
-    padding-left: 5%;
-    padding-right: 5%;
-    padding-top: 2%;
-    padding-bottom: 2%;
-    margin-left: 40%;
-    margin-top: 10px;
-}
-.square {
-    float:left;
-    position: relative;
-    width: 30%;
-    padding-bottom: 30%; /* = width for a 1:1 aspect ratio */
-    margin:1.66%;
-    overflow:hidden;
-    background: white;
-    box-shadow: 1px 1px 1px rgba(128, 128, 128, 0.28);
-}
-
-.content {
-    position:absolute;
-    height:60%; /* = 100% - 2*10% padding */
-    width:90%; /* = 100% - 2*5% padding */
-    padding: 30% 5%;
-    text-align: center;
-}
-
-.question
-{
-	text-transform: uppercase;
-	font-weight: 500;
-	transition: 0.5s all;
-}
-.question:active
-{
-	    background: rgba(170, 102, 204, 0.26);
-
-}
-.billboard
-{
-	padding-bottom: 1%;
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    flex-direction: row;
-    display: flex;
-    width: 100%;
-    z-index: 98;
-    background: white;
-    box-shadow: 0px 3px 5px rgba(128, 128, 128, 0.3);
-}
-#question-holder
-{
-    text-align: center;
-    margin-top: 2%;
-}
-#qtext
-{
-}
-.options
-{
-	/*background: rgba(250, 235, 215, 0.58);
-    margin-top: 5%;
-    padding: 5% 0% 5% 0%;
-    border-radius: 50px;*/
-    text-align: left;
-    background: #f7f7f7;
-    margin-top: 3%;
-    padding: 2% 0% 2% 2%;
-}
-.correct_option
-{
-	background: #99CC00;
-	color: white;
-}
-.wrong_option
-{
-	background: #ec7964;
-	color: white;
-}
-#timer{
-	background: rgb(238, 110, 115);
-    width: 100%;
-    height: 1.5px;
-    transition: 2s all;
-}
-#pop-up-menu
-{
-	    background: linear-gradient(rgb(247, 247, 247),rgb(249, 249, 249));
-    display: none;
-    margin-top: 9vmin;
-    flex-direction: column;
-    padding: 2% 5% 2% 5%;
-    position: absolute;
-    z-index: 99;
-    right: 2%;
-    border-radius: 2px;
-    box-shadow: 1px 2px 7px rgba(210, 210, 210, 0);
-}
-.menu-item
-{
-    padding: 4% 0% 4% 0%;
-    border-bottom: 1px solid #d4d4d4;
-    font-size: 4vmin;
-    transition: 0.5s all;
-}
-.menu-item:active
-{
-	    background: #ececec;
-}
-.my-container
-{
-	display: block;
-    margin-top: 10vmin;
-    overflow: auto;
-    height: calc( 100% - 10vmin);
+    <script type="text/javascript" src="https://cdn.rawgit.com/coderitual/odoo/feature/codevember16/lib/odoo.js"></script>
+    <script type="text/javascript" src="hammer.js"></script>
     
+
+    <style type="text/css">
+    /*primary color: #FF4444*/
+    
+    *
+    {
+        font-family: "Roboto","sans-serif";
+          -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+    }   
+    body
+    {
+        margin: 0px; 
+        overflow: hidden;
+        background:rgba(239, 239, 239, 0.4);
+    }
+    .shadow
+    {
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    }
+    .heading
+    {
+        text-align: center;
+        text-transform: uppercase;
+        color: #111;
+    }
+    .half_line
+    {
+        width: 50%;
+        height: 2px;
+        background: #FF4444;
+        margin-left: 25%;
+        position:relative;
+    }
+    ._25_line
+    {
+        width: 25%;
+        height: 2px;
+        background: #FF4444;
+        margin-left: 37.5%;
+        position:relative;
+    }
+
+    .list-container
+    {
+            text-align: center;
+            margin-top: 6%;
+    }
+    .option
+    {
+    padding: 5%;
+    background: rgba(255, 255, 255, 0);
+    display: inline-table;
+    margin-top: 5%;
+    margin-left: 10%;
+    margin-right: 10%;
+    color: #FF4444;
+    width: 10%;
+    min-width: 100px;
+    max-width: 250px;
+    transition: 0.5s all;
+    text-transform: lowercase;
+    border: 2px solid #FF4444;
+    }
+    .correct
+    {
+        background: rgba(0, 150, 136, 0.65);
+        color: white;       
+    }
+    .wrong
+    {
+        background: rgba(255, 68, 68, 0.64);
+        color: white;
+    }
+    
+    .explanation-holder
+    {
+        transition: 0.5s all cubic-bezier(.45,.64,.03,.98);
+        width: 100%;
+        height: 0px;
+        overflow-x: hidden;
+        overflow-y: auto;
+        margin-top: 5%;
+    }
+    .fab
+    {
+      position: absolute;
+      bottom: 2%;
+      right: 3%;
+      background: #FF4444;
+      border-radius: 50px;
+      padding: 5px;
+    }
+    .background-banner
+    {
+        background: #fff;
+    }
+    .content-holder
+    {
+    height: 80%;
+    background: rgba(255, 255, 255, 0);
+    padding-left: 6%;
+    padding-right: 6%;
+    padding-bottom: 5%;
+    position: absolute;
+    top: 5%;
+    width: 88%;
+    }
+    .content-holder-inner
+    {
+        text-align: center;
+        background: rgba(84, 84, 84, 0.08);
+        height: 100%;
+        padding-top: 3%;
+        padding-bottom:3%;
+        overflow-y: auto;
+    }   
+    .shakeClass
+    {
+      animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
+      transform: translate3d(0, 0, 0);
+      backface-visibility: hidden;
+      perspective: 1000px;
+    }
+@keyframes shake {
+  10%, 90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+  
+  20%, 80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%, 50%, 70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%, 60% {
+    transform: translate3d(4px, 0, 0);
+  }
 }
-</style>
+
+    #root-word>span
+    {
+        line-height: 160%;
+        font-size: 20px;
+        margin-left: 1.5%;
+    }
+    </style>
 </head>
-<body id="body">
-<nav>
-    <div class="nav-wrapper">
-      <a href="#!" class="brand-logo">Antonyms</a>
-      
+<body>
+<canvas id="canvas" class="background-banner"></canvas> 
+<div class="content-holder">
+    <div class="content-holder-inner shadow">
+        <div id="root-word" class="heading js-odoo">Antonyms</div>
+        <div class="half_line"></div>
+        <div class="list-container" id="words">
+            <div class="list-item" id="a">Maldives</div>
+            <div class="list-item" id="b">Tuvalu</div>
+            <div class="list-item" id="c">Dominica</div>
+            <div class="list-item" id="d">Cambodia</div>
+        </div>
     </div>
-  </nav>
 
-<div id="main">
-	<div class="wrapper">
-		<SECTION id="content">
-			<div class="container">
-			<div class="row" style="margin: auto;">
-			    <div class="col s12">
-			      <ul class="tabs">
-			        <li class="tab col s3"><a class="active"  href="#test-area">Quiz Area</a></li>
-			        <li class="tab col s3"><a href="#learning-area">Learning Area</a></li>
-			      </ul>
-			    </div>
-    		<div id="test-area" class="col s12">
-											<div id="question-holder">
-														<div style="background: #d6d6d6;"><div id="timer"></div></div>
-														<div id="correct_counter" style="text-align: center;">CORRECT 0/0</div>
-														<div class="container-item">
-															<div id="qtext" class="question">censure</div>
-															
-														</div>
-														<i>
-															<div id="a" class="answer">expression of blame or disapproval a rebuke</div>
-															<div id="b" class="answer">expression of blame or disapproval a rebuke</div>
-															<div id="c" class="answer">expression of blame or disapproval a rebuke</div>
-															<div id="d" class="answer">expression of blame or disapproval a rebuke</div>
-
-															</i>
-											</div>    	
-
-
-    	    </div>
-    		<div id="learning-area" class="col s12">
-											<!-- contents  -->
-											<div class="control-box">
-												<div id="prev" class="control-item">Previous</div>
-												<div id="drop-down" class="control-item">
-														<div><span id="position">1 of 20</span> <span class="down-arrow">▲</span></div>
-												</div>
-												<div id="next" " class="control-item">Next</div>
-											</div>
-											<div id="container" class="">
-													<div class="container-item">
-														<div class="question">#anto</div>
-														<div class="line"></div>
-														<div class="answer">#answer</div>
-													</div>
-											</div>
-
-
-    		</div>
-  </div>
-                       
-			</div>
-		</SECTION>
-
-	</div>
-</div>
-
-<!-- menu dots -->
-<!-- <div id="bar-menu-button" class="menu-button">...</div> -->
-<!-- pop up menu -->
-<div id="pop-up-menu" data-state="hidden">
-	<div onclick="showArea('learning-area','test-area')" class="menu-item">Learning Area</div>
-	<div onclick="showArea('test-area','learning-area')" class="menu-item">Quiz Area</div>
 </div>
 
 
-
-
-
-
-
-
-<!-- pop up -->
-<div id="custom-drop-down-outer-parent">
-	<div id="custom-drop-down-outer" class="custom-drop-down-outer">
-		<div class="square">
-		    <div class="content">Page 1</div>
-		</div>
-	</div>
-	<div id="close_button" class="simple_button">Close</div>
+<div class="explanation-holder" id="explanation-holder">
+</div>
+<div id="next-button" class="fab">
+  <svg xmlns="http://www.w3.org/2000/svg" fill="#111" height="24" viewBox="0 0 24 24" width="24">
+    <path d="M0 0h24v24H0z" fill="none"/>
+    <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+</svg>
 </div>
 
 <script type="text/javascript">
-var settings=
-{
-	"pageSize":10,
-	"shuffle":false,
-	"autoHideAnswer":true,
-	"currentPageIndex":0,
-	"maxPageIndex":0,
-	"isNewQuestion":true,
-	"correctCount":0,
-	"wrongCount":0
-};
-
+var currentPos;
+var isNewQuestion;
 document.addEventListener("DOMContentLoaded",function()
 {
-	initItems();
-	addEvents();
-	loadNewQuestionInTestarea();
+
+  currentPos=lastPosition();
+  rule1(0);
+  addEventListeners();
 });
-function showArea(showId,hideId)
+
+function lastPosition()
 {
-	document.getElementById(showId).style.display="block";
-	document.getElementById(hideId).style.display="none";
-	toggleTopBarPopUp();
-}
-function toggleTopBarPopUp(argument)
-{
-			var div=document.getElementById('pop-up-menu');
-			if(div.getAttribute("data-state")=="hidden")
-			{
-				//show
-				div.style.display="inline-flex";
-				div.setAttribute("data-state","visible");
-			}else
-			{
-				//hide
-				div.style.display="none";
-				div.setAttribute("data-state","hidden");
-
-			}
-}
-function addEvents()
-{
-		// document.getElementById('bar-menu-button').addEventListener("click",function()
-		// {
-		// 	//open drop down
-		// 	toggleTopBarPopUp();
-		// });
-		document.getElementById('drop-down').addEventListener("click",function()
-		{
-			//open drop down
-			document.getElementById('custom-drop-down-outer-parent').style.display="block";
-		});
-		document.getElementById('close_button').addEventListener("click",function()
-		{
-			//open drop down
-			document.getElementById('custom-drop-down-outer-parent').style.display="none";
-		});		
-
-		document.getElementById('next').addEventListener("click",function()
-		{
-				settings.currentPageIndex++;
-				if(settings.currentPageIndex>settings.maxPageIndex)
-					settings.currentPageIndex=settings.maxPageIndex;
-				loadPage(settings.currentPageIndex);						
-		});
-		
-		document.getElementById('prev').addEventListener("click",function()
-		{
-				settings.currentPageIndex--;
-				if(settings.currentPageIndex<0)
-					settings.currentPageIndex=0
-				loadPage(settings.currentPageIndex);		
-		});
-
-		// document.getElementById('bar-menu-button').addEventListener("click",function()
-		// {
-		// 		//show menu
-		// });
-
+  var i=0;
+  if(localStorage.index==undefined||localStorage.index==null)
+  { 
+    i=0;
+  }
+  else
+  {
+    i=parseInt(localStorage.index)
+  }
+  return i;
 
 }
-function loadNewQuestionInTestarea()
+
+function addEventListeners(argument)
 {
-
-	settings.isNewQuestion=true;
-		var list=getNRandomInts(0,array.length-1,4);
-		var qtext=array[list[0]].split("|")[0].trim();
-		var answer=array[list[0]].split("|")[1].trim();
-		var options=[];
-		for (var i = 0; i < list.length; i++)
-		{
-			var pos=list[i];
-			options.push(array[list[i]].split("|")[1].trim());
-		}
-		options.sort(function(){0.5-Math.random()});
-
-		var correctIndex=options.indexOf(answer);
-
-		document.getElementById('qtext').innerHTML=qtext;
-		document.getElementById('a').innerHTML=options[0];
-		document.getElementById('a').setAttribute("onclick","checkAnswer(0,"+correctIndex+")");
-		document.getElementById('a').setAttribute("class","options");
-		document.getElementById('b').innerHTML=options[1];
-		document.getElementById('b').setAttribute("onclick","checkAnswer(1,"+correctIndex+")");
-		document.getElementById('b').setAttribute("class","options");
-		document.getElementById('c').innerHTML=options[2];
-		document.getElementById('c').setAttribute("onclick","checkAnswer(2,"+correctIndex+")");
-		document.getElementById('c').setAttribute("class","options");
-		document.getElementById('d').innerHTML=options[3];
-		document.getElementById('d').setAttribute("onclick","checkAnswer(3,"+correctIndex+")");
-		document.getElementById('d').setAttribute("class","options");
-		document.getElementById("timer").style.width="100%";
+    document.getElementById('next-button').setAttribute('onclick',"rule1(1);");
 }
 
+function getNRandomInts(min,max,n)
+{
+    var randoms=[];
+    while(randoms.length!=n)
+    {
+        var num=getRandomInt(min,max);
+        if(randoms.indexOf(num)==-1)
+            randoms.push(num)
+    }
+    return randoms;
+}
+function hasDuplicates(arr)
+{
+  var sorted_arr = arr.slice().sort();
+  for (var i = 0; i < arr.length - 1; i++)
+  {
+      if (sorted_arr[i + 1] == sorted_arr[i])
+      {
+          return true;
+      }
+  }
+  return false;
+}
+//learning
+var list;
+var oldQtext="Antonyms";
+function rule1(dir)
+{
+        if(dir!=0)
+          textDir=dir;
+
+
+        currentPos=currentPos+dir;
+        if(currentPos<=0)
+          currentPos=0;
+        if(currentPos>=array.length)
+          currentPos=array.length-1;
+
+        var loop=true;
+        list=[];
+        while(loop)
+        {
+          list=getNRandomInts(0,array.length-1,3);
+          list.push(currentPos);
+          if(hasDuplicates(list)==false)
+            loop=false;
+        }
+        console.log(list);
+        var objects=[];
+        objects.push(array[list[0]]);
+        objects.push(array[list[1]]);
+        objects.push(array[list[2]]);
+        objects.push(array[list[3]]);
+
+        var options=[];
+        var qtext=objects[3].split("|")[0];
+        var answer=objects[3].split("|")[1];
+        
+        options.push(objects[0].split("|")[1]);
+        options.push(objects[1].split("|")[1]);
+        options.push(objects[2].split("|")[1]);
+        options.push(answer);
+        options.sort(function(){return 0.5-Math.random();});
+        var correctIndex=options.indexOf(answer);
+
+        //create json string
+        correct=correctIndex;
+        //document.getElementById("root-word").innerHTML=qtext;
+        changeQtext(qtext);
+        document.getElementById('a').innerHTML=options[0];
+        document.getElementById('b').innerHTML=options[1];
+        document.getElementById('c').innerHTML=options[2];
+        document.getElementById('d').innerHTML=options[3];
+
+        document.getElementById('a').setAttribute("onclick", "checkAnswer('a',"+correct+");" );
+        document.getElementById('a').setAttribute("class", "option" );
+        document.getElementById('b').setAttribute("onclick", "checkAnswer('b',"+correct+");" );
+        document.getElementById('b').setAttribute("class", "option" );
+        document.getElementById('c').setAttribute("onclick", "checkAnswer('c',"+correct+");" );
+        document.getElementById('c').setAttribute("class", "option" );
+        document.getElementById('d').setAttribute("onclick", "checkAnswer('d',"+correct+");" );
+        document.getElementById('d').setAttribute("class", "option" );
+        document.getElementById('explanation-holder').style.height=0;
+        isNewQuestion=true;
+        localStorage.index=currentPos;
+        oldQtext=qtext;
+        
+
+}
+function changeQtext(char)
+{
+    console.log(char);
+    var p=document.getElementById("root-word");
+    var html="";
+    for (var i = 0; i < char.length; i++)
+    {
+          html+="<span class=shuffle data-flag=false>"+char[i]+"</span>";
+    } 
+    p.innerHTML=html; 
+
+    var items=document.getElementsByClassName("shuffle");
+    var pos=0;
+    var id=setInterval(function()
+    {
+        for (var i = 0; i < items.length; i++)
+        {
+            var span=items[i];
+            if(span.getAttribute("data-flag")!="true")
+                span.innerHTML=String.fromCharCode(getRandomInt(65,90));
+        }
+        setTimeout(function()
+        {
+            if(pos<char.length)
+            {
+                items[pos].innerHTML=char[pos];
+                items[pos].setAttribute("data-flag","true");
+            }
+            pos++;            
+            if(pos==char.length)
+                clearInterval(id);
+            
+        },50);
+
+    },50);
+
+}
 function checkAnswer(userAnswer,correctIndex)
 {
-	if(settings.isNewQuestion)
-	{
-		settings.isNewQuestion=false;
-		var ids=["a","b","c","d"];
-		if(userAnswer==correctIndex)
-		{
-			event.target.setAttribute("class","options correct_option");
-			settings.correctCount++;
-		}else{
-			event.target.setAttribute("class","options wrong_option");
-			settings.wrongCount++;
-			document.getElementById(ids[correctIndex]).setAttribute("class","options correct_option");
-		}
+    if(isNewQuestion)
+    {
+        isNewQuestion=false;
+        var abcd=["a","b","c","d"];
+        document.getElementById('a').setAttribute("class","option");
+        document.getElementById('b').setAttribute("class","option");
+        document.getElementById('c').setAttribute("class","option");
+        document.getElementById('d').setAttribute("class","option");
+        if(userAnswer==abcd[correctIndex])
+        {
+            document.getElementById(userAnswer).setAttribute("class","option correct");
+        }else
+        {
+            document.getElementById(userAnswer).setAttribute("class","option wrong shakeClass");
+            document.getElementById(abcd[correctIndex]).setAttribute("class","option correct");
 
-		document.getElementById("timer").style.width="0%";
-		document.getElementById("correct_counter").innerHTML="CORRECT "+settings.correctCount+"/"+(settings.correctCount+settings.wrongCount);
-
-		setTimeout(function()
-		{
-			loadNewQuestionInTestarea();
-		},2000);
-	}
+        }
+    }
 }
 
-function initItems()
-{
-		var maxSize=array.length;
-		var numOfPages=maxSize/settings.pageSize;
-		console.log(numOfPages);	
-		settings.maxPageIndex=parseInt(numOfPages-1);
-		settings.currentPageIndex=0;
-		//custom drop down
-		var html="";
-		var parent=document.getElementById('custom-drop-down-outer');
-		for (var i = 0; i < numOfPages-1; i++)
-		{
-				// html+='<div class=item onclick=loadPage('+i+')>Page '+(i+1)+'</div>'
-				html+='<div class=square onclick=loadPage('+i+')>'
-	    		html+='<div class=content>Page '+(i+1)+'</div>'
-				html+='</div>'
-		}
-		parent.innerHTML=html;
-		loadPage(0);
-
-}
-
-function loadPage(pageNum)
-{
-	var maxSize=array.length;
-	var numOfPages=maxSize/settings.pageSize;
-
-	var parent=document.getElementById('container');
-	var html="";
-	var start=pageNum*settings.pageSize;
-	var end=start+settings.pageSize;
-	for (var i = start; i < end; i++)
-	{
-		var q=array[i].split("|")[0];
-		var a=array[i].split("|")[1];
-
-		html+='<div class=container-item onclick=handleClickOnItem()>';
-		html+='<div class=question>'+q+'</div>';
-		// html+='<div class="line"></div>';
-		html+='<i><div class="answer">'+a+'</div></i>';
-		html+='</div>';
-	}
-	parent.innerHTML=html;
-	settings.currentPageIndex=pageNum;
-
-	//hide drop down
-	document.getElementById('custom-drop-down-outer-parent').style.display="none";
-	document.getElementById('position').innerHTML=(pageNum+1)+" of "+(parseInt(numOfPages));
-
-}
-function handleClickOnItem()
-{
-	 // var div=event.srcElement.parentElement.getElementsByClassName('answer')[0];
-	 // div.style.opacity=1;
-	 // setTimeout(function(){
-	 // 	div.style.opacity=0;
-	 // },5*1000);
-}
 function getRandomInt(min, max)
 {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
-function getNRandomInts(min,max,n)
+//swipe to next
+new Hammer(document.getElementsByClassName('content-holder-inner')[0]).on('swipeleft swiperight', function(ev)
 {
-	var randoms=[];
-	while(randoms.length!=n)
-	{
-		var num=getRandomInt(min,max);
-		if(randoms.indexOf(num)==-1)
-			randoms.push(num)
-	}
-	return randoms;
-}
 
+  switch(ev.type)
+  {
+    case "swipeleft":
+    rule1(1);
+    break;
+
+    case "swiperight":
+    rule1(-1);
+    break;
+
+  }
+
+});
 
 var array=[];
 array.push("abeyance|continuance");
@@ -984,7 +774,6 @@ array.push("flaunt|hide");
 array.push("fledgling|experienced");
 array.push("flinch|extol");
 </script>
-
-<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.0/js/materialize.min.js"></script>
-</body></html>
+<script type="text/javascript" src="liveWallpaper_particles.js"></script>
+</body>
+</html>
