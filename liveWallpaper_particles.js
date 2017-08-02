@@ -4,7 +4,11 @@ var questionItem={};
 var textDir=1;
 document.addEventListener("DOMContentLoaded",function()
 {
-	initCanvas();
+
+	setTimeout(function(){
+		initCanvas();
+	},2000);
+
 });
 window.addEventListener("resize",function()
 {
