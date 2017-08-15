@@ -28,7 +28,7 @@
     {
         margin: 0px; 
         overflow: hidden;
-        background:rgba(239, 239, 239, 0.4);
+        background: #fff;
     }
     .shadow
     {
@@ -67,7 +67,7 @@
     padding: 5%;
     background: rgba(255, 255, 255, 0);
     display: inline-table;
-    margin-top: 5%;
+    margin-top: 10%;
     margin-left: 10%;
     margin-right: 10%;
     color: #FF4444;
@@ -127,50 +127,34 @@
     .content-holder-inner
     {
         text-align: center;
-        background: rgba(84, 84, 84, 0.08);
         height: 100%;
         padding-top: 3%;
         padding-bottom:3%;
         overflow-y: auto;
     }   
-    .shakeClass
-    {
-      animation: shake 0.82s cubic-bezier(.36,.07,.19,.97) both;
-      transform: translate3d(0, 0, 0);
-      backface-visibility: hidden;
-      perspective: 1000px;
-    }
-@keyframes shake {
-  10%, 90% {
-    transform: translate3d(-1px, 0, 0);
-  }
-  
-  20%, 80% {
-    transform: translate3d(2px, 0, 0);
-  }
-
-  30%, 50%, 70% {
-    transform: translate3d(-4px, 0, 0);
-  }
-
-  40%, 60% {
-    transform: translate3d(4px, 0, 0);
-  }
-}
-
     #root-word>span
     {
         line-height: 160%;
         font-size: 20px;
         margin-left: 1.5%;
     }
+    select
+    {
+        width: 100%;
+        text-align-last: center;
+        background:#fff;
+        color: #111;
+        border: 2px solid #FF4444;
+        padding: 1%;
+    }
+    
     </style>
 </head>
 <body>
 <canvas id="canvas" class="background-banner"></canvas> 
 <div class="content-holder">
     <div class="content-holder-inner shadow">
-        <div id="root-word" class="heading js-odoo">Antonyms</div>
+        <div id="root-word" class="heading">Antonyms</div>
         <div class="half_line"></div>
         <div class="list-container" id="words">
             <div class="list-item" id="a">Maldives</div>
@@ -179,29 +163,38 @@
             <div class="list-item" id="d">Cambodia</div>
         </div>
     </div>
-
+<div id="index-change-holder">
 </div>
-
-
-<div class="explanation-holder" id="explanation-holder">
-</div>
-<div id="next-button" class="fab">
-  <svg xmlns="http://www.w3.org/2000/svg" fill="#111" height="24" viewBox="0 0 24 24" width="24">
-    <path d="M0 0h24v24H0z" fill="none"/>
-    <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
-</svg>
-</div>
-
 <script type="text/javascript">
 var currentPos;
 var isNewQuestion;
 document.addEventListener("DOMContentLoaded",function()
 {
-
   currentPos=lastPosition();
   rule1(0);
   addEventListeners();
+  createSelectIndex();
 });
+
+function createSelectIndex(argument)
+{
+    var p=document.getElementById('index-change-holder');
+    var html="<select id=selectIndex size=1 onchange=jumpToQuestion();>";
+    for (var i = 0; i < array.length; i++)
+    {
+        html+="<option value="+i+">"+(i+1)+"</option>";        
+    }
+    html+="</select>";
+    p.innerHTML=html;    
+    document.getElementById('selectIndex').selectedIndex=currentPos;
+
+}
+function jumpToQuestion()
+{
+    var index=document.getElementById('selectIndex').value;
+    currentPos=parseInt(index);
+    rule1(0);
+}
 
 function lastPosition()
 {
@@ -213,6 +206,8 @@ function lastPosition()
   else
   {
     i=parseInt(localStorage.index)
+    if(isNaN(i))
+        i=0;
   }
   return i;
 
@@ -220,7 +215,6 @@ function lastPosition()
 
 function addEventListeners(argument)
 {
-    document.getElementById('next-button').setAttribute('onclick',"rule1(1);");
 }
 
 function getNRandomInts(min,max,n)
@@ -251,9 +245,10 @@ var list;
 var oldQtext="Antonyms";
 function rule1(dir)
 {
+
+
         if(dir!=0)
           textDir=dir;
-
 
         currentPos=currentPos+dir;
         if(currentPos<=0)
@@ -261,6 +256,7 @@ function rule1(dir)
         if(currentPos>=array.length)
           currentPos=array.length-1;
 
+        console.log(dir,currentPos);
         var loop=true;
         list=[];
         while(loop)
@@ -305,7 +301,11 @@ function rule1(dir)
         document.getElementById('c').setAttribute("class", "option" );
         document.getElementById('d').setAttribute("onclick", "checkAnswer('d',"+correct+");" );
         document.getElementById('d').setAttribute("class", "option" );
-        document.getElementById('explanation-holder').style.height=0;
+        try
+        {
+            document.getElementById('selectIndex').selectedIndex=currentPos;
+        }catch(e){}
+
         isNewQuestion=true;
         localStorage.index=currentPos;
         oldQtext=qtext;
@@ -352,6 +352,7 @@ function changeQtext(char)
     },50);
 
 }
+var id=null;
 function checkAnswer(userAnswer,correctIndex)
 {
     if(isNewQuestion)
@@ -371,6 +372,11 @@ function checkAnswer(userAnswer,correctIndex)
             document.getElementById(abcd[correctIndex]).setAttribute("class","option correct");
 
         }
+
+    clearInterval(id);
+    id=setTimeout(function(){
+        rule1(1);
+    },500);
     }
 }
 
