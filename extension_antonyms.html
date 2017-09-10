@@ -147,13 +147,29 @@
         border: 2px solid #FF4444;
         padding: 1%;
     }
+    #index-change-holder
+    {
+        position: absolute;
+        bottom: 1%;
+        text-align: center;
+        width: 100%;
+        color: #FF4444;
+    }
+    #select-holder
+    {
+        position: absolute;
+        bottom: 14%;
+        left: 25%;
+        width: 50%;
+        display: none;
+    }
     
     </style>
 </head>
 <body>
 <canvas id="canvas" class="background-banner"></canvas> 
 <div class="content-holder">
-    <div class="content-holder-inner shadow">
+    <div class="content-holder-inner ">
         <div id="root-word" class="heading">Antonyms</div>
         <div class="half_line"></div>
         <div class="list-container" id="words">
@@ -163,8 +179,13 @@
             <div class="list-item" id="d">Cambodia</div>
         </div>
     </div>
+</div>
+
 <div id="index-change-holder">
 </div>
+<div id="select-holder"></div>
+
+
 <script type="text/javascript">
 var currentPos;
 var isNewQuestion;
@@ -172,20 +193,33 @@ document.addEventListener("DOMContentLoaded",function()
 {
   currentPos=lastPosition();
   rule1(0);
-  addEventListeners();
   createSelectIndex();
+  document.getElementById('index-change-holder').addEventListener('click',function()
+  {
+    console.log('a');
+    var div=document.getElementById('select-holder');
+    
+    if(div.style.display=="block")
+    {
+     div.style.display="none";   
+    }else
+    {
+     div.style.display="block";
+    }
+
+  });
 });
 
 function createSelectIndex(argument)
 {
-    var p=document.getElementById('index-change-holder');
-    var html="<select id=selectIndex size=1 onchange=jumpToQuestion();>";
+    var p=document.getElementById('select-holder');
+    var html="<select style='' id=selectIndex size=5 onchange=jumpToQuestion();>";
     for (var i = 0; i < array.length; i++)
     {
         html+="<option value="+i+">"+(i+1)+"</option>";        
     }
     html+="</select>";
-    p.innerHTML=html;    
+    p.innerHTML=(html);    
     document.getElementById('selectIndex').selectedIndex=currentPos;
 
 }
@@ -193,6 +227,7 @@ function jumpToQuestion()
 {
     var index=document.getElementById('selectIndex').value;
     currentPos=parseInt(index);
+    document.getElementById('select-holder').style.display="none";
     rule1(0);
 }
 
@@ -212,11 +247,6 @@ function lastPosition()
   return i;
 
 }
-
-function addEventListeners(argument)
-{
-}
-
 function getNRandomInts(min,max,n)
 {
     var randoms=[];
@@ -245,8 +275,7 @@ var list;
 var oldQtext="Antonyms";
 function rule1(dir)
 {
-
-
+        
         if(dir!=0)
           textDir=dir;
 
@@ -308,6 +337,7 @@ function rule1(dir)
 
         isNewQuestion=true;
         localStorage.index=currentPos;
+        document.getElementById('index-change-holder').innerHTML=(currentPos+1)+"/"+array.length;
         oldQtext=qtext;
         
 
