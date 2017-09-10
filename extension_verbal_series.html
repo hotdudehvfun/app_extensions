@@ -82,12 +82,14 @@
     }
     .explanation-holder
     {
-    	transition: 0.5s all;
-    	text-align: center;
-    	width: 100%;
-    	height: 0px;
-    	overflow-x: hidden;
-    	overflow-y: auto;
+    transition: 0.5s all;
+    text-align: center;
+    width: 90%;
+    height: 0px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding-left: 5%;
+    padding-right: 5%;
     }
     </style>
 </head>
@@ -201,10 +203,8 @@ function rule1()
 	  		}
 	  }
 
-	  explanation.series=letter_series;
-	  explanation.diffArray=diffArray;
-
-
+	   //create explanation
+	   explanation.msg="";
 	  //change num to char
 	  for (var i =0; i < series_length; i++)
 	  {
@@ -212,8 +212,7 @@ function rule1()
 	  		{
 	  			letter_series[i][j]=String.fromCharCode(letter_series[i][j]);
 	  		}
-	  }
-	  
+	  }	  
 
 	  var options=[];
 	  //answer
@@ -271,6 +270,15 @@ function rule1()
 		document.getElementById('explanation-holder').style.height=0;
 		isNewQuestion=true;
 }
+function getDifference(a,b)
+{
+	var diff=[];
+	for (var i = 0; i < a.length; i++)
+	{
+		diff.push((a[i]-b[i]));
+	}
+	return diff;
+}
 function hasDuplicates(arr)
 {
 	var sorted_arr = arr.slice().sort();
@@ -302,32 +310,17 @@ function checkAnswer(userAnswer,correctIndex)
 			document.getElementById(abcd[correctIndex]).setAttribute("class","option correct");
 
 		}
-		showExplanation("rule1");
+		//showExplanation("rule1");
 	}
 }
 
-function showExplanation(rule)
+function showExplanation()
 {
 	// body...
 	console.log(explanation);
 	var div=document.getElementById('explanation-holder');
 	div.style.height="100%";
-	var html="";
-	var pos=1;
-	for (var i = 0; i < explanation.series.length; i++) 
-	{
-		var singleWord=explanation.series[i].toString().split(",").join("");
-		html+="<div style='text-align:center; margin-top:2%'>"+singleWord+"</div>";
-		html+="<div style='text-align:center'>";
-			for (var j = 0; j < explanation.diffArray[pos-1].length; j++)
-			{
-					var text=" ( "+(explanation.diffArray[pos-1][j])+" ) ";
-					html+="<span>"+text+"</span>";
-			}	
-		html+="</div>";
-	}
-	div.innerHTML="<br><br> Explanation <div class=_25_line></div>"+html;
-
+	div.innerHTML="<br><br> Explanation <div class=_25_line></div>"+explanation.msg;
 }
 
 
