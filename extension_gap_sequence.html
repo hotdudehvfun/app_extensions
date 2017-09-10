@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script type="text/javascript" src="hammer.js"></script>
     <style type="text/css">
     /*primary color: #5AC8FA*/
@@ -51,6 +52,7 @@
     {
     	text-align: center;
     	margin-top:5%; 
+    	letter-spacing: 5px;
     }
     .option
     {
@@ -89,16 +91,15 @@
     	overflow-y: auto;
     	margin-top: 5%;
     }
-    .fab
+    #next-button
     {
-	margin: 0px;
-    background: #5AC8FA;
-    color: white;
-    width: initial;
-    border-radius: 50px;
-    padding: 10%;
-    display: inline-block;
-    box-shadow: 1px 1px 1px rgba(130, 130, 130, 0.51);
+		position: absolute;
+	    bottom: 2%;
+	    right: 3%;
+	    background: #5AC8FA;
+	    color: white;
+	    border-radius: 100px;
+	    padding: 3px;
     }
     </style>
 </head>
@@ -115,15 +116,8 @@
 </div>
 <div class="explanation-holder" id="explanation-holder">
 </div>
-<div id="next-button" style="
-    position: absolute;
-    bottom: 2%;
-    right: 3%;
-">
-	<div class="fab" style=""><svg xmlns="http://www.w3.org/2000/svg" fill="#fff" height="24" viewBox="0 0 24 24" width="24">
-    <path d="M0 0h24v24H0z" fill="none"/>
-    <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
-</svg></div>
+<div id="next-button" style="">
+	<i class="material-icons">navigate_next</i>
 </div>
 
 <script type="text/javascript">
