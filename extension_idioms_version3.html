@@ -1,0 +1,964 @@
+<html><head>
+	<title>Idioms</title>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <script type="text/javascript" src="hammer.js"></script>
+<style type="text/css">
+
+	/*colorPrimary:#FFC107*/
+*
+{
+	font-family: "Roboto","sans-serif";
+   -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+body
+{
+	color: black;
+	background: rgba(234, 234, 234, 0.15);
+}
+.heading
+    {
+    	text-align: center;
+    }
+    .half_line
+    {
+  width: 70%;
+    height: 1px;
+    background: #f84b4b;
+    margin-left: 15%;
+    position: relative;
+    }
+    ._25_line
+    {
+    	width: 25%;
+    	height: 2px;
+    	background: #FFC107;
+    	margin-left: 37.5%;
+    	position:relative;
+    }
+
+    .qtext
+    {
+    	padding: 0% 2% 0% 2%;
+    	line-height: 160%;
+    	text-transform: uppercase;
+    }
+    .option
+    {
+	    padding: 2% 3% 2% 3%;
+	    border-radius: 50px;
+	    background: #ececec;
+	    display: inline-table;
+	    margin-top: 5%;
+	    margin-left: 10%;
+	    margin-right: 10%;
+	    color: #111;
+	    width: 30%;
+	    max-width: 200px;
+	    transition: 0.5s all;
+	}
+	.correct
+	{
+		background: #9C0;
+		color: white;		
+	}
+	.wrong
+	{
+		background: #ec7964;
+		color: white;
+	}
+    .option-container
+    {
+    	    text-align: center;
+    		margin-top: 5%;
+    }
+    .explanation-holder
+    {
+transition: 0.5s all cubic-bezier(.45,.64,.03,.98);
+    width: 94%;
+    height: 0px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    margin-top: 5%;
+    padding: 0% 3% 0% 3%;
+    }
+    .fab
+    {
+	margin: 0px;
+    background: #FFC107;
+    color: white;
+    width: initial;
+    border-radius: 50px;
+    padding: 10%;
+    display: inline-block;
+    box-shadow: 1px 1px 1px rgba(130, 130, 130, 0.51);
+    }
+.data
+{
+    text-transform: lowercase;
+    font-style:italic;
+    padding-left: 5%;
+}
+.feed-holder-outer
+{
+	padding: 0% 2% 0% 2%;
+    display: flex;
+    flex-direction: column;
+}
+.feed-holder-inner
+{
+	background: white;
+    margin-top: 3%;
+    border-radius: 0.5%;
+    padding-top:2%;
+    padding-bottom: 2%;
+    transition: 0.5s all;
+    opacity: 0;
+}
+.line
+{
+	width: 75%;
+    height: 1px;
+    background: #c3c3c3;
+    margin-left: 25%;
+    margin-top: 3%;
+}
+	.card
+    {
+		width: 80%;
+	    height: 80%;
+	    background: white;
+	    box-shadow:  0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+	    border-radius: 2px;
+	    min-width: 256;
+	    max-width: 512;
+	    max-height: 450px;
+	    display: flex;
+	    flex-direction: column;
+	    overflow:hidden;
+	    transition:0.9s all;
+	    transform-origin: bottom;
+	    margin-left: 5%;
+    }
+    .card-head {
+        width: 100%;
+    height: 50px;
+    background: #F84B4B;
+    border-radius: 2px;
+    display: flex;
+    flex-direction: row;
+}
+    .small-hole-holder
+    {
+    	width: 20%;
+   		text-align: center;
+    }
+    .small-hole
+    {
+	        height: 20px;
+    width: 20px;
+    background: rgb(234, 234, 234);
+    border-radius: 100px;
+    box-shadow: inset 0px 2px 1px 0px rgba(128, 128, 128, 0.75);
+    display: inline-block;
+    margin-top: 14px;
+    }
+    .card-heading
+    {
+		width: 100%;
+	    text-align: center;
+	    color: white;
+	    font-weight: bold;
+	    font-size: 250%;
+    }
+    .card-date-holder
+    {
+text-align: center;
+    font-size: 240%;
+    background: rgba(152, 152, 152, 0.03);
+    border-radius: 3px;
+    }
+    .card-footer
+    {
+    	    text-align: center;
+    		margin-top: 5%;
+    }
+    .card-week
+    {
+    	color: #8BC34A;
+    }
+    .card-year
+    {
+    	text-align: right;
+    color: #66ab17;
+    font-weight: bolder;
+    }
+    .card-footer-inner
+    {
+    	width: 50%;
+    }
+    .card-triangle
+    {
+	width: 100%;
+    height: 50%;
+    background: #f84b4b;
+    transform: rotate(45deg);
+    position: relative;
+    left: -97px;
+    top: 50%;
+    box-shadow: 14px -9px 5px rgba(128, 128, 128, 0.36);
+    z-index: 1;
+    transition: 0.5s all;
+    }
+    .card-container
+    {
+    	width: 100%;
+    	height: 95%;
+    	display: flex;
+    	flex-direction: row;
+    	overflow: auto;
+    }
+    
+</style>
+</head>
+<body id="body">
+<h2  class="heading">Idioms</h2>
+<div id="index" class="heading"></div>
+<div class="card-container">
+		<!-- <div class="card" data-state="active" style="z-index: 2">
+			<div class="card-head">		
+				<div class="card-heading">&clubs;</div>
+			</div>
+			<div class="card-date-holder">
+				<div class="card-date">card 1</div>
+			</div>
+			<div class="half_line"></div>
+				<div class="card-footer"><i>1</i>
+			</div>
+			<div class="card-triangle">
+			</div>
+		</div> -->
+</div>
+
+
+<script type="text/javascript">
+
+document.addEventListener('click',function()
+{
+	
+});
+
+	var pos;
+	var fatc=new Array();
+	fatc.push({value:"#1abc9c"});
+	fatc.push({value:"#40d47e"});
+	fatc.push({value:"#3498db"});
+	fatc.push({value:"#9b59b6"});
+	//fatc.push({value:"#34495e"});
+	
+	fatc.push({value:"#16a085"});
+	fatc.push({value:"#27ae60"});
+	fatc.push({value:"#2980b9"});
+	fatc.push({value:"#8e44ad"});
+	//fatc.push({value:"#2c3e50"});
+	
+	fatc.push({value:"#f1c40f"});
+	fatc.push({value:"#e67e22"});
+	fatc.push({value:"#e74c3c"});
+	//fatc.push({value:"#ecf0f1"});
+	//fatc.push({value:"#95a5a6"});
+	
+	fatc.push({value:"#f39c12"});
+	fatc.push({value:"#d35400"});
+	fatc.push({value:"#c0392b"});
+	//fatc.push({value:"#bdc3c7"});
+	//fatc.push({value:"#7f8c8d"});
+window.onload=start;
+var index=0;
+var array=[];
+function start()
+{
+	//init first card
+
+	var html="";
+	for (var i = 0; i < array.length; i++)
+	{
+		var data=getData(i);
+		var color=fatc[getRandomInt(0,fatc.length-1)].value;
+		var div=document.getElementsByClassName('card')[0];
+		var suits=["&spades;","&hearts;","&diams;","&clubs;"];
+		html+='<div class=card>';
+			html+='<div class=card-head style=background:'+color+'>';
+				html+='<div class=card-heading>&clubs;</div>';
+			html+='</div>';
+			html+='<div class="card-date-holder">';
+				html+='<div class="card-date">'+data.qtext+'</div>';
+			html+='</div>';
+			html+='<div class="half_line" style=background:'+color+'></div>';
+				html+='<div class="card-footer"><i>'+data.answer+'</i>';
+			html+='</div>';
+		html+='</div>';
+	}
+	document.getElementsByClassName('card-container')[0].innerHTML=html;
+}
+
+function getRandomInt(min, max)
+{
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function getData(pos)
+{
+	var i=pos;
+	// console.log(pos);
+	var qtext=array[i].split("#")[0].trim();
+	var answer=array[i].split("#")[1].trim();
+	var data={};
+	data.qtext=qtext;
+	data.answer=answer;
+	return data;
+}
+new Hammer(document.getElementsByTagName('body')[0]).on('swipeleft swiperight', function(ev)
+{
+	
+});
+array.push(" A big cheese#an important or a powerful person in a group or family");
+array.push(" A bird's eye view#a view from a very high place which allows you to see a large area");
+array.push(" A bit under the weather#falling ill");
+array.push(" A bone of contention#something that people argue for a long time");
+array.push(" A boon in disguise#a benefit in loss");
+array.push(" A bull in a China shop#an awkward person");
+array.push(" A cock and a bull story#a story or an explanation which is obviously not true");
+array.push(" A cuckoo in the nest#someone in a group of people but not liked by them");
+array.push(" A dead letter#an argument or law not followed by anyone");
+array.push(" A dish fit for Gods#something of very high quality");
+array.push(" A game of two equal halves#a sudden change in circumstances");
+array.push(" A house of cards#a poor plan");
+array.push(" A litmus test#a method which clearly proves something");
+array.push(" A nine days wonder#pleasure for a short time");
+array.push(" A queer fish#a strange person");
+array.push(" A red letter day#an important day");
+array.push(" A wakeup call#an event done to warn someone");
+array.push(" A witch hunt#an attempt to find and punish those who have options that are believed to be dangerous");
+array.push(" A worm's eye view#having very little knowledge about something");
+array.push(" Afraid of one's own shadow#to become easily frightened");
+array.push(" Against the clock#to be in a hurry to do something before a particular time");
+array.push(" Air one's dirty laundry#to make public something embarrassing that should be kept secret");
+array.push(" All systems go#everything is ready");
+array.push(" An arm and a leg#a large amount of money");
+array.push(" An early bird#someone who gets early in the morning");
+array.push(" An educated guess#a guess which was likely to get corrected");
+array.push(" Appear out of now here#to appear suddenly without warning");
+array.push(" Apple of someone's eye#someone loved very much");
+array.push(" As the crow flies#measuring distance between two places in a straight line");
+array.push(" Ask for the moon#to ask for too much");
+array.push(" Asleep at the switch#not to be alert on opportunity");
+array.push(" At an arm's length#to keep at a distance");
+array.push(" At sixes and sevens#in disorder");
+array.push(" At sixes and sevens#to be lost and bewildered");
+array.push(" At someone's beck and call#to be always ready to serve");
+array.push(" At the bottom of the ladder#at the lowest level");
+array.push(" At the crack of the dawn#very early in morning");
+array.push(" At the drop of the hat#u do something easily and without any preparation");
+array.push(" At the eleventh hour#be too late");
+array.push(" At the heels of#to follow someone");
+array.push(" Back the wrong horse#to support someone weak");
+array.push(" Back to square one#to reach again to the starting point");
+array.push(" Back to the salt mines#back to something that you don't want to do");
+array.push(" Bad blood#feelings of hate between two families");
+array.push(" Ball of fire#active and energetic");
+array.push(" Bark up the wrong tree#to make a wrong assumption");
+array.push(" Batten down the hatches#prepare for difficult times");
+array.push(" Batten down the hatches#to prepare for trouble");
+array.push(" Be above board#to be honest and legal");
+array.push(" Be as clear as mud#to be impossible to understand");
+array.push(" Be at each other's throat#two persons arguing angrily");
+array.push(" Be bouncing off the walls#excited and full of nervous energy");
+array.push(" Be in seventh heaven#extremely happy");
+array.push(" Be in the doldrums#not very successful or nothing new is taking place");
+array.push(" Be on cloud nine#be very happy");
+array.push(" Be on the edge#to be nervous or worried about something");
+array.push(" Be tailor made#to be completely suitable for someone");
+array.push(" Beat one's brain out#to work hard");
+array.push(" Beat one's head against the wall#to try to do something that is hopeless");
+array.push(" Beat the drum#to speak eagerly about something you support");
+array.push(" Begin to see the light#to begin to understand");
+array.push(" Behind closed doors#done in secret");
+array.push(" Bend your ears#to talk to someone for a very long time about something boring");
+array.push(" Bent on doing#to be determined to do something");
+array.push(" Bet on the wrong horse#to misread the future");
+array.push(" Between the devil and deep blue sea#a type of situation where u must choose between two equally unpleasant situations");
+array.push(" Bite off more than one can chew#to do more than one's ability");
+array.push(" Bite the bullet#to face a difficult situation bravely");
+array.push(" Bite your tongue#to stop yourself from saying something because it would be better not to");
+array.push(" Bitter pill to swallow#an unpleasant fact that must be accepted");
+array.push(" Black and blue#full of bruises");
+array.push(" Black sheep of the family#worst member");
+array.push(" Blessing in disguise#something that turns out to be good which earlier appeared to be wrong");
+array.push(" Blind leading the blind#someone who does not understand something but tries to explain it to other");
+array.push(" Blow one's own horn#to praise one");
+array.push(" Blow someone's mind#excite someone");
+array.push(" Blue blood#belonging to high social class");
+array.push(" Blue in the face#exhausted and speechless");
+array.push(" Bone of contention#subject matter of the fight");
+array.push(" Bow and scrap#try too hard to please someone in a position of authority");
+array.push(" Brass monkey weather#extremely cold weather");
+array.push(" Break a leg#to wish good luck");
+array.push(" Break the back of#reduce the power of something");
+array.push(" Break the ice#to make more comfort or relaxed with a person whom you have not met earlier, to break the silence");
+array.push(" Bring home the bacon#to earn money to live");
+array.push(" Burn a hole in one's pocket#to spend money quickly");
+array.push(" Burn the midnight oil#to study till late of night");
+array.push(" Bushman's holiday#a holiday where you spend doing same thing as you did at working days");
+array.push(" Button's one lip#to keep quite");
+array.push(" Cap it all#to finish");
+array.push(" Cards are stacked against#luck is against you");
+array.push(" Carrot and sticks#You use both awards as well as punishments to make someone do something");
+array.push(" Carry coals to new castle#to take something to a place or a person that has a lot of that thing already");
+array.push(" Carry the can#If you carry the can, you take the blame for something, even though you didn't do it or are only partly at fault");
+array.push(" Cast a long shadow#Something or someone that casts a long shadow has considerable influence on other people or events");
+array.push(" Cast in the same mould#to be very similar");
+array.push(" Cat and dog life#If people lead a cat and dog life, they are always arguing");
+array.push(" Change horses in midstream#to change plans");
+array.push(" Cloak and dragger#when people behave in a very secret manner");
+array.push(" Crack a book#to open book to study");
+array.push(" Cried with eyes out#cried a lot");
+array.push(" Cross a bridge before one comes to it#worry about the future in advance");
+array.push(" Dances to the tune#to always do what someone tells you to do");
+array.push(" Dancing on someone's grave#If you will dance on someone's grave, you will outlive or outlast them and will celebrate their demise");
+array.push(" Davey Jones' locker#Davey Jones' locker is the bottom of the sea or resting place of drowned sailors. ('Davy Jones' locker' is an alternative spelling.)");
+array.push(" Dog in the manger#If someone acts like a dog in the manger, they don't want other people to have or enjoy things that are useless to them");
+array.push(" Don't cry over spilt milk#When something bad happens and nothing can be done to help it people say, 'Don't cry over spilt milk'");
+array.push(" Don't throw bricks when you live in a glass house#Don't call others out on actions that you, yourself do. Don't be a hypocrite");
+array.push(" Don't wash your dirty laundry in public#People, especially couples, who argue in front of others or involve others in their personal problems and crises, are said to be washing their dirty laundry in public; making public things that are best left private");
+array.push(" Donkey work#Donkey work is any hard, boring work or task");
+array.push(" Dragging its feet#delaying in decision, not showing enthusiasm");
+array.push(" Dressed up to the nines#wearing fancy clothes");
+array.push(" Drive a wedge between#to break relationship between the two");
+array.push(" Earth shattering#not at all surprising");
+array.push(" Eat humble pie#to apologize humbly");
+array.push(" Egg on your face#If someone has egg on their face; they are made to look foolish or embarrassed");
+array.push(" Elephant in the room#An elephant in the room is a problem that everyone knows very well but no one talks about because it is taboo, embarrassing, etc");
+array.push(" Eleventh hour decision#decision that is made at the last possible minute");
+array.push(" End in smoke#to bear no result");
+array.push(" Entering the 80th orbit#celebrating the 80th birthday");
+array.push(" Eye for an eye#This is an expression for retributive justice, where the punishment equals the crime");
+array.push(" Eyes are bigger than one's stomach#If someone's eyes are bigger than their stomach, they are greedy and take on more than they can consume or manage");
+array.push(" Fall on our feet#If you fall on your feet, you succeed in doing something where there was a risk of failure");
+array.push(" Fall on your own sword#to be cheated by someone you trust");
+array.push(" Fall on your sword#If someone falls on their sword, they resign or accept the consequences of what they have done wrong");
+array.push(" Feather in one's cap#something that you achieve and proud of");
+array.push(" Feel the pinch#to have problems with money");
+array.push(" Finger in the pie#If you have a finger in the pie, you have an interest in something");
+array.push(" Fingers and thumbs#If you are all fingers and thumbs, you are being clumsy and not very skilled with your hands");
+array.push(" Firing on all cylinders#work every possible way to succeed");
+array.push(" Flash in the pan#If something is a flash in the pan; it is very noticeable but doesn't last long, like most singers, who are very successful for a while, then forgotten");
+array.push(" Follow your nose#When giving directions, telling someone to follow their nose means that they should go straight ahead");
+array.push(" Fool's paradise#A fool's paradise is a false sense of happiness or success");
+array.push(" Foot in mouth#This is used to describe someone who has just said something embarrassing, inappropriate, wrong or stupid");
+array.push(" For a song#If you buy or sell something for a song, it is very cheap");
+array.push(" For donkey's years#If people have done something, usually without much if any change, for an awfully long time, they can be said to have done it for donkey's years");
+array.push(" French leave#absent without permission, to take French leave is to leave a gathering without saying goodbye or without permission");
+array.push(" From cradle to grave#during the whole span of your life");
+array.push(" Get a raw deal#not treated equally");
+array.push(" Get off the hook#free from all obligations");
+array.push(" Get your wires crossed#If people get their wires cross, they misunderstand each other, especially when making arrangements.('Get your lines crossed' is also used.)");
+array.push(" Gift of the gab#talent of speaking, if someone has the gift of the gab, they speak in a persuasive and interesting way");
+array.push(" Give me a hand#If someone gives you a hand, they help you");
+array.push(" Give me five#If someone says this, they want to hit your open hand against theirs as a way of congratulation or greeting");
+array.push(" Give someone a bird#make fun");
+array.push(" Give someone a piece of your mind#If you give someone a piece of your mind, you criticize them strongly and angrily");
+array.push(" Give-up the ghost#to die");
+array.push(" Gives cold shoulder#to ignore");
+array.push(" Go bananas#If you go bananas, you are wild with excitement, anxiety, or worry");
+array.push(" Go tell it to birds#This is used when someone says something that is not credible or is a lie");
+array.push(" Go under the hammer#If something goes under the hammer, it is sold in an auction");
+array.push(" Got the slap on the wrist#got light punishment");
+array.push(" Got the wind up#to be scared");
+array.push(" Graveyard shift#If you have to work very late at night, it is the graveyard shift");
+array.push(" Grease monkey#A grease monkey is an idiomatic term for a mechanic");
+array.push(" Hand to mouth#Someone who's living from hand to mouth, is very poor and needs the little money they have coming in to cover their expenses");
+array.push(" Have a big mouth#one who gossips more or tells secret");
+array.push(" Have a one track mind#think only of one thing");
+array.push(" Have an egg on the face#be embarrassed");
+array.push(" Have ants in your pants#not be able to keep still because you are very excited or worried about something");
+array.push(" Have clean hands#be guiltless");
+array.push(" Have eyes bigger than stomach#desiring more food than one can eat");
+array.push(" Have no truck with#If you have no truck with something or someone, you refuse to get involved with it or them");
+array.push(" Having a whole of a time#to enjoy very much");
+array.push(" Heart in the right place#good natured");
+array.push(" Heart missed a beat#very excited");
+array.push(" Himalayan blunder#a serious mistake");
+array.push(" Hit the bull's-eye#If someone hits the bull's-eye, they are exactly right about something or achieve the best result possible");
+array.push(" Hit the nail on the head#done the thing correctly");
+array.push(" Hold one's horse#be patient");
+array.push(" Hold water#When you say that something does or does not 'hold water', it means that the point of view or argument put forward is or is not sound, strong or logical. For e.g. 'Saying we should increase our interest rates because everyone else is doing so will not hold water'");
+array.push(" Hornets' nest#A hornets' nest is a violent situation or one with a lot of dispute. (If you create the problem, you 'stir up a hornets' nest'.)");
+array.push(" If the shoe fits, wear it#If a description applies to you, then accept it");
+array.push(" In black and white#to give in writing");
+array.push(" In cahoots with#in a partnership usually for a dishonest reason");
+array.push(" In dribs and drabs#in small amounts at a time");
+array.push(" In droves#When things happen in droves, a lot happen at the same time or very quickly");
+array.push(" In the blues#low spirited");
+array.push(" In the doghouse#If someone is in the doghouse, they are in disgrace and very unpopular at the moment");
+array.push(" Jack Frost #If everything has frozen in winter, then Jack Frost has visited");
+array.push(" Jack the Lad #A confident and not very serious young man who behaves as he wants to without thinking about other people is a Jack the Lad");
+array.push(" Jack-of-all-trades#A jack-of-all-trades is someone that can do many different jobs");
+array.push(" Jam on your face #If you say that someone has jam on their face, they appear to be caught, embarrassed or found guilty");
+array.push(" Jam tomorrow #This idiom is used when people promise good things for the future that will never come");
+array.push(" Jane Doe #Jane Doe is a name given to an unidentified female who may be party to legal proceedings, or to an unidentified person in hospital, or dead. John Doe is the male equivalent");
+array.push(" Jekyll and Hyde #Someone who has a Jekyll and Hyde personality has a pleasant and a very unpleasant side to the character");
+array.push(" Jersey justice #Jersey justice is very severe justice");
+array.push(" Jet set #Very wealthy people who travel around the world to attend parties or functions are the jet set");
+array.push(" Jet-black #To emphasise just how black something is, such as someone's hair, we can call it jet-black");
+array.push(" Job's comforter #Someone who says they want to comfort, but actually discomforts people is a Job's comforter");
+array.push(" Jobs for the boys #Where people give jobs, contracts, etc, to their friends and associates, these are jobs for the boys");
+array.push(" Jockey for position #If a number of people want the same opportunity and are struggling to emerge as the most likely candidate, they are jockeying for position");
+array.push(" Joe Public #Joe Public is the typical, average person");
+array.push(" Jog my memory#If you jog someone's memory, you say words that will help someone trying to remember a thought, event, word, phrase, experience, etc");
+array.push(" John Doe#John Doe is a name given to an unidentified male who may be party to legal proceedings, or to an unidentified person in hospital, or dead. Jane Doe is the female equivalent");
+array.push(" Johnny on the spot #A person who is always available; ready, willing, and able to do what needs to be done.('Johnny-on-the-spot' is also used.)");
+array.push(" Johnny-come-lately #A Johnny-come-lately is someone who has recently joined something or arrived somewhere, especially when they want to make changes that are not welcome");
+array.push(" Join the club #Said when someone has expressed a desire or opinion, meaning 'That viewpoint is not unique to you'. It can suggest that the speaker should stop complaining since many others are in the same position. Example: 'If this train doesn't come, I'll be late for work!' 'Join the club!'");
+array.push(" Joined at the hip #If people are joined at the hip, they are very closely connected and think the same way");
+array.push(" Judge, jury and executioner #If someone is said to be the judge, jury, and executioner, it means they are in charge of every decision made, and they have the power to be rid of whomever they choose");
+array.push(" Juggle frogs #If you are juggling frogs, you are trying to do something very difficult");
+array.push(" Jump down someone's throat #If you jump down someone's throat, you criticise or chastise them severely");
+array.push(" Jump on the bandwagon #If people jump on the bandwagon, they get involved in something that has recently become very popular");
+array.push(" Jump ship #If you leave a company or institution for another because it is doing badly, you are jumping ship");
+array.push(" Jump the broom #To jump the broom is to marry. (Jump over the broom, jump over the broomstick, jump the broomstick are also used.)");
+array.push(" Jump the gun #If you jump the gun, you start doing something before the appropriate time");
+array.push(" Jump the track #Jumping the track is suddenly changing from one plan, activity, idea, etc, to another");
+array.push(" Jump through hoops #If you are prepared to jump through hoops for someone, you are prepared to make great efforts and sacrifices for them");
+array.push(" Jump to a conclusion #If someone jumps to a conclusion, they evaluate or judge something without a sufficient examination of the facts");
+array.push(" Jumping Judas! #An expression of surprise or shock");
+array.push(" Jungle out there #If someone says that it is a jungle out there, they mean that the situation is dangerous and there are no rules");
+array.push(" Jury's out #If the jury's out on an issue, then there is no general agreement or consensus on it");
+array.push(" Just around the corner#If something is just around the corner, then it is expected to happen very soon");
+array.push(" Just coming up to #If the time is just coming up to nine o'clock, it means that it will be nine o'clock in a very few seconds. You'll hear them say it on the radio in the morning");
+array.push(" Just deserts #If a bad or evil person gets their just deserts, they get the punishment or suffer the misfortune that it is felt they deserve");
+array.push(" Just for the heck of it #When someone does something just for the heck of it, they do it without a good reason");
+array.push(" Just for the record #If something is said to be just for the record, the person is saying it so that people know but does not necessarily agree with or support it");
+array.push(" Just in the nick of time #If you do something in the nick of time, you just manage to do it just in time, with seconds to spare");
+array.push(" Just off the boat #If someone is just off the boat, they are naive and inexperienced");
+array.push(" Just what the doctor ordered #If something's just what the doctor ordered, it is precisely what is needed");
+array.push(" Justice is blind #Justice is blind means that justice is impartial and objective");
+array.push(" Kangaroo court#When people take the law into their own hands and form courts that are not legal, these are known as kangaroo court");
+array.push(" Keep body and soul together#If you earn enough to cover your basic expenses, but nothing more than that, you earn enough to keep body and soul together");
+array.push(" Keep ones eye on the ball#be ready for something");
+array.push(" Keep your eye on the ball#If you keep your eye on the ball, you stay alert and pay close attention to what is happening");
+array.push(" Kick up a row#to start a fight, to create disturbance");
+array.push(" Know which way the wind blows#This means that you should know how things are developing and be prepared for the future");
+array.push(" Left to your own devices#If someone is left to their own devices, they are not controlled and can do whatever they want");
+array.push(" Let nature take its course#to allow someone to live or die naturally");
+array.push(" Let someone slide#neglect something");
+array.push(" Let the cat out of the bag#reveal the secret");
+array.push(" Like a shag on a rock#completely alone");
+array.push(" Like a sitting duck#totally unaware");
+array.push(" Lion's share#a major share");
+array.push(" Loaves and fishes#done for material benefits");
+array.push(" Make a bee line for#to go directly towards something");
+array.push(" Make a dry face#show disappointment");
+array.push(" Make a monkey of someone#If you make a monkey of someone, you make them look foolish");
+array.push(" Make castles in the air#plans or hopes that have very little chances of happening");
+array.push(" Make ones bed and lie on it#to be responsible for what you have done and accept the results");
+array.push(" Man of his word#A man of his word is a person who does what he says and keeps his Promises");
+array.push(" Many moons ago#A very long time ago");
+array.push(" Meet ones waterloo#meet ones final end");
+array.push(" Monkey around#to waste time here and there");
+array.push(" My hands are full#I am busy");
+array.push(" Needle in a haystack#If trying to find something is like looking for a needle in a haystack, it means that it is very difficult, if not impossible to find among everything around it");
+array.push(" Never-never land#ideal best place");
+array.push(" New brush sweeps clean#'A new brush sweeps clean' means that someone with a new perspective can make great changes. However, the full version is 'a new brush sweeps clean, but an old brush knows the corners', which warns that experience is also a valuable thing");
+array.push(" No love lost between#dislike");
+array.push(" No smoke without fire#This idiom means that when people suspect something, there is normally a good reason for the suspicion, even if there is no concrete evidence. ('Where's there's smoke, there's fire' is also used.)");
+array.push(" Nobody's fool#one who can take care of himself");
+array.push(" not having a leg to stand for#not having proof");
+array.push(" Old flames die hard#It's very difficult to forget old things");
+array.push(" On its last legs#in a bad condition and will not last long");
+array.push(" On pins and needles#If you are on pins and needles, you are very worried about something");
+array.push(" On the bandwagon#doing something because others are also doing it");
+array.push(" On the carpet#When you are called to the bosses office (since supposedly, they are the only ones who have carpetand its definitely not for a good reason, i.e., you are in trouble, something has not gone according to plan and either maybe you are responsible and/or have some explaining to do");
+array.push(" On the hook#If someone is on the hook, they are responsible for something");
+array.push(" Once in a blue moon#very rarely");
+array.push(" Only the wearer knows where the shoe pinches#This means that it's hard to know how much someone else is suffering");
+array.push(" Open Pandora's box#to discover more problems");
+array.push(" Over the moon#being too happy");
+array.push(" Paper over the cracks#to try to hide something");
+array.push(" Parrot fashion#If you learn something parrots fashion; you learn it word for word");
+array.push(" Pass muster#to be approved");
+array.push(" Pay on the nail#If you pay on the nail, you pay promptly in cash");
+array.push(" Pen is mightier than the sword#The idiom 'the pen is mightier than the sword' means that words and communication are morepowerful than wars and fighting");
+array.push(" Pick someone to pieces#to criticize sharply");
+array.push(" Pick someone's brains#If you pick someone's brains, you ask them for advice, suggestions and information about something they know about");
+array.push(" Pieces of the same cake#Pieces of the same cake are things that have the same characteristics or qualities");
+array.push(" Play fast and loose#If people play fast and loose, they behave in an irresponsible way and don't respect rules, etc");
+array.push(" Poker face#Someone with a poker face doesn't show any emotion or reaction so that people don't know what they are feeling");
+array.push(" Pull up the shocks#do things in the right manner and correctly");
+array.push(" Put the cart before the horse#doing things in a wrong manner");
+array.push(" Quarrel with bread and butter#Bread and butter, here, indicate the means of one's living. If a sub-ordinate in an organization is quarrelsome and gets angry and retorts or provokes the higher-up, the top man dismisses him from the job. So, he loses the job that gave him bread and butter. Hence we say, he quarreled with bread and butter (manager or the top manand lost his job");
+array.push(" Queer fish#A strange person is a queer fish");
+array.push(" Quiet as a cat#If somebody is as quiet as a cat they make as little noise as possible and try to be unnoticeable");
+array.push(" Quiet as a mouse#If someone's as quiet as a mouse, they make absolutely no noise");
+array.push(" Rack and ruin#If something or someone goes to rack and ruin, they are utterly destroyed or wrecked");
+array.push(" Rain on your parade#If someone rains on your parade, they ruin your pleasure or your plans");
+array.push(" Rake someone over the coals#If you rake someone over the coals, you criticize or scold them severely");
+array.push(" Read between the lines#read hidden meanings");
+array.push(" Recipe for disaster#A recipe for disaster is a mixture of people and events that could only possibly result in trouble");
+array.push(" Red carpet#If you give someone the red-carpet treatment, you give them a special welcome to show that you think they are important");
+array.push(" Red herring#If something is a distraction from the real issues, it is a red herring");
+array.push(" Red letter day#A red letter day is a one of good luck, when something special happens to you");
+array.push(" Reduce to ashes#If something is reduced to ashes, it is destroyed or made useless. His infidelities reduced their relationship to ashes");
+array.push(" Round the houses#If you go round the houses, you do something in an inefficient way when there is a quicker, more convenient way");
+array.push(" Round the twist#go crazy");
+array.push(" Rub shoulders#If you rub shoulders with people, you meet and spend time with them, especially when they are powerful or famous");
+array.push(" Run into the sand#If something runs into the sand, it fails to achieve a result");
+array.push(" Sail under false colors#Someone who sails under false colors is hypocritical or pretends to be something they aren't in order to deceive people");
+array.push(" Salad days#Your salad days are an especially happy period of your life");
+array.push(" Salt on the earth#fundamental good people");
+array.push(" Salt on the earth#fundamental good people");
+array.push(" Sands of time#tiny amounts of time");
+array.push(" Sands of time#tiny amounts of time");
+array.push(" Shake a leg#to go fast, hurry");
+array.push(" Shake a leg#to go fast, hurry");
+array.push(" showing the door#asking someone to leave");
+array.push(" Snake in the grass#a hidden army");
+array.push(" Snake in the grass#a hidden army");
+array.push(" Snake in the shoes#to be in a state of fear");
+array.push(" Song and a dance#an excuse");
+array.push(" Spill the beans#to expose a secret");
+array.push(" Spill the beans#to expose a secret");
+array.push(" Stood to his guns#maintained to his opinion");
+array.push(" Tables are turned#When the tables are turned, the situation has changed giving the advantage to the party who had previously been at a disadvantage");
+array.push(" Take a back seat#choose to decrease involvement");
+array.push(" Take someone under your wing#If you take someone under your wing, you look after them while they are learning something");
+array.push(" Take the cloth#to become a priest");
+array.push(" Take your medicine#If you take your medicine, you accept the consequences of something you have done wrong");
+array.push(" Taking to a brick wall#taking with a no response");
+array.push(" Talk turkey#to discuss a problem with a real intension to solve it");
+array.push(" Talking to a brick wall#If you talk to someone and they do not listen to you, it is like talking to a brick wall");
+array.push(" Taste of your own medicine#If you give someone a taste of their own medicine, you do something bad to someone that they have done to you to teach them a lesson");
+array.push(" The apple does not fall far from the tree#Offspring grow up to be like their parents");
+array.push(" though thick and thin#under all conditions");
+array.push(" Threaded his way out#walked carefully through");
+array.push(" Through thick and thin#If someone supports you through thick and thin, they support you during good times and bad");
+array.push(" Tit for tat#an action done to revenge against a person who has done some wrong to you");
+array.push(" to bell the cat#to take great risks");
+array.push(" to blow a fuse#to turn someone angry");
+array.push(" To crow over#to triumph over someone");
+array.push(" To look through colored glasses#to look the things not as they are");
+array.push(" Turned a deaf ear#disregarded");
+array.push(" Uncharted waters#If you're in uncharted waters, you are in a situation that is unfamiliar to you, that you have no experience of and don't know what might happen");
+array.push(" Under a cloud#If someone is suspected of having done something wrong, they are under a cloud");
+array.push(" Under fire#If someone is being attacked and criticized heavily, they are under fire");
+array.push(" Under lock and key#If something is under lock and key, it is stored very securely");
+array.push(" Under your nose#If something happens right in front of you, especially if it is surprising or audacious, it happens under your nose");
+array.push(" Up a river without a paddle#If you up a river without a paddle, you are in an unfortunate situation, unprepared and with none of the resources to remedy the matter");
+array.push(" Up for grabs#If something is up for grabs, it is available and whoever is first or is successful will get it");
+array.push(" Up to the neck#If someone's in something up to the neck, they are very involved in it, especially when it's something wrong");
+array.push(" Upset the apple cart#to create difficulty");
+array.push(" Vale of tears#This vale of tears is the world and the suffering that life brings");
+array.push(" Velvet glove #This idiom is used to describe a person who appears gentle, but is determined and inflexible underneath. ('Iron fist in a velvet glove' is the full form.)");
+array.push(" Vent your spleen #If someone vents their spleen, they release all their anger about something");
+array.push(" Vicar of Bray #A person who changes their beliefs and principles to stay popular with people above them is a Vicar of Bray");
+array.push(" Vicious circle #A vicious circle is a sequence of events that make each other worse#someone drinks because they are unhappy at work, then loses their job... 'Vicious cycle' is also used");
+array.push(" Vinegar tits #A mean spirited women lacking in love or compassion");
+array.push(" Virgin territory #If something is virgin territory, it hasn't been explored before");
+array.push(" Voice in the wilderness #Someone who expresses an opinion that no one believes or listens to is a voice in the wilderness,especially if proved right later");
+array.push(" Volte-face #If you do a volte-face on something, you make a sudden and complete change in your stance or position over an issue");
+array.push(" Vultures are circling #If the vultures are circling, then something is in danger and its enemies are getting ready for the kill");
+array.push(" Wait for a raindrop in the drought#hoping for something that is extremely unlikely to happen");
+array.push(" Walking on broken glass#When a person is punished for something");
+array.push(" Weight one's word#be careful to what one says");
+array.push(" Wet behind the ears#very young or inexperienced");
+array.push(" Whale of a time#If you have a whale of a time, you really enjoy yourself");
+array.push(" Work your fingers to the bone#If you work your fingers to the bone, you work extremely hard on something");
+array.push(" Wrench in the works#If someone puts or throws a wrench, or monkey wrench, in the works, they ruin a plan");
+array.push(" X factor #The dangers for people in the military that civilians do not face, for which they receive payment, are known as the X factor");
+array.push(" X marks the spot #This is used to say where something is located or hidden");
+array.push(" X-rated #If something is x-rated, it is not suitable for children");
+array.push(" Yah boo sucks#Yah boo & yah boo sucks can be used to show that you have no sympathy with someone");
+array.push(" Yank my chain #If some one says this to another person (i.e. stop yanking my chainit means for the other person to leave the person who said it alone and to stop bothering them");
+array.push(" Yell bloody murder #If someone yells bloody murder, they protest angrily and loudly, or scream in fear");
+array.push(" Yellow press #The yellow press is a term for the popular and sensationalist newspapers");
+array.push(" Yellow streak#If someone has a yellow streak, they are cowardly about something");
+array.push(" Yellow-bellied #A yellow-bellied person is a coward");
+array.push(" Yen #a desire for something or someone");
+array.push(" Yeoman's service #To do yeoman's service is to serve in an exemplary manner");
+array.push(" Yes-man #Someone who always agrees with people in authority is a yes-man");
+array.push(" Yesterday's man or Yesterday's woman #Someone, especially a politician or celebrity, whose career is over or on the decline is yesterday's man or woman");
+array.push(" You are what you eat #This is used to emphasise the importance of a good diet as a key to good health");
+array.push(" You can catch more flies with honey than with vinegar #This means that it is easier to persuade people if you use polite arguments and flattery than if you are confrontational");
+array.push(" You can choose your friends, but you can't choose your family #Some things you can choose, but others you cannot, so you have to try to make the best of what you have where you have no choice");
+array.push(" You can lead a horse to water, but you can't make it drink #This idiom means you can offer something to someone, like good advice, but you cannot make them take it");
+array.push(" You can say that again #If you want to agree strongly with what someone has said, you can say 'You can say that again' as a way of doing so");
+array.push(" You can't fight City Hall #This phrase is used when one is so cynical that one doesn't think one can change their Representatives. The phrase must have started with frustration towards a local body of government");
+array.push(" You can't have cake and the topping, too #This idiom means that you can't have everything the way you want it, especially if your desires are contradictory");
+array.push(" You can't have your cake and eat it #This idiom means that you can't have things both ways. For example, you can't have very low taxes and a high standard of state care");
+array.push(" You can't hide elephants in mouse holes #means that some issues/problems/challenges cannot be hidden/concealed but have to be faced and dealt with");
+array.push(" You can't make a silk purse out of a sow's ear #If something isn't very good to start with, you can't do much to improve it");
+array.push(" You can't make an omelette without breaking eggs #This idiom means that in order to achieve something or make progress, there are often losers in the process");
+array.push(" You can't take it with you #Enjoy life, enjoy what you have and don't worry about not having a lot, especially money...because once you're dead, 'you can't take it with you.' For some, it means to use up all you have before you die because it's no use to you afterwards");
+array.push(" You can't teach an old dog new tricks #It is difficult to make someone change the way they do something when they have been doing it the same way for a long time");
+array.push(" You can't un-ring a bell #This means that once something has been done, you have to live with the consequences as it can't be undone");
+array.push(" You could have knocked me down with a feather #An expression of great or utter surprise, bewilderment, or astonishment");
+array.push(" You do not get a dog and bark yourself #If there is someone in a lower position who can or should do a task, then you shouldn't do it");
+array.push(" You get what you pay for #Quality of thing you get is directly relates to price your pay");
+array.push(" You reap what you sow #do bad things, bad things will happen to you, or good things if you do good things.");
+array.push(" You said it!#Used to say you agree completely with something just said");
+array.push(" You scratch my back and I'll scratch yours #do something for me, I'll return the favour");
+array.push(" You're toast #to be in serious trouble");
+array.push(" You've got rocks in your head #Someone who has acted with a lack of intelligence has rocks in their head");
+array.push(" You've made your bed, now lie in it #said to someone who must accept the unpleasant results of something they have done");
+array.push(" Young blood #Young people with new ideas and fresh approaches are young blood");
+array.push(" Young Turk #A Young Turk is a young person who is rebellious and difficult to control in a company, team or organisation");
+array.push(" Your belly button is bigger than your stomach #taking on more responsibilities than you can handle");
+array.push(" Your call #If something is your call, it is up to you to make a decision on the matter");
+array.push(" Your name is mud #A dishonored reputation");
+array.push(" Your sins will find you out #things you do wrong will become known");
+array.push(" Zero hour#The time when something important is to begin is zero hour");
+array.push(" Zero tolerance #If the police have a zero tolerance policy, they will not overlook any crime, no matter how small or trivial");
+array.push(" Zigged before you zagged #If you did things in the wrong order, you zigged before you zagged");
+array.push(" Zip it #tell someone to be quiet");
+array.push(" Zip your lip #If someone tells you to zip your lip, they want to to shut up or keep quiet about something");
+array.push("A Babel #a confused noise ");
+array.push("A bad egg #a worthless person ");
+array.push("A bird in the hand is worth two in the bush #certainty is better then possibility ");
+array.push("A blue stocking #a learned woman ");
+array.push("A bolt from the blue #a sudden ");
+array.push("A bone of contention #a cause of dispute ");
+array.push("A Book-worm #a person always poring over books ");
+array.push("A breach of faith #to act contrary to what one had professed ");
+array.push("A burnt child dreads the fire #one who has had a previous unpleasant experience is always scared of situations where such experience are likely to be repeatedli> ");
+array.push("A chip of the old block #a son resembling his father in face disposition, habits etc.  ");
+array.push("A close shave #a narrow escape ");
+array.push("A cock and bull story #a foolishly incredible story ");
+array.push("A dare-devil #a fearless, reckless man ");
+array.push("A fidus Achates #a faithful friend  ");
+array.push("A fish out of water #anyone in an awkward ");
+array.push("A good for nothing #a worth less person ");
+array.push("A good Samaritan #a friend in need ");
+array.push("A laconic speech #a concise ");
+array.push("A Lilliputian #a pygmy ");
+array.push("A Martinet #a very strict disciplinarian ");
+array.push("A miss is as good as a mile #comes nowhere near it ");
+array.push("A nine days'wonder #an event which relates a sensation for a time but is soon forgotten ");
+array.push("A rolling stone gathers no moss #unstable people never achieve anything worthwhile ");
+array.push("A skeleton in the cupboard/the family skeleton #a dreadful domestic secret ");
+array.push("A snake in the grass #an enemy who strikes under cover ");
+array.push("A Spartan life #a life of extreme self discipline ");
+array.push("A stitch in time saves nine #If we give our attention to the little details of life ");
+array.push("A wet Blanket #a person who is a discourage ");
+array.push("A white elephant #a useless possession which is extremely expensive to keep  ");
+array.push("A wild goose chase #a vain attempt ");
+array.push("Above all #chiefly, mainly ");
+array.push("Above board #honest, beyond reproach  ");
+array.push("All that glitters is not gold #things are not always as attractive as they appears ");
+array.push("An admirable Crichton #a very talented person ");
+array.push("An Adonis #a very handsome man  ");
+array.push("An Amazon #a warlike masculine woman  ");
+array.push("An Ananias #a liar  ");
+array.push("An Apollo #a man with perfect physique  ");
+array.push("An eye for an eye #tit for tat to return evil for evil; retaliate  ");
+array.push("An old bird is not to be caught with chaff #experienced people are not easily fooled or deceived ");
+array.push("Apple pie order #in perfect order ");
+array.push("Arcadian life #a blissful, happy, rural and simple life ");
+array.push("As the crow flies #in a direct line ");
+array.push("As you make your bed, so must lie on it #you will have to bear the consequences of your crimes or your own mistakes or misdeeds ");
+array.push("At first Blush #at first sight ");
+array.push("At the eleventh hour #at the last moment ");
+array.push("Back in harness #to resume work after a holiday ");
+array.push("Bad faith #dishonest intentions ");
+array.push("Bag and baggage #with all one's belongings ");
+array.push("Baptism of fire #a soldier's first experience of actual war ");
+array.push("Barmecide's feast #imaginary benefits ");
+array.push("Bed and board #lodging and food ");
+array.push("Bee-line #the shortest distance between two places ");
+array.push("Behind one's back #without one's Knowledge ");
+array.push("Behind the scenes #in private, out of sight ");
+array.push("Birds of a feather flock together #people of similar tastes and dis-positions crave each other's company ");
+array.push("Blood is thicker than water #One usually takes the side of ones relation against another who is not one's own blood ");
+array.push("Blue ribbon #the highest prize in any sport competition ");
+array.push("Breach of promise #failure to keep a promise to marry one of whom you are betrothed ");
+array.push("By fits and starts #spasmodically ");
+array.push("By hook or by crook #by fair or foul means ");
+array.push("By leaps and bounds #with remarkable speed ");
+array.push("By the skin of the teeth #very narrowly ");
+array.push("Capitan punishment #the death sentence or penalty ");
+array.push("Care killed the cat #don't fret and worry yourself to death ");
+array.push("Chicken hearted #weak, timid ");
+array.push("Close fisted #mean ");
+array.push("Crocodile tears #hypocritical tears ");
+array.push("Cut and dried #ready made ");
+array.push("Cut your cloth according to your cloth #live within your income ");
+array.push("Devil's bones #dice ");
+array.push("Devil's playthings #playing cards ");
+array.push("Don't count your chickens before they are hatched #don't calculate your gains before they are realized ");
+array.push("Don't put your eggs in one basket #Don't stake all your money on a single industry ");
+array.push("Dutch courage #bravery induced by alcoholic liquors ");
+array.push("Eagle eye #quick to discover; very discerning ");
+array.push("Empty vessels make the most noise #those who know or have little knowledge often shout the loudest ");
+array.push("Every cloud has a silver lining #adverse conditions do not last for ever ");
+array.push("Every dog has his day #sooner or later, every one has his share of good fortune ");
+array.push("Evil days #a period of misfortune ");
+array.push("Face the music#to accept punishment for something you have done");
+array.push("Foul play #cheating ");
+array.push("From hand to hand #from one person to another ");
+array.push("Give a dog a bad name and hang him #once a person loses his reputation ");
+array.push("Go to the devil #be off ");
+array.push("Good wine needs no bush #there is no need to advertise something good ");
+array.push("Halcyon days #A time when there is peace and happiness in the land ");
+array.push("Hard and fast rules #strict rules  ");
+array.push("Hard to hearing #almost deaf ");
+array.push("He has no backbone #he has no will of his own ");
+array.push("He is a cat's paw #one used as a to something dangerous ");
+array.push("His bark was worse than his bite #he usually makes a lot of vain verbal threats ");
+array.push("His better half #a man's wife ");
+array.push("His bread is well butter #he is in fortunate circumstance ");
+array.push("Hobson's choice #no alterative ");
+array.push("If the cap fits, wear it #if you think the remarks refer to you ");
+array.push("If wishes were horses, beggars might ride #if all people's wishes came true every body would be rich ");
+array.push("In a nutshell #Summed up in a few words ");
+array.push("In cold Blood #deliberately ");
+array.push("In the same boat #in the same misfortune or circumstances ");
+array.push("It is an broad as it is long #it is the same whichever way you view it ");
+array.push("John bull #an Englishman ");
+array.push("Lock, stock and barrel #the whole of everything ");
+array.push("Look before you leap #think before action ");
+array.push("Make hay while the sun shines #take advantage of all opportunities ");
+array.push("More haste less speed #work done hurriedly is apt to be badly done ");
+array.push("Never cross the Bridge until you come to it #don't anticipate difficulties ");
+array.push("Not to know a B from a bull's foot #to be ignorant of even the simplest things ");
+array.push("Off color #not in the usual form ");
+array.push("On Account of #due to, for the reason  ");
+array.push("On no account #not for any reason  ");
+array.push("Once in a blue moon #a very rare occurrence ");
+array.push("One swallow does not make a summer #it is unreliable to base one's conclusions on only a single test or incident ");
+array.push("One's bread and butter #one's means of livelihood ");
+array.push("Other fish to fry #more important business to attend to ");
+array.push("Out of date #obsolete ");
+array.push("Out of temper #angry ");
+array.push("Pyrrhic victory #a victory that is as costly as defeat ");
+array.push("Red flag #the symbol of revolution ");
+array.push("Red letter-day #a memorable day ");
+array.push("Red tape #a team used to describe the delay in attending to matters in government department because the official routine and formality ");
+array.push("Rome was not built in a day #it takes time to accomplish anything really worthwhile ");
+array.push("See which way the cat jumps #sit on fence ");
+array.push("She is no chicken #she is older than she says  ");
+array.push("The apple of discord #cause of quarrel  ");
+array.push("The biter bit #to cheat the cheater ");
+array.push("The bread winner #one who provides the means of livelihood for himself and his family ");
+array.push("The heel of Achilles #a week point  ");
+array.push("The lion's share #the largest part ");
+array.push("The proof of the pudding is in eating #people are judged by their actions ");
+array.push("Those who live in glass houses should not throw stones #people who do not live blameless lives should not find fault with others  ");
+array.push("To air one's opinions #to give vent to one's feeling in public  ");
+array.push("To assume airs #to affect superiority  ");
+array.push("To backbite a person #to slander or speak ill of someone ");
+array.push("To be a dog in the manger #to prevent others from using what one can't use oneself ");
+array.push("To be at daggers drawn #to be deadly enemies ");
+array.push("To be between Scylla and Charybdis #to be faced with two dangerous alternatives ");
+array.push("To be between the devil and the deep sea #to be faced with two dangerous situations, each of which is to be dreaded as much as the other ");
+array.push("To be caught red-handed #to be caught in the very act of committing a crime ");
+array.push("To be cock sure #to be absolutely certain ");
+array.push("To be dead beat #worn out by fatigue ");
+array.push("To be in hot water #to be in trouble or difficulty ");
+array.push("To be in the doldrums #to be in low spirits, to be out of spirits ");
+array.push("To be like a drowned rat #to be soaking wet ");
+array.push("To be on the horns of dilemma #to in such a position that it is difficult to decide what to do ");
+array.push("To beat about the bush #to approach a matter in an indirect and round about manner ");
+array.push("To bell the cat #to undertake a dangerous task and the enemy is common ");
+array.push("To bite the dust #to be defeated in battle ");
+array.push("To blow hot and cold #to do one think at one time and the opposite soon after ");
+array.push("To breadth freely again #to be no longer in a fear or anxiety ");
+array.push("To breadth one's last #to die ");
+array.push("To Break in #to tame, to control in a gentle manner ");
+array.push("To break the back of any thing #to perform the most difficult part of it ");
+array.push("To break the ice #to be the first to begin ");
+array.push("To break the news #to tell someone some important news, usually bad news ");
+array.push("To bring to light #to reveal ");
+array.push("To brow beat #to bully ");
+array.push("To build castles in the air #To day dream  ");
+array.push("To burn the candle at both ends #To overwork or exhaust oneself by doing too many things, especially both late at night and early in the morning");
+array.push("To burry the hatchet #to forget past quarrels and be friends again  ");
+array.push("To call a spade a spade #to be brutally frank ");
+array.push("To call to the bar #to admit as a barrister ");
+array.push("To came off with flying color #to succeed brilliantly ");
+array.push("To carry coals to New castle #to do any thing superfluous ");
+array.push("To Catch one's eye #to attract attention ");
+array.push("To cause bad blood #to cause enmity ");
+array.push("To commit to memory #to learn by heart ");
+array.push("To curry favour #to seek favour by flattery ");
+array.push("To cut a dash #to make an impression ");
+array.push("To cut a Gordian knot #to solve a difficult problem by adopting bold and drastic measures ");
+array.push("To die in harness #to continue at one's occupation until death ");
+array.push("To eat an humble pie #to submit oneself to humiliation and insult ");
+array.push("To fall out #to quarrel ");
+array.push("To fall through #fail ");
+array.push("To fight like cats and dog #to be always quarrelling and fighting ");
+array.push("To gain ground #to make progress in any undertaking  ");
+array.push("To get one's back up #to rouse one's anger ");
+array.push("To give a good account of oneself #to act with credit to oneself  ");
+array.push("To give the devil his due #give a person credit for his good qualities however worthless he may be ");
+array.push("To give the lie to #to prove to be false ");
+array.push("To give up the ghost #to die  ");
+array.push("To go a begging #to be sold very cheaply because no one cares to buy ");
+array.push("To have an axe to grind #to have some selfish objective in view ");
+array.push("To have one's head in the cloud #to live in dreamland ");
+array.push("To hit below the belt #to act unfairly in a contest ");
+array.push("To hit the nail on the head #to mention the true facts of a case ");
+array.push("To jump from a frying pan into fire #to come out of one trouble and get into a worse ");
+array.push("To keep a person at an arm's length #to avoid and keep distance from a person ");
+array.push("To keep the ball rolling #to keep things going  ");
+array.push("To kick the bucket #to die ");
+array.push("To kill the goose that laid the golden egg #to lose a valuable source of income though greed ");
+array.push("To kiss the book #to take an oath in a produce or commodities ");
+array.push("To kiss the dust #to be defeated in battle ");
+array.push("To lead to the altar #to marry  ");
+array.push("To let the cat out of the bag #to expose the trick ");
+array.push("To look to one's laurels #to take care not to lose one's place ");
+array.push("To make a silk purse out of a sow's ear #to attempt to accomplish great things with inferior materials ");
+array.push("To make both ends meet #to keep expenses within one's income ");
+array.push("To make bricks without straw #to attempt to do something without proper materials or due preparations ");
+array.push("To move heaven and earth #to exert all efforts ");
+array.push("To pick and choose #to make a careful selection  ");
+array.push("To pick to pieces #to analyse critically, to criticize ");
+array.push("To play to the gallery #to endeavour to gain cheap popularity  ");
+array.push("To put down a person #to degrade or humiliate a person ");
+array.push("To put the cart before the horse #to do first what ought to be done afterwards ");
+array.push("To rain cats and dogs #to rain incessantly ");
+array.push("To raise cain #to rebuke severely ");
+array.push("To see daylight #to begin to understand ");
+array.push("To send to Coventry #to boycott ");
+array.push("To set the Thames on fire #to do something sensational or remarkable ");
+array.push("To smell of the lamp #to show signs of strenuous preparation for an examination or a speech etc ");
+array.push("To square the circle #to attempt something impossible ");
+array.push("To stand aloof #To keep to oneself and not mix with others ");
+array.push("To stand on one's own legs #to depend entirely on one's own resources ");
+array.push("To step into dead man's shoes #to come into an inheritance ");
+array.push("To take the bit between one's teeth #to get out of control ");
+array.push("To take the cake #to take the first prize ");
+array.push("To take the chair #to preside a meeting ");
+array.push("To take to one's bed #to have to be confined to bed as a result of sickness ");
+array.push("To take up arms #to fight, to go to war ");
+array.push("To take up the cudgels #to champion or flight for someone ");
+array.push("To throw cold water upon anything #to discourage effort ");
+array.push("To throw dust in one's eyes #to try to deceive some one ");
+array.push("To upset the apple cart #to disturb the peace  ");
+array.push("To win laurels #to gain distinction or glory in s contest ");
+array.push("Too many cooks spoil the broth #when there are more worpkers than necessary ");
+array.push("Up to date #recent, modern ");
+array.push("Ups and downs #varying fortunes; changes and chances of life ");
+array.push("Yellow press #newspapers which publish sensational and unscrupulous stories about crime, sex etc. ");
+</script>
+
+</body></html>
+
