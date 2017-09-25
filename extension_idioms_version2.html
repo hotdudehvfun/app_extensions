@@ -223,7 +223,8 @@ text-align: center;
 </style>
 </head>
 <body id="body">
-<h2 class="heading">Idioms</h2>
+<div  class="heading">Idioms</div>
+<div id="index" class="heading"></div>
 <div class="card" data-state="active" style="z-index: 2">
 	<div class="card-head">		
 		<div class="card-heading">&clubs;</div>
@@ -293,12 +294,14 @@ function start()
 	var suits=["&spades;","&hearts;","&diams;","&clubs;"];
 	var data=getData();
 	div.getElementsByClassName('card-heading')[0].style.background=color;
+	div.setAttribute('data-i',data.i);
 	div.getElementsByClassName('card-date')[0].innerHTML=data.qtext;
 	div.getElementsByClassName('card-footer')[0].innerHTML=data.answer;
 	div.getElementsByClassName('card-triangle')[0].style.background=color;
 	div.getElementsByClassName('half_line')[0].style.background=color;
 	div.getElementsByClassName('card-heading')[0].innerHTML=suits[getRandomInt(0,suits.length-1)];
 	div.getElementsByClassName('card-triangle')[0].style.left=getRandomInt(100,-100)+"px";
+	document.getElementById('index').innerHTML=(data.i)+"/"+array.length;
 
 	//init card 2
 	color=fatc[getRandomInt(0,fatc.length-1)].value;
@@ -306,6 +309,7 @@ function start()
 	data=getData();
 	suits=["&spades;","&hearts;","&diams;","&clubs;"];
 	div.getElementsByClassName('card-heading')[0].style.background=color;
+	div.setAttribute('data-i',data.i);
 	div.getElementsByClassName('card-date')[0].innerHTML=data.qtext;
 	div.getElementsByClassName('card-footer')[0].innerHTML=data.answer;
 	div.getElementsByClassName('card-triangle')[0].style.background=color;
@@ -317,7 +321,7 @@ function getRandomInt(min, max)
 {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
-
+var allowSwipe=true;
 function cardExit()
 {
 	var list=document.getElementsByClassName('card');
@@ -327,6 +331,7 @@ function cardExit()
 		div=list[0];
 		list[0].setAttribute("data-state","hidden");
 		list[1].setAttribute("data-state","active");
+		document.getElementById('index').innerHTML=(list[1].getAttribute('data-i'))+"/"+array.length;
 
 		//slide back to bottom
 		setTimeout(function()
@@ -335,12 +340,14 @@ function cardExit()
 			list[0].style.left=oldLeft;
 			list[0].style.zIndex=1;
 			list[1].style.zIndex=2;
+			allowSwipe=true;
 		},1200);
 	}else if(list[1].getAttribute("data-state")=="active")
 	{
 		div=list[1];
 		list[1].setAttribute("data-state","hidden");
 		list[0].setAttribute("data-state","active");
+		document.getElementById('index').innerHTML=(list[0].getAttribute('data-i'))+"/"+array.length;
 
 		//slide back to bottom
 		setTimeout(function()
@@ -349,7 +356,8 @@ function cardExit()
 			list[1].style.zIndex=1;
 			list[1].style.left=oldLeft;
 			list[0].style.zIndex=2;
-		},1400);
+			allowSwipe=true;
+		},1200);
 	}
 
 	var rects=div.getClientRects()[0];
@@ -369,14 +377,13 @@ function cardExit()
 		var suits=["&spades;","&hearts;","&diams;","&clubs;"];
 		var data=getData();
 		div.getElementsByClassName('card-heading')[0].style.background=color;
+		div.setAttribute('data-i',data.i);
 		div.getElementsByClassName('card-date')[0].innerHTML=data.qtext;
 		div.getElementsByClassName('card-footer')[0].innerHTML=data.answer;
 		div.getElementsByClassName('card-triangle')[0].style.background=color;
 		div.getElementsByClassName('half_line')[0].style.background=color;
-
 		div.getElementsByClassName('card-heading')[0].innerHTML=suits[getRandomInt(0,suits.length-1)];
 		div.getElementsByClassName('card-triangle')[0].style.left=getRandomInt(100,-100)+"px";
-
 	},3000);
 }
 
@@ -384,17 +391,23 @@ var array=[];
 function getData()
 {
 	var i=getRandomInt(0,array.length-1);
-	console.log(i);
+	// console.log(i);
+	
 	var qtext=array[i].split("#")[0].trim();
 	var answer=array[i].split("#")[1].trim();
 	var data={};
 	data.qtext=qtext;
 	data.answer=answer;
+	data.i=i+1;
 	return data;
 }
 new Hammer(document.getElementsByTagName('body')[0]).on('swipeleft swiperight', function(ev)
 {
-	cardExit();
+	if(allowSwipe)
+	{
+		cardExit();
+		allowSwipe=false;
+	}
 });
 array.push(" A big cheese#an important or a powerful person in a group or family");
 array.push(" A bird's eye view#a view from a very high place which allows you to see a large area");
@@ -670,7 +683,7 @@ array.push(" Play fast and loose#If people play fast and loose, they behave in a
 array.push(" Poker face#Someone with a poker face doesn't show any emotion or reaction so that people don't know what they are feeling");
 array.push(" Pull up the shocks#do things in the right manner and correctly");
 array.push(" Put the cart before the horse#doing things in a wrong manner");
-array.push(" Quarrel with bread and butter#Bread and butter, here, indicate the means of one's living. If a sub-ordinate in an organization is quarrelsome or if he is not patient enough to bear the reprimand he deserves, gets angry and retorts or provokes the higher-up, the top man dismisses him from the job. So, he loses the job that gave him bread and butter. Hence we say, he quarreled with bread and butter (manager or the top manand lost his job");
+array.push(" Quarrel with bread and butter#Bread and butter, here, indicate the means of one's living. If a sub-ordinate in an organization is quarrelsome and gets angry and retorts or provokes the higher-up, the top man dismisses him from the job. So, he loses the job that gave him bread and butter. Hence we say, he quarreled with bread and butter (manager or the top manand lost his job");
 array.push(" Queer fish#A strange person is a queer fish");
 array.push(" Quiet as a cat#If somebody is as quiet as a cat they make as little noise as possible and try to be unnoticeable");
 array.push(" Quiet as a mouse#If someone's as quiet as a mouse, they make absolutely no noise");
