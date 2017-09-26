@@ -3,28 +3,19 @@
 	<meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-    <script type="text/javascript" src="hammer.js"></script>
 <style type="text/css">
-
-	/*colorPrimary:#FFC107*/
 *
 {
-	font-family: "Roboto","sans-serif";
-   -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-     -khtml-user-select: none; /* Konqueror HTML */
-       -moz-user-select: none; /* Firefox */
-        -ms-user-select: none; /* Internet Explorer/Edge */
-            user-select: none; /* Non-prefixed version, currently
-                                  supported by Chrome and Opera */
+	font-family: "Verdana";
+	user-select: none; 
 }
 body
 {
 	color: black;
 	background: rgba(234, 234, 234, 0.15);
+	margin:0px;
 }
-.heading
+	.heading
     {
     	text-align: center;
     }
@@ -133,29 +124,24 @@ transition: 0.5s all cubic-bezier(.45,.64,.03,.98);
 }
 	.card
     {
-		width: 80%;
-	    height: 80%;
+		width: 100%;
+	    height: 60%;
 	    background: white;
-	    box-shadow:  0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+	    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
 	    border-radius: 2px;
-	    min-width: 256;
 	    max-width: 512;
 	    max-height: 450px;
-	    display: flex;
+	    display: inline-flex;
 	    flex-direction: column;
-	    overflow:hidden;
-	    transition:0.9s all;
-	    transform-origin: bottom;
-	    margin-left: 5%;
+	    transition: 0.9s all;
+	    margin-top: 5%;
     }
-    .card-head {
-        width: 100%;
-    height: 50px;
-    background: #F84B4B;
-    border-radius: 2px;
-    display: flex;
-    flex-direction: row;
-}
+    .card-head
+    {
+    	padding-top: 5px;
+    padding-bottom: 5px;
+    text-align: right;
+	}
     .small-hole-holder
     {
     	width: 20%;
@@ -173,58 +159,56 @@ transition: 0.5s all cubic-bezier(.45,.64,.03,.98);
     }
     .card-heading
     {
-		width: 100%;
-	    text-align: center;
-	    color: white;
-	    font-weight: bold;
-	    font-size: 250%;
+    width: 30px;
+    height: 28px;
+    background: #009688;
+    color: white;
+    font-weight: bold;
+    font-size: 30px;
+    border-radius: 30px;
+    margin-left: 5px;
+    margin-top: 9px;
+    padding: 2px 0px 0px 0px;
+    text-align: center;
+    }
+    .card-title
+    {
+		font-size: 15px;
+    color: #fff;
+    border-radius: 50px;
+    text-align: center;
+    padding: 10px 10px 5px 10px;
+    display: inline-block;
+    height: 22px;
+    }
+    .card-title>span
+    {
+		font-size: 13px;
+	    color: #828282;
     }
     .card-date-holder
     {
-text-align: center;
-    font-size: 240%;
-    background: rgba(152, 152, 152, 0.03);
-    border-radius: 3px;
+		text-align: center;
+	    background: #009688;
+	    border-radius: 3px;
+	    height: 100%;
+	    color: white;
     }
-    .card-footer
+    .card-qtext
     {
-    	    text-align: center;
-    		margin-top: 5%;
+		font-size: 30px;
+		margin-top: 10px;
+		color: #111;
     }
-    .card-week
+    .card-answer
     {
-    	color: #8BC34A;
-    }
-    .card-year
-    {
-    	text-align: right;
-    color: #66ab17;
-    font-weight: bolder;
-    }
-    .card-footer-inner
-    {
-    	width: 50%;
-    }
-    .card-triangle
-    {
-	width: 100%;
-    height: 50%;
-    background: #f84b4b;
-    transform: rotate(45deg);
-    position: relative;
-    left: -97px;
-    top: 50%;
-    box-shadow: 14px -9px 5px rgba(128, 128, 128, 0.36);
-    z-index: 1;
-    transition: 0.5s all;
+    	font-size: 20px;
+    	margin-top: 10px;
+    	color: #333;
     }
     .card-container
     {
-    	width: 100%;
-    	height: 95%;
-    	display: flex;
-    	flex-direction: row;
-    	overflow: auto;
+		text-align: center;
     }
     
 </style>
@@ -233,92 +217,112 @@ text-align: center;
 <h2  class="heading">Idioms</h2>
 <div id="index" class="heading"></div>
 <div class="card-container">
-		<!-- <div class="card" data-state="active" style="z-index: 2">
+		<!-- <div class="card">
 			<div class="card-head">		
-				<div class="card-heading">&clubs;</div>
+				<div class="card-heading"><i class="material-icons">drafts</i></div>
+				<div class="card-title">Idioms </br><span>999</span> </div>
 			</div>
 			<div class="card-date-holder">
-				<div class="card-date">card 1</div>
-			</div>
-			<div class="half_line"></div>
-				<div class="card-footer"><i>1</i>
-			</div>
-			<div class="card-triangle">
+				<div class="card-qtext">A big cheese
+					 </br>
+						 <i>
+							 <div class="card-answer">
+							 	an important or a powerful person in a group or family
+							 </div>
+						 </i>
+				</div>
 			</div>
 		</div> -->
 </div>
 
 
 <script type="text/javascript">
+var pos;
+var fatc=new Array();
+fatc.push({'background':'#efefef','color':"#111"});
+var materialColors=[];
+materialColors.push("rgb(244, 67, 54)");
+materialColors.push("rgb(233, 30, 99)");
+materialColors.push("rgb(156, 39, 176)");	
+materialColors.push("rgb(103, 58, 183)");
+materialColors.push("rgb(33, 150, 243)");
+materialColors.push("rgb(3, 169, 244)");
+materialColors.push("rgb(0, 188, 212)");
+materialColors.push("rgb(0, 150, 136)");
+materialColors.push("rgb(255, 87, 34)");
 
-document.addEventListener('click',function()
-{
-	
-});
 
-	var pos;
-	var fatc=new Array();
-	fatc.push({value:"#1abc9c"});
-	fatc.push({value:"#40d47e"});
-	fatc.push({value:"#3498db"});
-	fatc.push({value:"#9b59b6"});
-	//fatc.push({value:"#34495e"});
-	
-	fatc.push({value:"#16a085"});
-	fatc.push({value:"#27ae60"});
-	fatc.push({value:"#2980b9"});
-	fatc.push({value:"#8e44ad"});
-	//fatc.push({value:"#2c3e50"});
-	
-	fatc.push({value:"#f1c40f"});
-	fatc.push({value:"#e67e22"});
-	fatc.push({value:"#e74c3c"});
-	//fatc.push({value:"#ecf0f1"});
-	//fatc.push({value:"#95a5a6"});
-	
-	fatc.push({value:"#f39c12"});
-	fatc.push({value:"#d35400"});
-	fatc.push({value:"#c0392b"});
-	//fatc.push({value:"#bdc3c7"});
-	//fatc.push({value:"#7f8c8d"});
 window.onload=start;
 var index=0;
 var array=[];
+var startIndex=0,limit=5;
 function start()
 {
-	//init first card
+	//init 5 cards
+	loadContent(startIndex,startIndex+limit);
 
+	document.addEventListener('scroll',function()
+	{
+		//check if last div is in view
+		var all=document.getElementsByClassName('card');
+		var last=all[all.length-1];
+
+		if(isScrolledIntoView(last))
+		{
+			//load new content
+			console.log('load new content');
+			var temp=startIndex;
+			startIndex+=limit;
+			if(startIndex<array.length)
+			{
+				console.log(startIndex,startIndex+limit);
+				if(startIndex+limit>=array.length)
+				{
+					var diff=startIndex+limit-(array.length);
+					console.log(diff);
+					limit=limit-diff;
+				}
+				loadContent(startIndex,startIndex+limit);
+			}
+		}
+	});
+}
+function loadContent(start,end)
+{
 	var html="";
-	for (var i = 0; i < array.length; i++)
+	for (var i = start; i < end; i++)
 	{
 		var data=getData(i);
-		var color=fatc[getRandomInt(0,fatc.length-1)].value;
-		var div=document.getElementsByClassName('card')[0];
-		var suits=["&spades;","&hearts;","&diams;","&clubs;"];
+		var color=fatc[0];//fatc[getRandomInt(0,fatc.length-1)];
+		var mateColor=materialColors[getRandomInt(0,materialColors.length-1)];
 		html+='<div class=card>';
-			html+='<div class=card-head style=background:'+color+'>';
-				html+='<div class=card-heading>&clubs;</div>';
+			
+			html+='<div class=card-head>';
+				html+='<div class=card-title style="background:'+mateColor+' ">Idioms</div>';
 			html+='</div>';
-			html+='<div class="card-date-holder">';
-				html+='<div class="card-date">'+data.qtext+'</div>';
-			html+='</div>';
-			html+='<div class="half_line" style=background:'+color+'></div>';
-				html+='<div class="card-footer"><i>'+data.answer+'</i>';
+			
+			html+='<div class=card-date-holder style=background:'+color.background+' >';
+				html+='<div class=card-qtext>'+data.qtext+'';
+					html+='</br>';
+					html+='<i>';
+						html+='<div class=card-answer>';
+							html+=data.answer+"<br><span style=font-size:15px>"+(i+1)+"</span>";
+						html+='</div>';
+					html+='</i>';
+				html+='</div>';
 			html+='</div>';
 		html+='</div>';
 	}
-	document.getElementsByClassName('card-container')[0].innerHTML=html;
-}
+	document.getElementsByClassName('card-container')[0].innerHTML+=html;
 
+}
 function getRandomInt(min, max)
 {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
-
 function getData(pos)
 {
 	var i=pos;
-	// console.log(pos);
 	var qtext=array[i].split("#")[0].trim();
 	var answer=array[i].split("#")[1].trim();
 	var data={};
@@ -326,10 +330,18 @@ function getData(pos)
 	data.answer=answer;
 	return data;
 }
-new Hammer(document.getElementsByTagName('body')[0]).on('swipeleft swiperight', function(ev)
+
+function isScrolledIntoView(elem)
 {
-	
-});
+    var docViewTop = window.scrollY;
+    var docViewBottom = docViewTop + window.innerHeight;
+
+    var elemTop = elem.offsetTop;
+    var elemBottom = elemTop + elem.getClientRects()[0].height;
+
+    return ((elemBottom <= docViewBottom) && (elemTop >= docViewTop));
+}
+
 array.push(" A big cheese#an important or a powerful person in a group or family");
 array.push(" A bird's eye view#a view from a very high place which allows you to see a large area");
 array.push(" A bit under the weather#falling ill");
