@@ -333,7 +333,8 @@ function getData(pos)
 function isScrollAtBottom()
 {
 	var div=document.getElementsByTagName('body')[0];
-	if(div.scrollHeight - div.scrollTop ==div.clientHeight)
+	// console.log((div.scrollHeight - div.scrollTop) , div.clientHeight);
+	if((div.scrollHeight - (div.scrollTop+100)) <= div.clientHeight)
 	{
 		console.log("at bottom");
 		return true;
@@ -341,17 +342,6 @@ function isScrollAtBottom()
 	return false;
 
 }
-function isScrolledIntoView(elem)
-{
-    var docViewTop = window.scrollY;
-    var docViewBottom = docViewTop + window.innerHeight;
-
-    var elemTop = elem.offsetTop;
-    var elemBottom = elemTop + elem.getClientRects()[0].height;
-
-    return ((elemBottom <= docViewBottom) && (elemTop >= docViewTop));
-}
-
 array.push(" A big cheese#an important or a powerful person in a group or family");
 array.push(" A bird's eye view#a view from a very high place which allows you to see a large area");
 array.push(" A bit under the weather#falling ill");
