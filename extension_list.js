@@ -1,6 +1,13 @@
 {
   "extensions": [
     {
+      "icon": "record_voice_over",
+      "icon_color": "#4CD964",
+      "title": "Change of Speech",
+      "subtitle": "Change of speech questions to practice",
+      "url": "https://hotdudehvfun.github.io/app_extensions/extension_changeofspeech.html"
+    },
+    {
       "icon": "group_work",
       "icon_color": "#4CD964",
       "title": "Missing Number",
