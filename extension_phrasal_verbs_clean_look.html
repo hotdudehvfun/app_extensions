@@ -1,0 +1,364 @@
+<html><head>
+	<title>Phrasal Verbs</title>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <script type="text/javascript" src="hammer.js"></script>
+<style type="text/css">
+
+	/*colorPrimary:#FFC107*/
+*
+{
+	font-family: "Roboto","sans-serif";
+   -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+body
+{
+	color: black;
+	background: rgba(234, 234, 234, 0.15);
+	margin:0px;
+}
+.heading
+    {
+    	text-align: center;
+    }
+    .half_line
+    {
+    	width: 50%;
+    	height: 2px;
+    	background: #FFC107;
+    	margin-left: 25%;
+    	position:relative;
+    }
+    ._25_line
+    {
+    	width: 25%;
+    	height: 2px;
+    	background: #FFC107;
+    	margin-left: 37.5%;
+    	position:relative;
+    }
+
+    .qtext
+    {
+    	padding: 0% 2% 0% 2%;
+    	line-height: 160%;
+    	text-transform: uppercase;
+    }
+    .option
+    {
+    padding: 2% 3% 2% 3%;
+    border-radius: 50px;
+    background: #41ccc9;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    margin-left: 35%;
+    color: white;
+    width: 30%;
+    transition: 0.5s all;
+}
+	}
+	.correct
+	{
+		background: #9C0;
+		color: white;		
+	}
+	.wrong
+	{
+		background: #ec7964;
+		color: white;
+	}
+    .option-container
+    {
+    	    text-align: center;
+    		margin-top: 5%;
+    }
+    .explanation-holder
+    {
+transition: 0.5s all cubic-bezier(.45,.64,.03,.98);
+    width: 94%;
+    height: 0px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    margin-top: 5%;
+    padding: 0% 3% 0% 3%;
+    }
+    .fab
+    {
+	margin: 0px;
+    background: #FFC107;
+    color: white;
+    width: initial;
+    border-radius: 50px;
+    padding: 10%;
+    display: inline-block;
+    box-shadow: 1px 1px 1px rgba(130, 130, 130, 0.51);
+    }
+.data
+{
+    text-transform: lowercase;
+    font-style:italic;
+    padding-left: 5%;
+}
+.feed-holder-outer
+{
+    display: flex;
+    flex-direction: column;
+}
+.feed-holder-inner
+{
+	background: white;
+    margin-top: 0%;
+    border-radius: 0.5%;
+    padding: 2% 3% 2% 3%;
+    transition: 0.5s all;
+    opacity: 0;
+    border-bottom: 1px solid rgba(93, 93, 93, 0.07);
+}
+
+.line
+{
+	height: 1px;
+    background: rgba(195, 195, 195, 0.32);
+    margin-top: 2%;
+}
+.main_board
+{
+	    background: #41ccc9;
+    color: white;
+    padding: 8% 0% 8% 0%;
+    font-size: 1.5em;
+}
+</style>
+</head>
+<body id="body">
+	<div class="main_board">
+		<div class="heading">Phrasal Verbs</div>
+	</div>
+<div style="text-align: center;">
+</div>
+<div class="feed-holder-outer" id="feed-holder-outer">
+</div>
+<div id="page-text" class="option" style="">...</div>
+<script type="text/javascript">
+
+var mainColor="#41ccc9";
+var colors=["#50a9d3","#487cb5","#487cb5","#57426b"];
+
+document.addEventListener('click',function(){
+	getNewData(1);
+});
+
+	var pos;
+window.onload=start;
+var startPos=0,len=10;
+function start()
+{
+	showCards(startPos,len);
+}
+function getNewData(dir)
+{
+		startPos+=len*dir;
+		showCards(startPos,len);	
+}
+function getRandomInt(min, max)
+{
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+function showCards(start,len)
+{
+	var parent=document.getElementById('feed-holder-outer');
+	var html="";
+	var t=0.1,step=0.2;
+	var colorPos=0;
+	for (var i = start; i < start+len; i++)
+	{
+		var string=array[i];		
+		string=string.split("#");
+		string[1]=string[1].replace("(","");
+		string[1]=string[1].replace(")","");
+		console.log(colors[colorPos]);
+
+		var qtext=string[0].trim();
+		var answer=string[1].trim();
+		html+="<div class=feed-holder-inner >";
+		html+="<div class=qtext>"+qtext+"</div>";
+		html+="<div class=data>"+answer+"</div>";
+		html+="</div>";		
+		t+=step;
+		colorPos++;
+		colorPos=colorPos%colors.length;
+	}
+	parent.innerHTML=html;
+	setTimeout(function(){
+		var cards=document.getElementsByClassName("feed-holder-inner");
+		for(var i=0;i<cards.length;i++)
+		{
+			cards[i].style.opacity=1;		
+		}
+	},100);
+
+	document.getElementById('page-text').innerHTML="Page "+parseInt((start/len)+1)+" of "+parseInt(array.length/len);
+}
+new Hammer(document.getElementsByTagName('body')[0]).on('swipeleft swiperight', function(ev)
+{
+	console.log(ev.type);
+	if(ev.type=="swipeleft")
+		getNewData(1);
+	else
+		getNewData(-1);
+});
+var array=[];
+array.push("abide by#To respect or obey a decision, a law or a rule");
+array.push("account for#To explain, give a reason");
+array.push("add up#To make sense, seem reasonable");
+array.push("advise against#To recommend not doing something");
+array.push("agree with#To have the same opinion as someone else.");
+array.push("allow for#To take into consideration");
+array.push("appeal to#1.To plead or make a request<br>2.To be attractive or");
+array.push("apply for#To make a formal request for something (job, permit, loan etc.)");
+array.push("back away#To move backwards, in fear or dislike");
+array.push("back down#To withdraw, concede defeat");
+array.push("back up#1.To give support or encouragement<br>2.To make a copy of file");
+array.push("bank on#To base your hopes on something/someone");
+array.push("black out#To faint, lose consciousness");
+array.push("block off#To separate using a barrier.");
+array.push("blow up#1.To explode<br>2.To get angry");
+array.push("boil down to#To be summarized as");
+array.push("boot up#To start a computer by loading an operating system or program");
+array.push("break away#To separate from a crowd");
+array.push("break down#1.To go out of order, cease to function<br>2.To lose control of one’s emotions");
+array.push("break into#To enter by force");
+array.push("break out#To start suddenly");
+array.push("break out of#To escape from a place by force");
+array.push("break up#To come to an end (marriage, relationship)");
+array.push("bring up#To raise (a child)");
+array.push("brush up on#To improve, refresh one’s knowledge of something");
+array.push("bump into#To meet by chance or unexpectedly");
+array.push("burn out#1.stop (something) working<br>2.become exhausted from over-working");
+array.push("call back#To return a phone call");
+array.push("call off#To cancel");
+array.push("calm down#To become more relaxed, less angry or upset");
+array.push("carry on#To continue");
+array.push("carry out#1.To do something as specified (a plan, an order, a threat)<br>2.To perform or conduct (test, experiment)");
+array.push("check in#To register at a hotel or airport");
+array.push("check out#1.To pay one’s bill and leave (a hotel)<br>2.To investigate");
+array.push("clam up#To refuse to speak");
+array.push("clamp down on#To act strictly to prevent something");
+array.push("come across#1.To find by chance<br>2.To appear, seem, make an impression");
+array.push("come forward#To present oneself");
+array.push("count on#To rely or depend on (for help)");
+array.push("cut down on#To reduce in number or size");
+array.push("cut out#1.To remove using scissors<br>2.To stop doing something");
+array.push("deal with#To handle, take care of (problem, situation)");
+array.push("die down#To calm down, become less strong");
+array.push("do without#To manage without");
+array.push("drag on#To last longer than expected");
+array.push("draw up#To write (contract, agreement, document)");
+array.push("dress up#wear elegant clothes");
+array.push("drop in#To visit, usually on the way somewhere");
+array.push("drop off#1.To deliver someone or something<br>2.To fall asleep");
+array.push("drop out#To leave school without finishing");
+array.push("ease off#To reduce, become less severe or slow down (pain, traffic, work)");
+array.push("end in#To finish in a certain way; result in");
+array.push("end up#To finally reach a state, place or action");
+array.push("fall through#To fail; doesn’t happen");
+array.push("figure out#To understand, find the answer");
+array.push("fill out#To complete (a form/an application)");
+array.push("find out#To discover or obtain information");
+array.push("focus on#To concentrate on something");
+array.push("get along (with)#To be on good terms; work well with");
+array.push("get at#To imply");
+array.push("get away#To escape");
+array.push("get by#To manage to cope or to survive");
+array.push("get in#To enter");
+array.push("get into (+noun)#To enter");
+array.push("get off#1.To leave (bus, train, plane)<br>2.To remove");
+array.push("get on#To board (bus, train, plane)");
+array.push("get on with (something)#To continue to do; make progress");
+array.push("get on (well) with (somebody)#To have a good relationship with");
+array.push("get out#To leave");
+array.push("get out of#To avoid doing something");
+array.push("get over#To recover from (illness, disappointment)");
+array.push("get over#To recover from (illness, disappointment)");
+array.push("get rid of#To eliminate");
+array.push("get together#To meet each other");
+array.push("get up#To rise, leave bed");
+array.push("give in#1.To cease opposition; yield<br>2.To To hand in,submit");
+array.push("give up#To stop doing something");
+array.push("go through#To experience");
+array.push("grow up#To spend one’s childhood; develop; become an adult");
+array.push("hand in#To submit (report, homework)");
+array.push("hand out#To distribute");
+array.push("hang out#To spend time in a particular place or with a group of friends");
+array.push("hang up#To end a phone conversation");
+array.push("hold on#1.To wait<br>2.To grip tightly");
+array.push("hurry up#To be quick, act speedily");
+array.push("iron out#To resolve by discussion, eliminate differences");
+array.push("join in#To participate");
+array.push("join up#1.To engage in, become a member of<br>2.To meet and unite with");
+array.push("keep on#To continue doing something");
+array.push("keep up with#To stay at the same level as someone or something");
+array.push("kick off#To begin, start");
+array.push("leave out#To omit, not mention");
+array.push("let down#To disappoint");
+array.push("look after#To take care of");
+array.push("look down on#To consider as inferior");
+array.push("look on#To be a spectator at an event");
+array.push("look for#To try to find something");
+array.push("look forward to#To await or anticipate with pleasure");
+array.push("look up to#To admire");
+array.push("make fun of#To laugh at/ make jokes about");
+array.push("make up#To invent (excuse, story)");
+array.push("mix up#To mistake one thing or person for another");
+array.push("move in#To arrive in a new home or office");
+array.push("move out#To leave your home/office for another one.");
+array.push("nod off#To fall asleep");
+array.push("own up#To admit or confess something");
+array.push("pass away#To die");
+array.push("pass out#To faint");
+array.push("pay back#To reimburse");
+array.push("put off#To postpone, arrange a later date");
+array.push("put on#To turn on, switch on");
+array.push("put out#To extinguish");
+array.push("put up#To accommodate, give somebody a bed");
+array.push("pick up#To collect somebody");
+array.push("point out#To indicate/direct attention to something");
+array.push("rely on#To count on, depend on, trust");
+array.push("rule out#To eliminate");
+array.push("run away#To escape from a place or suddenly leave");
+array.push("run into#To meet by accident or unexpectedly (also: bump into)");
+array.push("run out of#To have no more of something.");
+array.push("set off#To start a journey;");
+array.push("set up#To start a business");
+array.push("shop around#To compare prices");
+array.push("show off#To brag or want to be admired");
+array.push("show up#To appear/arrive");
+array.push("shut up (impolite)#To be silent, stop talking");
+array.push("sit down#To take a seat");
+array.push("stand up#To rise from a sitting position");
+array.push("stick up for#To defend");
+array.push("take after#To resemble, in appearance or character");
+array.push("take care of#To look after");
+array.push("take off#To leave the ground");
+array.push("take on#To hire or engage staff");
+array.push("take out#To remove; extract");
+array.push("tell off#To reprimand/criticize severely");
+array.push("think over#To consider");
+array.push("try on#To wear something to see if it suits or fits");
+array.push("turn down#To refuse");
+array.push("use up#To finish a product (so that there’s none left)");
+array.push("watch out#To be careful");
+array.push("wear out#1.To become unusable<br>2.To become very tired");
+array.push("work out#1.To do physical exercise<br>2.To find a solution or calculate something");
+array.push("wipe off#To clean (board, table)");
+</script>
+
+</body></html>
