@@ -1,5 +1,6 @@
 {
   "extensions": [
+    
     {
       "icon": "record_voice_over",
       "icon_color": "#4CD964",
@@ -48,6 +49,13 @@
       "title": "Idioms and Phrases",
       "subtitle": "Learn idioms and phrasal verbs",
       "url": "https://hotdudehvfun.github.io/app_extensions/extension_idioms.html"
+    },
+    {
+      "icon": "date_range",
+      "icon_color": "#FE9900",
+      "title": "Calendar",
+      "subtitle": "Calendar based questions.",
+      "url": "https://hotdudehvfun.github.io/app_extensions/extension_calendar.html"
     }
   ]
 }
