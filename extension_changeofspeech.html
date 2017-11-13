@@ -1,0 +1,1153 @@
+<!DOCTYPE>
+<html>
+<head>
+	<title>Change of Speech</title>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <script type="text/javascript" src="hammer.js"></script>
+    <style type="text/css">
+    /*primary color: #4CD964*/
+    
+	*
+	{
+		font-family: "Roboto","sans-serif";
+		line-height: 160%;
+		  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+	}
+	table
+	{
+		border-collapse:collapse;
+        border: 1px solid #4CD964;
+        border-radius: 3px;
+	}
+	th,td {
+	}
+	th {
+		font-weight: normal;
+		-webkit-font-smoothing: antialiased;
+		padding: 1em;
+		color: rgba(0,0,0,0.45);
+		text-shadow: 0 0 1px rgba(0,0,0,0.1);
+		font-size: 1.5em;
+	}
+	 td {
+		color: #111;
+		padding: 0.7em 1em 0.7em 1.15em;
+	}
+	tr {
+		-webkit-transition: background 0.3s, box-shadow 0.3s;
+		-moz-transition: background 0.3s, box-shadow 0.3s;
+		transition: background 0.3s, box-shadow 0.3s;
+	}
+
+    body
+    {
+    	margin: 0px; 
+    	overflow-x: hidden;
+    }
+    .heading
+    {
+    	text-align: center;
+    }
+    .half_line
+    {
+    	width: 50%;
+    	height: 2px;
+    	background: #4CD964;
+    	margin-left: 25%;
+    	position:relative;
+    }
+    ._25_line
+    {
+    	width: 25%;
+    	height: 2px;
+    	background: #4CD964;
+    	margin-left: 37.5%;
+    	position:relative;
+    }
+
+    #qtext
+    {
+    	text-align: center;
+    	margin-top:5%; 
+    	padding: 0% 2% 0% 2%;
+    	line-height: 160%;
+    }
+    .option
+    {
+	    padding: 2% 3% 2% 3%;
+	    border-radius: 50px;
+	    background: #ececec;
+	    display: inline-table;
+	    margin-top: 5%;
+	    margin-left: 10%;
+	    margin-right: 10%;
+	    color: #111;
+	    width: 74%;
+	    transition: 0.5s all;
+	}
+	.correct
+	{
+		background: #9C0;
+		color: white;		
+	}
+	.wrong
+	{
+		background: #ec7964;
+		color: white;
+	}
+    .option-container
+    {
+    	    text-align: center;
+    		margin-top: 5%;
+    }
+    .explanation-holder
+    {
+transition: 0.5s all cubic-bezier(.45,.64,.03,.98);
+    width: 94%;
+    height: 0px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    margin-top: 5%;
+    padding: 0% 3% 0% 3%;
+    }
+    .fab
+    {
+	margin: 0px;
+    background: #4CD964;
+    color: white;
+    width: initial;
+    border-radius: 50px;
+    padding: 10%;
+    display: inline-block;
+    box-shadow: 1px 1px 1px rgba(130, 130, 130, 0.51);
+    }
+    </style>
+</head>
+<body>
+<h2 class="heading">Change of Speech</h2>
+<div class="half_line"></div>
+<div id="qtext">
+</div>
+<div class="option-container">
+	<div class="option" id="a"></div>
+	<div class="option" id="b"></div>
+	<div class="option" id="c"></div>
+	<div class="option" id="d"></div>
+</div>
+<div class="explanation-holder" id="explanation-holder">
+</div>
+<div id="next-button" style="
+    position: fixed;
+    bottom: 2%;
+    right: 3%;
+    display: inline-block;
+">
+	<div class="fab" style=""><svg xmlns="http://www.w3.org/2000/svg" fill="#fff" height="24" viewBox="0 0 24 24" width="24">
+    <path d="M0 0h24v24H0z" fill="none"/>
+    <path d="M12 4l-1.41 1.41L16.17 11H4v2h12.17l-5.58 5.59L12 20l8-8z"/>
+</svg></div>
+</div>
+
+<script type="text/javascript">
+var isNewQuestion;
+var data=[];
+document.addEventListener("DOMContentLoaded",function()
+{
+	
+  getNewQuestion();
+  addEventListeners();
+
+});
+
+function addEventListeners(argument)
+{
+	document.getElementById('next-button').setAttribute('onclick',"getNewQuestion();");
+}
+
+function getNewQuestion()
+{
+      
+    var pos=getRandomInt(0,data.length-1);
+    console.log(pos);
+    var item=data[pos];
+    var options=[];
+    var correct=inflateCorrect(item.correct);//in form a b c d
+    var abcd=['a','b','c','d'];
+    var index=abcd.indexOf(correct);
+
+    options[0]=item.a;
+    options[1]=item.b;
+    options[2]=item.c;
+    options[3]=item.d;
+
+    //options.sort(function(){Math.random()-0.5});
+
+    document.getElementById("qtext").innerHTML=item.qtext;
+    document.getElementById('a').innerHTML=(options[0]+"");
+    document.getElementById('b').innerHTML=(options[1]+"");
+    document.getElementById('c').innerHTML=(options[2]+"");
+    document.getElementById('d').innerHTML=(options[3]+"");
+
+		document.getElementById('a').setAttribute("onclick", "checkAnswer('a',"+index+");" );
+		document.getElementById('a').setAttribute("class", "option" );
+		document.getElementById('b').setAttribute("onclick", "checkAnswer('b',"+index+");" );
+		document.getElementById('b').setAttribute("class", "option" );
+		document.getElementById('c').setAttribute("onclick", "checkAnswer('c',"+index+");" );
+		document.getElementById('c').setAttribute("class", "option" );
+		document.getElementById('d').setAttribute("onclick", "checkAnswer('d',"+index+");" );
+		document.getElementById('d').setAttribute("class", "option" );
+		document.getElementById('explanation-holder').style.height=0;
+		isNewQuestion=true;
+}
+
+function inflateCorrect(answer)
+{
+  switch(answer)
+  {
+    case '1':
+    case 'a':
+    case 'A':
+    return 'a';
+    case '2':
+    case 'b':
+    case 'B':
+    return 'b';
+    case '3':
+    case 'c':
+    case 'C':
+    return 'c';
+    case '4':
+    case 'd':
+    case 'D':
+    return 'd';
+  }
+}
+
+
+function checkAnswer(userAnswer,correctIndex)
+{
+	if(isNewQuestion)
+	{
+		isNewQuestion=false;
+		var abcd=["a","b","c","d"];
+		document.getElementById('a').setAttribute("class","option");
+		document.getElementById('b').setAttribute("class","option");
+		document.getElementById('c').setAttribute("class","option");
+		document.getElementById('d').setAttribute("class","option");
+		if(userAnswer==abcd[correctIndex])
+		{
+			document.getElementById(userAnswer).setAttribute("class","option correct");
+		}else
+		{
+			document.getElementById(userAnswer).setAttribute("class","option wrong");
+			document.getElementById(abcd[correctIndex]).setAttribute("class","option correct");
+
+		}
+	}
+}
+
+function getRandomInt(min, max)
+{
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+function isInt(n)
+{
+   return n % 1 === 0;
+}
+
+//swipe to next
+new Hammer(document.getElementsByTagName('body')[0]).on('swipeleft swiperight', function(ev)
+{
+	getNewQuestion();
+
+});
+
+
+//data
+
+
+        data.push({
+      "qtext": "\"If you don't keep quiet I shall shoot you\", he said to her in a calm voice.",
+      "a": "A. He warned her to shoot if she didn't keep quiet calmly.",
+      "b": "B. He said calmly that I shall shoot you if you don't be quiet.",
+      "c": "C. He warned her calmly that he would shoot her if she didn't keep quiet.",
+      "d": "D. Calmly he warned her that be quiet or else he will have to shoot her.",
+      "correct": "C"      
+    });
+    data.push({
+      "qtext": "I told him that he was not working hard.",
+      "a": "A. I said to him, \"You are not working hard.\"",
+      "b": "B. I told to him, \"You are not working hard.\"",
+      "c": "C. I said, \"You are not working hard.\"",
+      "d": "D. I said to him, \"He is not working hard.\"",
+      "correct": "A"      
+    });
+    data.push({
+      "qtext": "His father ordered him to go to his room and study.",
+      "a": "A. His father said, \"Go to your room and study.\"",
+      "b": "B. His father said to him, \"Go and study in your room.\"",
+      "c": "C. His father shouted, \"Go right now to your study room\"",
+      "d": "D. His father said firmly, \"Go and study in your room.\"",
+      "correct": "A"      
+    });
+    data.push({
+      "qtext": "He said to his father, \"Please increase my pocket-money.\"",
+      "a": "A. He told his father, \"Please increase the pocket-money\"",
+      "b": "B. He pleaded his father to please increase my pocket money.",
+      "c": "C. He requested his father to increase his pocket-money.",
+      "d": "D. He asked his father to increase his pocket-money.",
+      "correct": "C"      
+    });
+    data.push({
+      "qtext": "She said that her brother was getting married.",
+      "a": "A. She said, \"Her brother is getting married.\"",
+      "b": "B. She told, \"Her brother is getting married.\"",
+      "c": "C. She said, \"My brother is getting married.\"",
+      "d": "D. She said, \"My brother was getting married.\"",
+      "correct": "C"      
+    });
+    data.push({
+      "qtext": "The boy said, \"Who dare call you a thief?\"",
+      "a": "A. The boy enquired who dared call him a thief.",
+      "b": "B. The boy asked who called him a thief.",
+      "c": "C. The boy told that who dared call him a thief.",
+      "d": "D. The boy wondered who dared call a thief.",
+      "correct": "A"      
+    });
+    data.push({
+      "qtext": "She exclaimed with sorrow that was a very miserable plight.",
+      "a": "A. She said with sorrow, \"What a pity it is.\"",
+      "b": "B. She said, \"What a mystery it is.\"",
+      "c": "C. She said, \"What a miserable sight it is.\"",
+      "d": "D. She said, \"What a miserable plight it is.\"",
+      "correct": "D"      
+    });
+    data.push({
+      "qtext": "Dhruv said that he was sick and tired of working for that company.",
+      "a": "A. Dhruv said, \"I am sick and tired of working for this company.\"",
+      "b": "B. Dhruv said, \"He was tired of that company.\"",
+      "c": "C. Dhruv said to me, \"I am sick and tired of working for this company.\"",
+      "d": "D. Dhruv said, \"I will be tired of working for that company.\"",
+      "correct": "A"      
+    });
+    data.push({
+      "qtext": "\"Are you alone, my son?\" asked a soft voice close behind me.",
+      "a": "A. A soft voice asked that what I was doing there alone.",
+      "b": "B. A soft voice said to me are you alone son.",
+      "c": "C. A soft voice from my back asked If I was alone.",
+      "d": "D. A soft voice behind me asked If I was alone.",
+      "correct": "D"      
+    });
+    data.push({
+      "qtext": "She said to him, \"Why don't you go today?\"",
+      "a": "A. She asked him why he did not go that day.",
+      "b": "B. She said to him why he don't go that day.",
+      "c": "C. She asked him not to go that day.",
+      "d": "D. She asked him why he did not go today.",
+      "correct": "A"      
+    });
+    data.push({
+      "qtext": "He exclaimed with joy that India had won the Sahara Cup.",
+      "a": "A. He said, \"India has won the Sahara Cup\"",
+      "b": "B. He said, \"India won the Sahara Cup\"",
+      "c": "C. He said, \"How! India will win the Sahara Cup\"",
+      "d": "D. He said, \"Hurrah! India has won the Sahara Cup\"",
+      "correct": "D"      
+    });
+    data.push({
+      "qtext": "The little girl said to her mother, \"Did the sun rise in the East?\"",
+      "a": "A. The little girl said to her mother that the sun rose in the East.",
+      "b": "B. The little girl asked her mother if the sun rose in the East.",
+      "c": "C. The little girl said to her mother if the sun rises in the East.",
+      "d": "D. The little girl asked her mother if the sun is in the East.",
+      "correct": "B"      
+    });
+    data.push({
+      "qtext": "The man said, \"No, I refused to confers guilt.\"",
+      "a": "A. The man emphatically refused to confers guilt.",
+      "b": "B. The man refused to confers his guilt.",
+      "c": "C. The man told that he did not confers guilt.",
+      "d": "D. The man was stubborn enough to confers guilt.",
+      "correct": "A"      
+    });
+    data.push({
+      "qtext": "Nita ordered her servant to bring her cup of tea.",
+      "a": "A. Nita told her servant, \"Bring a cup of tea.\"",
+      "b": "B. Nita said, \"Bring me a cup of tea.\"",
+      "c": "C. Nita said to her servant, \"Bring me a cup of tea.\"",
+      "d": "D. Nita told her servant, \"Bring her that cup of tea.\"",
+      "correct": "C"      
+    });
+    data.push({
+      "qtext": "My cousin said, \"My room-mate had snored throughout the night.\"",
+      "a": "A. my cousin said that her room-mate snored throughout the night.",
+      "b": "B. my cousin told me that her room-mate snored throughout the night.",
+      "c": "C. my cousin complained to me that her room-mate is snoring throughout the night.",
+      "d": "D. my cousin felt that her room-mate may be snoring throughout the night.",
+      "correct": "A"      
+    });
+    data.push({
+      "qtext": "\"Please don't go away\", she said.",
+      "a": "A. She said to please her and not go away.",
+      "b": "B. She told me to go away.",
+      "c": "C. She begged me not to go away.",
+      "d": "D. She begged that I not go away.",
+      "correct": "C"      
+    });
+    data.push({
+      "qtext": "She said to her friend, \"I know where is everyone\"",
+      "a": "A. She told that she knew where was everyone.",
+      "b": "B. She told her friend that she knew where was everyone.",
+      "c": "C. She told her friend that she knew where is everyone.",
+      "d": "D. She told her friend that she knows where was everyone.",
+      "correct": "B"      
+    });
+    data.push({
+      "qtext": " He said to me, \"I am ready\".",
+      "a": "(A)He told to me that he is ready.",
+      "b": "(B)He told me that he was ready.",
+      "c": "(C)He told me that I am ready.",
+      "d": "(D)He told me that I will ready.",
+      "correct": "B"      
+    });
+    data.push({
+      "qtext": " Sonia said, \"You help my sister\".",
+      "a": "(A)Sonia said that I helps her sister.",
+      "b": "(B)Sonia said to me that I helped her sister.",
+      "c": "(C)Sonia said that I helped her sister.",
+      "d": "(D)Sonia says that I helped her sister.",
+      "correct": "C"      
+    });
+    data.push({
+      "qtext": " They said, \"We can not live without oxygen\".",
+      "a": "(A)They said that we can not live without oxygen.",
+      "b": "(B)They said that they can not live without oxygen.",
+      "c": "(C)They said that they would not live without oxygen.",
+      "d": "(D)They says that they can not live without oxygen.",
+      "correct": "A"      
+    });
+    data.push({
+      "qtext": " Rahul said to me, \"We are mortal\".",
+      "a": "(A)Rahul said to me that we are mortal.",
+      "b": "(B)Rahul says to me that we are mortal.",
+      "c": "(C)Rahul said to me that we all are mortal.",
+      "d": "(D)Rahul said to me that he and I are mortal.",
+      "correct": "A"      
+    });
+    data.push({
+      "qtext": " The Indian express says, \"We shall issue a astrology section in our Thursday's paper\".",
+      "a": "(A)The Indian express says that it will issue a astrology section in their Thursday's paper.",
+      "b": "(B)The Indian express says that they will issue a astrology section in their Thursday's paper.",
+      "c": "(C)The Indian express said that it will issue a astrology section in its Thursday's paper.",
+      "d": "(D)The Indian express says that it will issue a astrology section in its Thursday's paper.",
+      "correct": "D"      
+    });
+    data.push({
+      "qtext": " John says, \"I shall go there\".",
+      "a": "(A)John said that he went there.",
+      "b": "(B)John says that he will go there.",
+      "c": "(C)John says that he went there.",
+      "d": "(D)John said that I will go there.",
+      "correct": "B"      
+    });
+    data.push({
+      "qtext": " Robert will say to me, \"I am your classmate\".",
+      "a": "(A)Robert will tell me that he is my classmate.",
+      "b": "(B)Robert will tell me that he was my classmate.",
+      "c": "(C)Robert will tell me that he will be my classmate.",
+      "d": "(D)Robert said me that he is my classmate.",
+      "correct": "A"      
+    });
+    data.push({
+      "qtext": " Sushant said to him, \"I have been helping your son for years\".",
+      "a": "(A)Sushant told him that he has helped his son for years.",
+      "b": "(B)Sushant told him that he have been helping his son for years.",
+      "c": "(C)Sushant told him that he had been helping his son for years.",
+      "d": "(D)Sushant told him that he has been helping his son for years.",
+      "correct": "C"      
+    });
+    data.push({
+      "qtext": " He said to me, \"I shall write an essay\".",
+      "a": "(A)He said to me that he will be writing an essay.",
+      "b": "(B)He told me that he would write an essay.",
+      "c": "(C)He said to me that he will write an essay.",
+      "d": "(D)He told me that he would write an essay.",
+      "correct": "D"      
+    });
+    data.push({
+      "qtext": " He said to me, \"I shall be writing an essay\".",
+      "a": "(A)He told me that he would have been writing an essay.",
+      "b": "(B)He told me that he would be writing an essay.",
+      "c": "(C)He told me that he will be writing an essay.",
+      "d": "(D)He told me that he shall be writing an essay.",
+      "correct": "B"      
+    });
+    data.push({
+      "qtext": " Sita said to Geeta, \"You can learn piano\".",
+      "a": "(A)Sita told Geeta that she can be learn piano.",
+      "b": "(B)Sita told Geeta that you can learn piano.",
+      "c": "(C)Sita told Geeta that she could learn piano.",
+      "d": "(D)Sita told Geeta that she can learn piano.",
+      "correct": "C"      
+    });
+    data.push({
+      "qtext": " He said to you, \"You may go out\".",
+      "a": "(A)He told you that you might be go out.",
+      "b": "(B)He said you that you might be go out.",
+      "c": "(C)He told you that you may go out.",
+      "d": "(D)He told you that you might go out.",
+      "correct": "D"      
+    });
+    data.push({
+      "qtext": " Ram said to Rahul, \"You are a good player of cricket\".",
+      "a": "(A)Ram told Rahul that he was a good player of cricket. ",
+      "b": "(B)Ram told Rahul that he were a good player of cricket.",
+      "c": "(C)Ram told Rahul that he would a good player of cricket.",
+      "d": "(D)Ram told Rahul that he could be a good player of cricket.",
+      "correct": "A"      
+    });
+    data.push({
+      "qtext": " Shahekant said to me, \"I have no time for you\".",
+      "a": "(A)Shahekant said that he had no time for me.",
+      "b": "(B)Shahekant told me that he had no time for me.",
+      "c": "(C)Shahekant told me that he has no time for me.",
+      "d": "(D)Shahekant told me that he was having no time for me.",
+      "correct": "B"      
+    });
+    data.push({
+      "qtext": " Sahil said to Deepu, \"I was going to buy milk\".",
+      "a": "(A)Sahil told Deepu that he were going to buy milk.",
+      "b": "(B)Sahil told Deepu that he would going to buy milk.",
+      "c": "(C)Sahil told Deepu that he had been going to buy milk.",
+      "d": "(D)Sahil told Deepu that he was going to buy milk.",
+      "correct": "C"      
+    });
+    data.push({
+      "qtext": " She said, \"You were missing from the picnic\".",
+      "a": "(A)She told me that I had been missing from the picnic. ",
+      "b": "(B)She told me that I has been missing from the picnic.",
+      "c": "(C)She told me that I were missing from the picnic.",
+      "d": "(D)She told me that I had been missed from the picnic.",
+      "correct": "A"      
+    });
+    data.push({
+      "qtext": " Reeta said Shivani, \"You have to go to school\".",
+      "a": "(A)Reeta told Shivani that she would have to go to school.",
+      "b": "(B)Reeta told Shivani that she has to go to school.",
+      "c": "(C)Reeta told Shivani that she have to go to school.",
+      "d": "(D)Reeta told Shivani that she had to go to school.",
+      "correct": "D"      
+    });
+    data.push({
+      "qtext": " You said to her, \"She has to cook food for you\".",
+      "a": "(A)You told her that she has to cook food for you.",
+      "b": "(B)You told her that she had to cook food for you.",
+      "c": "(C)You told her that she needs to cook food for you.",
+      "d": "(D)You told her that she would have to cook food for you.",
+      "correct": "B"      
+    });
+    data.push({
+      "qtext": " He said to me, \" I had to finish this first.\"",
+      "a": "(A)He told me that he has to finish this first.",
+      "b": "(B)He told me that he have to finish this first.",
+      "c": "(C)He told me that he had had to finish this first.",
+      "d": "(D)He told me that he had to finish this first.",
+      "correct": "C"      
+    });
+    data.push({
+      "qtext": " Rahul said to Shusheela, \"I had to reach there\".",
+      "a": "(A)Rahul told Susheela that he has to reach there.",
+      "b": "(B)Rahul told Susheela that he would have to reach there.",
+      "c": "(C)Rahul told Susheela that he had to reach there.",
+      "d": "(D)Rahul told Susheela that he had had to reach there.",
+      "correct": "D"      
+    });
+    data.push({
+      "qtext": " She said to me, \"I could reach there easily\".",
+      "a": "(A)She told me that she could reach there easily.",
+      "b": "(B)She told me that she could have reach there easily.",
+      "c": "(C)She told me that she had reach there easily.",
+      "d": "(D)She told me that she had been reach there easily.",
+      "correct": "A"      
+    });
+    data.push({
+      "qtext": " Reema said to Jitender, \"You would not fight with me.\"",
+      "a": "(A)Reema told to Jitender that he has not to fight with her.",
+      "b": "(B)Reema told to Jitender that he would not fight with her.",
+      "c": "(C)Reema told to Jitender that he will not fight with her.",
+      "d": "(D)Reema told to Jitender that he should not fight with her.",
+      "correct": "B"      
+    });
+    data.push({
+      "qtext": " My father said to me, \"It might rain yesterday\".",
+      "a": "(A)My father told me that it may have rain the previous day.",
+      "b": "(B)My father told me that it would rain the previous day.",
+      "c": "(C)My father told me that it might rain the previous day.",
+      "d": "(D)My father told me that it could rain the previous day.",
+      "correct": "C"      
+    });
+    data.push({
+      "qtext": " He said, \"I went to Rajesthan yesterday.\"",
+      "a": "(A)He told that he had gone to Rajesthan the day before.",
+      "b": "(B)He told that he has gone to Rajesthan the day before.",
+      "c": "(C)He told that he has went to Rajesthan the day before.",
+      "d": "(D)He told that he had went to Rajesthan the day before.",
+      "correct": "A"      
+    });
+    data.push({
+      "qtext": " Raju said to me, \"He worked hard\".",
+      "a": "(A)Raju told me that he had worked hard.",
+      "b": "(B)Raju told me that he has worked hard.",
+      "c": "(C)Raju told me that he had been worked hard.",
+      "d": "(D)Raju told me that he has been worked hard.",
+      "correct": "A"      
+    });
+    data.push({
+      "qtext": " Rahul said, \" He was walking.\"",
+      "a": "(A)Rahul said that he had been walking.",
+      "b": "(B)Rahul said that he was walking.",
+      "c": "(C)Rahul said that he had walking.",
+      "d": "(D)Rahul said that he had walked.",
+      "correct": "A"      
+    });
+    data.push({
+      "qtext": " Sheela said to me, \"Munni is dancing better than me.\"",
+      "a": "(A)Sheela told me that Munni have been dancing better than her.",
+      "b": "(B)Sheela told me that Munni was dancing better than her.",
+      "c": "(C)Sheela told me that Munni had been dancing better than her.",
+      "d": "(D)Sheela told me that Munni had dancing better than her.",
+      "correct": "C"      
+    });
+    data.push({
+      "qtext": " She said, \"He was trying to help me\".",
+      "a": "(A)She said that he tried to help her.",
+      "b": "(B)She said that he had been trying to help her.",
+      "c": "(C)She said that he has been trying to help her.",
+      "d": "(D)She said that he was trying to help her.",
+      "correct": "B"      
+    });
+    data.push({
+      "qtext": " Deepak said to me, \"I had finished the coffee.\"",
+      "a": "(A)Deepak told me that he had finished the coffee.",
+      "b": "(B)Deepak told me that he had been finished the coffee.",
+      "c": "(C)Deepak told me that he had finish the coffee.",
+      "d": "(D)Deepak told me that he finished the coffee.",
+      "correct": "A"      
+    });
+    data.push({
+      "qtext": " Rahul said to me, \" I had gone through it.\"",
+      "a": "(A)Rahul told me that he have went through it.",
+      "b": "(B)Rahul told me that he have gone through it.",
+      "c": "(C)Rahul told me that he had went through it.",
+      "d": "(D)Rahul told me that he had gone through it.",
+      "correct": "D"      
+    });
+    data.push({
+      "qtext": " Baljider said to me, \"I had been working on it for 5 days.\"",
+      "a": "(A)Baljinder told me that he had been working on it for 5 days.",
+      "b": "(B)Baljinder told me that he has been working on it for 5 days.",
+      "c": "(C)Baljinder told me that he had worked on it for 5 days.",
+      "d": "(D)Baljinder told me that he was working on it for 5 days.",
+      "correct": "A"      
+    });
+    data.push({
+      "qtext": " Sweety said to me, \"I had been writing an essay for 3 hours.\"",
+      "a": "(A)Sweety told me that she has been writing an essay for 3 hours.",
+      "b": "(B)Sweety told me that she had been writing an essay for 3 hours.",
+      "c": "(C)Sweety told me that she was writing an essay for 3 hours.",
+      "d": "(D)Sweety told me that she had written an essay for 3 hours.",
+      "correct": "B"      
+    });
+    data.push({
+      "qtext": " Rahul said, \"I can buy that watch.\"",
+      "a": "(A)Rahul said that he can buy that watch.",
+      "b": "(B)Rahul said that he could buy that watch.",
+      "c": "(C)Rahul said that he was able to buy that watch.",
+      "d": "(D)Rahul said that he can be buy that watch.",
+      "correct": "B"      
+    });
+    data.push({
+      "qtext": " He said, \"Honesty is the best policy.\"",
+      "a": "(A)He said that Honesty is the best policy.",
+      "b": "(B)He said that Honesty was the best policy.",
+      "c": "(C)He said that Honesty would be the best policy.",
+      "d": "(D)He said that Honesty will be the best policy.",
+      "correct": "A"      
+    });
+    data.push({
+      "qtext": " He remarked, \"Two and two makes four.\"",
+      "a": "(A)He remarked that two and two would make four.",
+      "b": "(B)He remarked that two and two made four.",
+      "c": "(C)He remarked that two and two makes four.",
+      "d": "(D)He advised that two and two makes four.",
+      "correct": "C"      
+    });
+    data.push({
+      "qtext": " My father said, \"All that glitters is not gold.\"",
+      "a": "(A)My father said that all that glitters was not gold.",
+      "b": "(B)My father advised that all that glitters is not gold.",
+      "c": "(C)My father remarked that all that glitters is not gold.",
+      "d": "(D)My father said that all that glitters is not gold.",
+      "correct": "D"      
+    });
+    data.push({
+      "qtext": " Rahul said, \"We must obey our parents.\"",
+      "a": "(A)Rahul remarked that we must obey our parents.",
+      "b": "(B)Rahul advised that we must obey our parents.",
+      "c": "(C)Rahul said that we must obey our parents.",
+      "d": "(D)Rahul said that we should obey our parents.",
+      "correct": "C"      
+    });
+    data.push({
+      "qtext": " Sheela said, \"I must go.\"",
+      "a": "(A)Sheela said that she had to go.",
+      "b": "(B)Sheela said that I must go.",
+      "c": "(C)Sheela said that she need to go.",
+      "d": "(D)Sheela said that she must went.",
+      "correct": "A"      
+    });
+    data.push({
+      "qtext": " Rakhi says to him, \"You must come back home in time.\"",
+      "a": "(A)Rakhi tells him that he has to come come back home in time. ",
+      "b": "(B)Rakhi tells him that he had to come come back home in time.",
+      "c": "(C)Rakhi tells him that he will have to come come back home in time.",
+      "d": "(D)Rakhi tells him that he must come come back home in time.",
+      "correct": "A"      
+    });
+    data.push({
+      "qtext": " The MLA said to people, \"Ladies and gentlemen, your vote is my real power.\"",
+      "a": "(A)The MLA said that people your vote will my real power.",
+      "b": "(B)The MLA addressed the people as ladies and gentlemen and said that your vote will be my real power.",
+      "c": "(C)The MLA addressed the people as ladies and gentlemen and said that their vote is my real power.",
+      "d": "(D)The MLA addressed the people as ladies and gentlemen and said that their vote was his real power.",
+      "correct": "D"      
+    });
+    data.push({
+      "qtext": " She said, \"Well, Rahul, You have done this work.\"",
+      "a": "(A)She told Rahul that you had done this work.",
+      "b": "(B)She told Rahul that you had done that work.",
+      "c": "(C)She told Rahul that he had done that work.",
+      "d": "(D)She told Rahul that he has done that work.",
+      "correct": "C"      
+    });
+    data.push({
+      "qtext": " Salma said to me, \"Have you a LED TV ?\"",
+      "a": "(A)Salma asked me if I have a LED TV.",
+      "b": "(B)Salma asked me have you a LED TV.",
+      "c": "(C)Salma told me have you a LED TV.",
+      "d": "(D)Salma asked me if I had a LED TV.",
+      "correct": "D"      
+    });
+    data.push({
+      "qtext": " He said to us, \"Are you going to market today?\"",
+      "a": "(A)He asked us if we were going to market that day.",
+      "b": "(B)He asked us if you are going to market that day.",
+      "c": "(C)He asked us if we went to market that day.",
+      "d": "(D)He asked us if we had gone to market that day.",
+      "correct": "A"      
+    });
+    data.push({
+      "qtext": " I said to my brother, \"What are you playing today ?\"",
+      "a": "(A)I asked my brother what he will be playing that day.",
+      "b": "(B)I asked my brother what he was playing that day.",
+      "c": "(C)I asked my brother if he was playing that day.",
+      "d": "(D)I asked my brother what he would be playing that day.",
+      "correct": "B"      
+    });
+    data.push({
+      "qtext": " I asked, \"What happened?\"",
+      "a": "(A)I enquired what happened.",
+      "b": "(B)I asked what happened.",
+      "c": "(C)I enquired that what happened.",
+      "d": "(D)I asked what had happened.",
+      "correct": "D"      
+    });
+    data.push({
+      "qtext": " Rahul said to Shilpa, \"How are you ?\"",
+      "a": "(A)Rahul asked Shilpa how she was.",
+      "b": "(B)Rahul asked Shilpa how she were.",
+      "c": "(C)Rahul asked Shilpa how is she.",
+      "d": "(D)Rahul enquired Shilpa how she was.",
+      "correct": "A"      
+    });
+    data.push({
+      "qtext": " He said to me, \"You are rich, aren't you ?\"",
+      "a": "(A)He asked me if I had rich.",
+      "b": "(B)He asked me if I had been rich.",
+      "c": "(C)He asked me if I was rich.",
+      "d": "(D)He asked me if I was rich, wasn't me.",
+      "correct": "C"      
+    });
+    data.push({
+      "qtext": " Rohit said to Sunita, \"Will you love me.\"",
+      "a": "(A)Rohit asked Sunita if she would love him.",
+      "b": "(B)Rohit asked Sunita if you would love me.",
+      "c": "(C)Rohit asked Sunita if she will love him.",
+      "d": "(D)Rohit asked Sunita if she should love him.",
+      "correct": "A"      
+    });
+    data.push({
+      "qtext": " The Judge said to inspector, \"Call the thieves.\"",
+      "a": "(A)The Judge urged inspector to call the thieves.",
+      "b": "(B)The Judge ordered inspector to get the thieves.",
+      "c": "(C)The Judge requested inspector to call the thieves.",
+      "d": "(D)The Judge ordered inspector to call the thieves.",
+      "correct": "D"      
+    });
+    data.push({
+      "qtext": " She said, \"Madam, I have done homework.\"",
+      "a": "(A)She said respectfully that she had been done homework.",
+      "b": "(B)She said respectfully that she has done homework.",
+      "c": "(C)She said respectfully that she had done homework.",
+      "d": "(D)She said respectfully to her teacher that she had done homework.",
+      "correct": "C"      
+    });
+    data.push({
+      "qtext": " He said to me, \"Do read the holy Gita daily.\"",
+      "a": "(A)He asked to me to read the holy Gita daily.",
+      "b": "(B)He asked me to do read the holy Gita daily.",
+      "c": "(C)He asked me to read the holy Gita daily.",
+      "d": "(D)He requested me to read the holy Gita daily.",
+      "correct": "C"      
+    });
+    data.push({
+      "qtext": " Sahil said to his friends, \"Lets go to the park.\"",
+      "a": "(A)Sahil suggested to his friends that we should go to the park.",
+      "b": "(B)Sahil requested to his friends that we should go to the park.",
+      "c": "(C)Sahil suggested to his friends that we would go to the park.",
+      "d": "(D)Sahil suggested to his friends that we have to go to the park.",
+      "correct": "A"      
+    });
+    data.push({
+      "qtext": " The children said, \"Let us complete homework together.\"",
+      "a": "(A)The children told that let them complete homework together.",
+      "b": "(B)The children told that they should complete homework together.",
+      "c": "(C)The children suggested that they should complete homework together.",
+      "d": "(D)The children asked that they should complete homework together.",
+      "correct": "C"      
+    });
+    data.push({
+      "qtext": " He said, \"May God bless you.\"",
+      "a": "(A)He prayed that God bless him.",
+      "b": "(B)He prayed that may God bless him.",
+      "c": "(C)He told that may God bless him.",
+      "d": "(D)He prayed that might God bless him.",
+      "correct": "D"      
+    });
+    data.push({
+      "qtext": " They said to me, \"May you live long.\"",
+      "a": "(A)They prayed for me that I might live long.",
+      "b": "(B)They blessed me that I might live long.",
+      "c": "(C)They blessed me that I may live long.",
+      "d": "(D)They blessed me that may I live long.",
+      "correct": "B"      
+    });
+    data.push({
+      "qtext": " Captain said, \"Bravo ! We have won the match.\"",
+      "a": "(A)Captain exclaimed with joy that they have won the match.",
+      "b": "(B)Captain exclaimed that they had won the match.",
+      "c": "(C)Captain exclaimed with joy that they had won the match.",
+      "d": "(D)Captain exclaimed with surprise that they had won the match.",
+      "correct": "C"      
+    });
+    data.push({
+      "qtext": " She said, \" Ugh! I have hated him.\"",
+      "a": "(A)She exclaimed with disgust that she had been hated him.",
+      "b": "(B)She exclaimed with disgust that she had hated him.",
+      "c": "(C)She exclaimed with sorrow that she had hated him.",
+      "d": "(D)She exclaimed with disgust that I had hated him.",
+      "correct": "B"      
+    });
+    data.push({
+      "qtext": " Shakshi said, \"How clever I am!\"",
+      "a": "(A)Shakshi exclaimed that she was very clever.",
+      "b": "(B)Shakshi exclaimed with joy that she was very clever.",
+      "c": "(C)Shakshi exclaimed that she is very clever.",
+      "d": "(D)Shakshi said that she was very clever.",
+      "correct": "A"      
+    });
+    data.push({
+      "qtext": " Mr. Bajaj said, \"How foolish of me!\"",
+      "a": "(A)Mr. Bajaj confessed with regret that he had been very foolish.",
+      "b": "(B)Mr. Bajaj confessed with regret that he is very foolish.",
+      "c": "(C)Mr. Bajaj confessed with sorrow that he was very foolish.",
+      "d": "(D)Mr. Bajaj confessed with regret that he was very foolish.",
+      "correct": "D"      
+    });
+    data.push({
+      "qtext": " Bhaskar said to Kapil, \"Please do come some time.\"",
+      "a": "(A)Bhaskar requested Kapil to do come sometime.",
+      "b": "(B)Bhaskar requested Kapil to come sometime.",
+      "c": "(C)Bhaskar asked Kapil to come sometime.",
+      "d": "(D)Bhaskar requested Kapil to please come sometime.",
+      "correct": "B"      
+    });
+    data.push({
+      "qtext": " I said her, \"Could you please help me ?\"",
+      "a": "(A)I requested her to help me.",
+      "b": "(B)I asked her to help me.",
+      "c": "(C)I told her if she can help me.",
+      "d": "(D)I asked her if she can help me.",
+      "correct": "A"      
+    });
+    data.push({
+      "qtext": "Kiran asked me, \"Did you see the Cricket match on television last night?\"\n",
+      "a": "(A)Kiran asked me whether I saw the Cricket match on television the earlier night.",
+      "b": "(B)Kiran asked me whether I had seen the Cricket match on television the earlier night.",
+      "c": "(C)Kiran asked me did I see the Cricket match on television the last night.",
+      "d": "(D)Kiran asked me whether I had seen the Cricket match on television the last night.",
+      "correct": "4"      
+    });
+    data.push({
+      "qtext": "David said to Anna, \"Mona will leave for her native place tomorrow.\"\n\n\n\n",
+      "a": "(A)David told Anna that Mona will leave for her native place tomorrow.",
+      "b": "(B)David told Anna that Mona left for her native place the next day.",
+      "c": "(C)David told Anna that Mona would be leaving for her native place tomorrow.",
+      "d": "(D)David told Anna that Mona would leave for her native place the next day.",
+      "correct": "4"      
+    });
+    data.push({
+      "qtext": "I said to him, \"Why are you working so hard?\"\n",
+      "a": "(A)I asked him why he was working so hard.",
+      "b": "(B)I asked him why was he working so hard.",
+      "c": "(C)I asked him why had he been working so hard.",
+      "d": "(D)I asked him why he had been working so hard.",
+      "correct": "1"      
+    });
+    data.push({
+      "qtext": "He said to her, What a cold day!\"\n",
+      "a": "(A)He told her that it was a cold day.",
+      "b": "(B)He exclaimed that it was a cold day.",
+      "c": "(C)He exclaimed sorrowfully that it was a cold day.",
+      "d": "(D)He exclaimed that it was a very cold day.",
+      "correct": "4"      
+    });
+    data.push({
+      "qtext": "The tailor said to him, \"Will you have the suit ready by tomorrow evening?\"\n\n\n\n\n",
+      "a": "(A)The tailor asked him that he will have the suit ready by the next evening.",
+      "b": "(B)The tailor asked him that he would had the suit ready by the next evening.",
+      "c": "(C)The tailor asked him if he would have the suit ready by the next evening.",
+      "d": "(D)The tailor asked him if he will like to the suit ready by the next evening.",
+      "correct": "3"      
+    });
+    data.push({
+      "qtext": "He said to interviewer, \"Could you please repeat the question?\"\n\n\n\n",
+      "a": "(A)He requested the interviewer if he could please repeat the question.",
+      "b": "(B)He requested the interviewer to please repeat the question.",
+      "c": "(C)He requested the interviewer to repeat the question.",
+      "d": "(D)He requested the interviewer if he could repeat the question.",
+      "correct": "3"      
+    });
+    data.push({
+      "qtext": "He said. \"Be quite and listen to my words.\n\t\n\n\n\n",
+      "a": "(A)He urged them to be quite and listen to his words.",
+      "b": "(B)He urged them and said be quite and listen to his words.",
+      "c": "(C)He urged they should be quite and listen to his words.",
+      "d": "(D)He said you should be quite and listen to his words.",
+      "correct": "1"      
+    });
+    data.push({
+      "qtext": "He said to me, I have often told you not to play with fire.\n\t\n\n\n",
+      "a": "(A)He said that he has often been telling me not to play with fire.",
+      "b": "(B)He told me that he had often told me not to play with fire.",
+      "c": "(C)He reminded me that he often said to me not to play with fire.",
+      "d": "(D)He said to me that he often told me not to play with fire.",
+      "correct": "2"      
+    });
+    data.push({
+      "qtext": "The Captain said to his men, \"Stand at ease.\"\n",
+      "a": "(A)The Captain urged his men to stand at ease.",
+      "b": "(B)The Captain wanted his men to stand at ease.",
+      "c": "(C)The Captain told his men that they should stand at ease.",
+      "d": "(D)The Captain commanded his men to stand at ease.",
+      "correct": "4"      
+    });
+    data.push({
+      "qtext": "Pawan said to me, \"If I hear any news, I'll phone you.\"\n\n\n\n",
+      "a": "(A)Pawan told me that if he heard any news, he will phone me.",
+      "b": "(B)Pawan told me that if he will hear my news, he will phone me.",
+      "c": "(C)Pawan told me that if he had heard any news, he would phone me.",
+      "d": "(D)Pawan told me that if he heard any news, he would phone me.",
+      "correct": "4"      
+    });
+    data.push({
+      "qtext": "He said,\"I cannot help you at present because I am myself in difficulty.\"\n",
+      "a": "(A)He said that I cannot help you at present because I myself in difficulty.",
+      "b": "(B)He said that he could not help you at present because he was himself in difficulty.",
+      "c": "(C)He told that he could not help you at present because he was himself in difficulty.",
+      "d": "(D)He asked that he could not help you at present because he was himself in difficulty.",
+      "correct": "2"      
+    });
+    data.push({
+      "qtext": "He told her, \"I want to meet your father\":\n",
+      "a": "(A)He told her that I want to meet your father.",
+      "b": "(B)He told her that he wanted to meet her father.",
+      "c": "(C)He told her that he wanted to meet your father.",
+      "d": "(D)He told her that she wanted to meet her father.",
+      "correct": "2"      
+    });
+    data.push({
+      "qtext": "He says, ''I don't want to play any more.\" \n\n\n\n",
+      "a": "(A)He says that he doesn't want to play any more.",
+      "b": "(B)He says that I don't want to play any more.",
+      "c": "(C)He says that I didn't want to play any more.",
+      "d": "(D)He says that he didn't want to play any more.",
+      "correct": "1"      
+    });
+    data.push({
+      "qtext": "The government has announced, \"Taxes will be raised\":\n\n\n\n",
+      "a": "(A)The government has announced that taxes would be raised.",
+      "b": "(B)The government has announced that taxes would raised.",
+      "c": "(C)The government has announced that taxes will be raised.",
+      "d": "(D)The government has announced taxes will be raised.",
+      "correct": "3"      
+    });
+    data.push({
+      "qtext": "Mohan said, \"We shall go to see the Taj in the moonlit night\":\n\n\n",
+      "a": "(A)Mohan said that we shall go to see the Taj in the moonlit night.",
+      "b": "(B)Mohan told that we shall go to see the Taj in moonlit night.",
+      "c": "(C)Mohan told that we should go to see the Taj in the moonlit night.",
+      "d": "(D)Mohan said that they should go to see the Taj in moonlit night.",
+      "correct": "4"      
+    });
+    data.push({
+      "qtext": "The teacher said to Ram,\"Congratulations ! Wish you success in life.\"\n",
+      "a": "(A)The teacher congratulated Ram and said wish you success in life.",
+      "b": "(B)The teacher wished congratulations and success in life to Ram.",
+      "c": "(C)The teacher wished congratulations to Ram and wished him success in life.",
+      "d": "(D)The teacher congratulated Ram and wished him success in life.",
+      "correct": "4"      
+    });
+    data.push({
+      "qtext": "The poor examine said,\"O God, take pity on me.\"\n",
+      "a": "(A)The poor examine prayed God to take pity on him.",
+      "b": "(B)The poor examine, involving God, implored him to take pity on him.",
+      "c": "(C)The poor examine exclaimed that God take pity on him.",
+      "d": "(D)The poor examine asked God to take pity on him.",
+      "correct": "2"      
+    });
+    data.push({
+      "qtext": "\"Where will you be tomorrow,\" I said, \"in case I have to ring you ?\"\n",
+      "a": "(A)I asked where you will be the next day in case I will ring him.",
+      "b": "(B)I asked where he would be the next day in case I had to ring him.",
+      "c": "(C)I said to him where he will be in case I have to ring him.",
+      "d": "(D)I enquired about his where about the next day in case I would have to ring up.",
+      "correct": "2"      
+    });
+    data.push({
+      "qtext": "Seeta said to me, \" Can you give me your pen ?\"\n\n",
+      "a": "(A)Seeta asked me can I give her my pen.",
+      "b": "(B)Seeta asked me if I can give me your pen.",
+      "c": "(C)Seeta asked me if I could give her my pen.",
+      "d": "(D)Seeta asked me if i could give her my pen.",
+      "correct": "3"      
+    });
+    data.push({
+      "qtext": "The father warned his son that he should be beware of him.\n",
+      "a": "(A)The father warned his son, \"beware of him !\"",
+      "b": "(B)The father warned his son, \"Watch that chap !\"",
+      "c": "(C)The father warned his son, \"Be careful about him.\"",
+      "d": "(D)The father warned his son, \"Don't fall into the trap.\"",
+      "correct": "1"      
+    });
+    data.push({
+      "qtext": "Manna asked Rohan, \"Have you sat in a trolley bus before ?\"\n",
+      "a": "(A)Manna asked Rohan had he sat in a trolley bus earlier.",
+      "b": "(B)Manna asked Rohan had he sat in a trolley bus before.",
+      "c": "(C)Manna asked Rohan if he sat on a trolley bus before.",
+      "d": "(D)Manna asked Rohan if he has ever sat in a trolley bus.",
+      "correct": "1"      
+    });
+    data.push({
+      "qtext": " Farhan asked Geeta, \"Could you lend me a hundred rupees until tomorrow ?\" \n\n\n",
+      "a": "(A)Farhan asked Geeta whether she could lend him a hundred rupees until tomorrow.",
+      "b": "(B)Farhan asked Geeta whether she could lend him a hundred rupees until the next day.",
+      "c": "(C)Farhan asked Geeta whether she could lend me a hundred rupees untill the next day.",
+      "d": "(D)Farhan asked whether Geeta could lend me a hundred rupees until the next day.",
+      "correct": "2"      
+    });
+    data.push({
+      "qtext": "\"What about going for swim,\" he said, \"It's quite fine now.\"\n\n\n\n",
+      "a": "(A)He asked me what about going for a swim as it was quite fine then.",
+      "b": "(B)He proposed going for swim as it was quite fine.",
+      "c": "(C)He suggested going for a swim as it was quite fine.",
+      "d": "(D)He advised me to go for a swim as it was quite fine.",
+      "correct": "1"      
+    });
+    data.push({
+      "qtext": "\"You can't bathe in this sea,\" he said to me, \"it's very rough.\"\n\n\n\n",
+      "a": "(A)He said that I can't bathe in this sea because it's very rough.",
+      "b": "(B)He said that you couldn't bathe in the sea if it was very rough.",
+      "c": "(C)He said that I couldn't bathe in that sea as it was very rough.",
+      "d": "(D)He said that you can't bathe in this sea since it was very rough.",
+      "correct": "3"      
+    });
+    data.push({
+      "qtext": "Vissu said, \"We passed by a beautiful lake when we went on a trip to Goa.\"\n",
+      "a": "(A)Vissu said that they passed by a beautiful lake when they had gone on a trip to Goa.",
+      "b": "(B)Vissu said that they has passed by a beautiful lake when they went on a trip to Goa.",
+      "c": "(C)Vissu said that they had passed by a beautiful lake when they had gone on a trip to Goa.",
+      "d": "(D)Vissu said they passed by a beautiful lake when they went on a trip to Goa.",
+      "correct": "3"      
+    });
+    data.push({
+      "qtext": "He said to me, \"I expect you to attend the function.\"\n\n",
+      "a": "(A)He told me that he had expected me to attend the function.",
+      "b": "(B)He told me that he expected me to attended the function.",
+      "c": "(C)He told me that he expected me to have attended the function.",
+      "d": "(D)He told me that he expected me to attend the function.",
+      "correct": "1"      
+    });
+    data.push({
+      "qtext": "He said, \"Why didn't you send your application to me ?\"\n",
+      "a": "(A)He enquired why I had not sent my application to him.",
+      "b": "(B)He enquired why I did not send my application to him.",
+      "c": "(C)He enquired why had I not sent my application to him.",
+      "d": "(D)He enquired why did I not send my application to him.",
+      "correct": "1"      
+    });
+    data.push({
+      "qtext": "Dinesh asked, \"Are you going to the party tomorrow, Rani ?\"\n",
+      "a": "(A)Dinesh asked whether Rani was going to the party the next day.",
+      "b": "(B)Dinesh asked Rani whether you are going to the party the next day.",
+      "c": "(C)Dinesh asked Rani whether she was going to the party the next day.",
+      "d": "(D)Dinesh asked Rani are you going to the party tomorrow.",
+      "correct": "3"      
+    });
+    data.push({
+      "qtext": "Suresh asked, \" How long will it take to travel from Germany to South Africa ?\"\n",
+      "a": "(A)Suresh asked how long it will take to travel from Germany to South Africa.",
+      "b": "(B)Suresh asked how long would it take to travel from Germany to South Africa.",
+      "c": "(C)Suresh asked how long it would take to travel from Germany to South Africa.",
+      "d": "(D)Suresh was asking how long must it take to travel from Germany to South Africa.",
+      "correct": "2"      
+    });
+    data.push({
+      "qtext": "\"What did you see at the South Pole ?\" Ashok asked Anil.\n",
+      "a": "(A)Ashok asked Anil if he saw anything at the South Pole.",
+      "b": "(B)Ashok asked Anil What he had seen at the South Pole.",
+      "c": "(C)Ashok asked Anil What did he see at the South Pole.",
+      "d": "(D)Ashok asked Anil that he saw anything at the South Pole.",
+      "correct": "2"      
+    });
+    data.push({
+      "qtext": "My father said to us, \"We should study and get a good division in the examination.\"\n",
+      "a": "(A)My father said us that we should study and got a good division in the examination.",
+      "b": "(B)My father told us that we should studied and got a good division in the examination.",
+      "c": "(C)My father told us that we should study and get a good division in the examination.",
+      "d": "(D)My father told to us that we should study and get a good division in the examination.",
+      "correct": "2"      
+    });
+</script>
+
+</body>
+</html>
