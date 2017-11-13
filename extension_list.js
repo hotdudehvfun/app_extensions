@@ -2,6 +2,12 @@
   "extensions": [
     
     {
+      "icon": "toys",
+      "icon_color": "#41ccc9",
+      "title": "Phrasal Verbs",
+      "subtitle": "Learn phrasal verbs which help in fill in the blanks and improvement type of questions",
+      "url": "https://hotdudehvfun.github.io/app_extensions/extension_phrasal_verbs_clean_look.html"
+    },{
       "icon": "record_voice_over",
       "icon_color": "#4CD964",
       "title": "Change of Speech",
