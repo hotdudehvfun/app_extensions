@@ -194,6 +194,8 @@ var currentPos;
 var isNewQuestion;
 document.addEventListener("DOMContentLoaded",function()
 {
+	 $.mobile.loading( "hide" );
+    $.mobile.loading().hide();
   currentPos=lastPosition();
   rule1(0);
   createSelectIndex();
