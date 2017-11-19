@@ -425,7 +425,6 @@ function getRandomInt(min, max)
 //swipe to next
 new Hammer(document.getElementsByTagName('body')[0]).on('swipeleft swiperight', function(ev)
 {
-
   switch(ev.type)
   {
     case "swipeleft":
@@ -435,10 +434,23 @@ new Hammer(document.getElementsByTagName('body')[0]).on('swipeleft swiperight', 
     case "swiperight":
     rule1(-1);
     break;
-
   }
-
 });
+new Hammer(document.getElementsByClassName('content-holder-inner')[0]).on('swipeleft swiperight', function(ev)
+{
+  switch(ev.type)
+  {
+    case "swipeleft":
+    rule1(1);
+    break;
+
+    case "swiperight":
+    rule1(-1);
+    break;
+  }
+});
+
+
 
 var array=[];
 array.push("abeyance|continuance");
