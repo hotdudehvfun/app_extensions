@@ -6,12 +6,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-    <script type="text/javascript" src="https://cdn.rawgit.com/coderitual/odoo/feature/codevember16/lib/odoo.js"></script>
     <script type="text/javascript" src="hammer.js"></script>
     
 
     <style type="text/css">
-    /*primary color: #FF4444*/
+    /*primary color: #632b6c*/
     
     *
     {
@@ -27,8 +26,8 @@
     body
     {
         margin: 0px; 
-        overflow: hidden;
         background: #fff;
+        overflow-x: hidden;
     }
     .shadow
     {
@@ -44,7 +43,7 @@
     {
         width: 50%;
         height: 2px;
-        background: #FF4444;
+        background: #632b6c;
         margin-left: 25%;
         position:relative;
     }
@@ -52,7 +51,7 @@
     {
         width: 25%;
         height: 2px;
-        background: #FF4444;
+        background: #632b6c;
         margin-left: 37.5%;
         position:relative;
     }
@@ -64,29 +63,32 @@
     }
     .option
     {
-    padding: 5%;
-    background: rgba(255, 255, 255, 0);
-    display: inline-table;
-    margin-top: 10%;
-    margin-left: 10%;
-    margin-right: 10%;
-    color: #FF4444;
-    width: 10%;
-    min-width: 100px;
-    max-width: 250px;
-    transition: 0.5s all;
-    text-transform: lowercase;
-    border: 2px solid #FF4444;
+    	padding: 2% 3% 2% 3%;
+	    border-radius: 50px;
+	    background: #ececec;
+	    display: inline-table;
+	    margin-top: 5%;
+	    margin-left: 10%;
+	    margin-right: 10%;
+	    color: #111;
+	    width: 30%;
+	    max-width: 200px;
+    }
+    .option>img
+    {
+    	height: 10px;
+	    width: 10px;
+	    margin-left: 5px;
+	    display: none;
     }
     .correct
     {
-        background: rgba(0, 150, 136, 0.65);
-        color: white;       
+        border: 1px solid #4CAF50;
     }
     .wrong
     {
-        background: rgba(255, 68, 68, 0.64);
-        color: white;
+        border: 1px solid #e00d32;
+
     }
     
     .explanation-holder
@@ -103,7 +105,7 @@
       position: absolute;
       bottom: 2%;
       right: 3%;
-      background: #FF4444;
+      background: #632b6c;
       border-radius: 50px;
       padding: 5px;
     }
@@ -115,19 +117,10 @@
     }
     .content-holder
     {
-    height: 80%;
-    background: rgba(255, 255, 255, 0);
-    padding-left: 6%;
-    padding-right: 6%;
-    padding-bottom: 5%;
-    position: absolute;
-    top: 5%;
-    width: 88%;
+    
     }
     .content-holder-inner
     {
-        text-align: center;
-        height: 100%;
         padding-top: 3%;
         padding-bottom:3%;
         overflow-y: auto;
@@ -144,7 +137,7 @@
         text-align-last: center;
         background:#fff;
         color: #111;
-        border: 2px solid #FF4444;
+        border: 2px solid #632b6c;
         padding: 1%;
     }
     #index-change-holder
@@ -153,7 +146,7 @@
         bottom: 1%;
         text-align: center;
         width: 100%;
-        color: #FF4444;
+        color: #632b6c;
     }
     #select-holder
     {
@@ -163,11 +156,20 @@
         width: 50%;
         display: none;
     }
+    .main_board
+	{
+		background: #632b6c;
+	    color: white;
+	    padding: 8% 0% 8% 0%;
+	    font-size: 1.5em;
+	}
     
     </style>
 </head>
 <body>
-<canvas id="canvas" class="background-banner"></canvas> 
+	<div class="main_board">
+		<div class="heading" style="color: #fff;">Antonyms</div>
+	</div>
 <div class="content-holder">
     <div class="content-holder-inner ">
         <div id="root-word" class="heading">Antonyms</div>
@@ -315,12 +317,12 @@ function rule1(dir)
 
         //create json string
         correct=correctIndex;
-        //document.getElementById("root-word").innerHTML=qtext;
-        changeQtext(qtext);
-        document.getElementById('a').innerHTML=options[0];
-        document.getElementById('b').innerHTML=options[1];
-        document.getElementById('c').innerHTML=options[2];
-        document.getElementById('d').innerHTML=options[3];
+        document.getElementById("root-word").innerHTML=qtext;
+        //changeQtext(qtext);
+        document.getElementById('a').innerHTML=options[0]+"<img src='wrong_image.png'>"+"<img  src='correct_image.png'>";
+        document.getElementById('b').innerHTML=options[1]+"<img src='wrong_image.png'>"+"<img  src='correct_image.png'>";
+        document.getElementById('c').innerHTML=options[2]+"<img src='wrong_image.png'>"+"<img  src='correct_image.png'>";
+        document.getElementById('d').innerHTML=options[3]+"<img src='wrong_image.png'>"+"<img  src='correct_image.png'>";
 
         document.getElementById('a').setAttribute("onclick", "checkAnswer('a',"+correct+");" );
         document.getElementById('a').setAttribute("class", "option" );
@@ -393,20 +395,26 @@ function checkAnswer(userAnswer,correctIndex)
         document.getElementById('b').setAttribute("class","option");
         document.getElementById('c').setAttribute("class","option");
         document.getElementById('d').setAttribute("class","option");
+        //img 0 is wrong ,1 is correct
         if(userAnswer==abcd[correctIndex])
         {
             document.getElementById(userAnswer).setAttribute("class","option correct");
+            document.getElementById(userAnswer).getElementsByTagName('img')[1].style.display="inline-block";
+
         }else
         {
             document.getElementById(userAnswer).setAttribute("class","option wrong");
+            document.getElementById(userAnswer).getElementsByTagName('img')[0].style.display="inline-block";
+            
             document.getElementById(abcd[correctIndex]).setAttribute("class","option correct");
+            document.getElementById(abcd[correctIndex]).getElementsByTagName('img')[1].style.display="inline-block";
 
         }
 
-    clearInterval(id);
-    id=setTimeout(function(){
-        rule1(1);
-    },2000);
+    // clearInterval(id);
+    // id=setTimeout(function(){
+    //     rule1(1);
+    // },2000);
     }
 }
 
@@ -415,7 +423,7 @@ function getRandomInt(min, max)
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 //swipe to next
-new Hammer(document.getElementsByClassName('content-holder-inner')[0]).on('swipeleft swiperight', function(ev)
+new Hammer(document.getElementsByTagName('body')[0]).on('swipeleft swiperight', function(ev)
 {
 
   switch(ev.type)
@@ -815,6 +823,5 @@ array.push("flaunt|hide");
 array.push("fledgling|experienced");
 array.push("flinch|extol");
 </script>
-<script type="text/javascript" src="liveWallpaper_particles.js"></script>
 </body>
 </html>
