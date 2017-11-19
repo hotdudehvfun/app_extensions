@@ -6,7 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-    <script type="text/javascript" src="hammer.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
     
 
     <style type="text/css">
@@ -422,10 +423,9 @@ function getRandomInt(min, max)
 {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
-//swipe to next
-new Hammer(document.getElementsByTagName('body')[0]).on('swipeleft swiperight', function(ev)
+$('body').on('swipeleft swiperight',function(e)
 {
-  switch(ev.type)
+  switch(e.type)
   {
     case "swipeleft":
     rule1(1);
@@ -434,20 +434,7 @@ new Hammer(document.getElementsByTagName('body')[0]).on('swipeleft swiperight', 
     case "swiperight":
     rule1(-1);
     break;
-  }
-});
-new Hammer(document.getElementsByClassName('content-holder-inner')[0]).on('swipeleft swiperight', function(ev)
-{
-  switch(ev.type)
-  {
-    case "swipeleft":
-    rule1(1);
-    break;
-
-    case "swiperight":
-    rule1(-1);
-    break;
-  }
+  }    
 });
 
 
