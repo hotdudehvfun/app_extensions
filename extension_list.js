@@ -2,6 +2,12 @@
   "extensions": [
     
     {
+      "icon": "weekend",
+      "icon_color": "#01b988",
+      "title": "Odd One Out Words",
+      "subtitle": "find the odd one out from given options",
+      "url": "https://hotdudehvfun.github.io/app_extensions/extension_odd_one_out_words.html"
+    },{
       "icon": "toys",
       "icon_color": "#41ccc9",
       "title": "Phrasal Verbs",
@@ -36,15 +42,15 @@
       "url": "https://hotdudehvfun.github.io/app_extensions/extension_gap_sequence.html"
     },
     {
-      "icon": "library_books",
-      "icon_color": "#e91e63",
+      "icon": "text_format",
+      "icon_color": "#632b6c",
       "title": "Antonyms",
       "subtitle": "Learn opposite meaning words",
       "url": "https://hotdudehvfun.github.io/app_extensions/extension_antonyms.html"
     },
     {
-      "icon": "library_books",
-      "icon_color": "#e91e63",
+      "icon": "pets",
+      "icon_color": "#2ecc70",
       "title": "Synonyms",
       "subtitle": "Learn similar meaning words",
       "url": "https://hotdudehvfun.github.io/app_extensions/extension_synonyms.html"
