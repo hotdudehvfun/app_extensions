@@ -1,0 +1,3171 @@
+<!DOCTYPE>
+<html>
+<head>
+    <title>Antonyms</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    
+
+    <style type="text/css">
+    /*primary color: #01b988*/    
+    *
+    {
+        font-family: "Roboto","sans-serif";
+          -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+    }   
+    body
+    {
+        margin: 0px; 
+        background: #fff;
+        overflow-x: hidden;
+    }
+    .shadow
+    {
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    }
+    .heading
+    {
+        text-align: center;
+        text-transform: uppercase;
+        color: #111;
+    }
+    .half_line
+    {
+        width: 50%;
+        height: 2px;
+        background: #01b988;
+        margin-left: 25%;
+        position:relative;
+    }
+    ._25_line
+    {
+        width: 25%;
+        height: 2px;
+        background: #01b988;
+        margin-left: 37.5%;
+        position:relative;
+    }
+
+    .list-container
+    {
+            text-align: center;
+            margin-top: 6%;
+    }
+    .option
+    {
+    	padding: 2% 3% 2% 3%;
+	    border-radius: 50px;
+	    background: #ececec;
+	    display: inline-table;
+	    margin-top: 5%;
+	    margin-left: 10%;
+	    margin-right: 10%;
+	    color: #111;
+	    width: 30%;
+	    max-width: 200px;
+    }
+    .option>img
+    {
+    	height: 10px;
+	    width: 10px;
+	    margin-left: 5px;
+	    display: none;
+    }
+    .correct
+    {
+        border: 1px solid #4CAF50;
+    }
+    .wrong
+    {
+        border: 1px solid #e00d32;
+
+    }
+    
+    .explanation-holder
+    {
+        transition: 0.5s all cubic-bezier(.45,.64,.03,.98);
+        width: 100%;
+        height: 0px;
+        overflow-x: hidden;
+        overflow-y: auto;
+        margin-top: 5%;
+    }
+    .fab
+    {
+      position: absolute;
+      bottom: 2%;
+      right: 3%;
+      background: #01b988;
+      border-radius: 50px;
+      padding: 5px;
+    }
+    .background-banner
+    {
+        background: #fff;
+        transition: 0.5s all;
+        opacity: 0;
+    }
+    .content-holder
+    {
+    
+    }
+    .content-holder-inner
+    {
+        padding-top: 3%;
+        padding-bottom:3%;
+        overflow-y: auto;
+    }   
+    #root-word>span
+    {
+        line-height: 160%;
+        font-size: 20px;
+        margin-left: 1.5%;
+    }
+    select
+    {
+        width: 100%;
+        text-align-last: center;
+        background:#fff;
+        color: #111;
+        border: 2px solid #01b988;
+        padding: 1%;
+    }
+    #index-change-holder
+    {
+        position: absolute;
+        bottom: 1%;
+        text-align: center;
+        width: 100%;
+        color: #01b988;
+    }
+    #select-holder
+    {
+        position: absolute;
+        bottom: 14%;
+        left: 25%;
+        width: 50%;
+        display: none;
+    }
+    .main_board
+	{
+		background: #01b988;
+	    color: white;
+	    padding: 8% 0% 8% 0%;
+	    font-size: 1.5em;
+	}
+    
+    </style>
+</head>
+<body>
+	<div class="main_board">
+		<div class="heading" style="color: #fff;">Odd One Out Words</div>
+	</div>
+<div class="content-holder">
+    <div class="content-holder-inner ">
+        <div id="root-word" class="heading"></div>
+        <div class="half_line"></div>
+        <div class="list-container" id="options">
+            <div class="option" id="a"></div>
+
+        </div>
+    </div>
+</div>
+
+<div id="index-change-holder">
+</div>
+<div id="select-holder"></div>
+
+
+<script type="text/javascript">
+var currentPos;
+var isNewQuestion;
+document.addEventListener("DOMContentLoaded",function()
+{
+	 $.mobile.loading( "hide" );
+    $.mobile.loading().hide();
+  currentPos=lastPosition();
+  rule1(0);
+  createSelectIndex();
+  document.getElementById('index-change-holder').addEventListener('click',function()
+  {
+    console.log('a');
+    var div=document.getElementById('select-holder');
+    
+    if(div.style.display=="block")
+    {
+     div.style.display="none";   
+    }else
+    {
+     div.style.display="block";
+    }
+
+  });
+});
+
+function createSelectIndex(argument)
+{
+    var p=document.getElementById('select-holder');
+    var html="<select style='' id=selectIndex size=5 onchange=jumpToQuestion();>";
+    for (var i = 0; i < array.length; i++)
+    {
+        html+="<option value="+i+">"+(i+1)+"</option>";        
+    }
+    html+="</select>";
+    p.innerHTML=(html);    
+    document.getElementById('selectIndex').selectedIndex=currentPos;
+
+}
+function jumpToQuestion()
+{
+    var index=document.getElementById('selectIndex').value;
+    currentPos=parseInt(index);
+    document.getElementById('select-holder').style.display="none";
+    rule1(0);
+}
+
+function lastPosition()
+{
+  var i=0;
+  if(localStorage.index==undefined||localStorage.index==null)
+  { 
+    i=0;
+  }
+  else
+  {
+    i=parseInt(localStorage.index)
+    if(isNaN(i))
+        i=0;
+  }
+  return i;
+
+}
+function getNRandomInts(min,max,n)
+{
+    var randoms=[];
+    while(randoms.length!=n)
+    {
+        var num=getRandomInt(min,max);
+        if(randoms.indexOf(num)==-1)
+            randoms.push(num)
+    }
+    return randoms;
+}
+function hasDuplicates(arr)
+{
+  var sorted_arr = arr.slice().sort();
+  for (var i = 0; i < arr.length - 1; i++)
+  {
+      if (sorted_arr[i + 1] == sorted_arr[i])
+      {
+          return true;
+      }
+  }
+  return false;
+}
+//learning
+var list;
+var oldQtext="";
+function rule1(dir)
+{
+        
+        if(dir!=0)
+          textDir=dir;
+
+        currentPos=currentPos+dir;
+        if(currentPos<=0)
+          currentPos=0;
+        if(currentPos>=array.length)
+          currentPos=array.length-1;
+
+        console.log(dir,currentPos);
+
+        var object=array[currentPos];
+        var qtext=object.qtext;
+        var options=[];
+        'a' in object?options.push(object.a):false;
+        'b' in object?options.push(object.b):false;
+        'c' in object?options.push(object.c):false;
+        'd' in object?options.push(object.d):false;
+        'e' in object?options.push(object.e):false;
+
+        var correct=object.correct;
+        options.sort(function(){return 0.5-Math.random();});
+        var correctIndex=options.indexOf(correct);
+
+        //create json string
+        var tempArray=['a','b','c','d','e'];
+        correct=correctIndex;
+        document.getElementById("root-word").innerHTML="";
+        var p=document.getElementById('options');
+        p.innerHTML="";
+        for (var i = 0; i < options.length; i++)
+        {
+            
+            var child=document.createElement('div');
+            child.setAttribute('class','option');
+            child.setAttribute('id',tempArray[i]);
+            child.setAttribute('data-userIndex',i);//0 based
+            child.setAttribute('data-correctIndex',correct);//0 based
+            child.setAttribute("onclick", "checkAnswer(event);");
+            child.innerHTML=options[i]+"<img src='wrong_image.png'>"+"<img  src='correct_image.png'>";
+            p.appendChild(child);
+
+        }
+        try
+        {
+            document.getElementById('selectIndex').selectedIndex=currentPos;
+        }catch(e){}
+
+        isNewQuestion=true;
+        localStorage.index=currentPos;
+        document.getElementById('index-change-holder').innerHTML=(currentPos+1)+"/"+array.length;
+        oldQtext=qtext;
+        
+
+}
+function checkAnswer(event)
+{
+    if(isNewQuestion)
+    {
+        isNewQuestion=false;
+        var p=document.getElementById('options').childNodes;
+        for (var i = 0; i < p.length; i++)
+        {
+            p[i].setAttribute('class','option');
+        }
+        var abcd=['a','b','c','d','e'];
+        var correctIndex=parseInt(event.target.getAttribute('data-correctIndex'));
+        //img 0 is wrong ,1 is correct
+        if(event.target.getAttribute('data-userIndex')==event.target.getAttribute('data-correctIndex'))
+        {
+            event.target.setAttribute("class","option correct");
+            event.target.getElementsByTagName('img')[1].style.display="inline-block";
+
+        }else
+        {
+            event.target.setAttribute("class","option wrong");
+            event.target.getElementsByTagName('img')[0].style.display="inline-block";
+            
+            document.getElementById(abcd[correctIndex]).setAttribute("class","option correct");
+            document.getElementById(abcd[correctIndex]).getElementsByTagName('img')[1].style.display="inline-block";
+
+        }
+    }
+}
+
+function getRandomInt(min, max)
+{
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+$('body').on('swipeleft swiperight',function(e)
+{
+  switch(e.type)
+  {
+    case "swipeleft":
+    rule1(1);
+    break;
+
+    case "swiperight":
+    rule1(-1);
+    break;
+  }    
+});
+
+
+
+var array=[];
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Kiwi",
+      "b": "Eagle",
+      "c": "Emu",
+      "d": "Penguin",
+      "e": "Ostrich",
+      "correct": "Eagle"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Lake",
+      "b": "Sea",
+      "c": "River",
+      "d": "Pool",
+      "e": "Pond",
+      "correct": "River"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Arrow",
+      "b": "Axe",
+      "c": "Knife",
+      "d": "Dagger",
+      "e": "Sword",
+      "correct": "Arrow"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Sun",
+      "b": "Moon",
+      "c": "Star",
+      "d": "Mars",
+      "e": "Universe",
+      "correct": "Universe"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "House",
+      "b": "Cottage",
+      "c": "School",
+      "d": "Palace",
+      "e": "Hut",
+      "correct": "School"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Turtle",
+      "b": "Lamb",
+      "c": "Colt",
+      "d": "Bitch",
+      "e": "Farrow",
+      "correct": "Bitch"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Fox",
+      "b": "Wolf",
+      "c": "Jackal",
+      "d": "Deer",
+      "e": "Panther",
+      "correct": "Deer"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Cap",
+      "b": "Turban",
+      "c": "Helmet",
+      "d": "Veil",
+      "e": "Hat",
+      "correct": "Veil"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Physics",
+      "b": "Chemistry",
+      "c": "Geography",
+      "d": "Botany",
+      "e": "Zoology",
+      "correct": "Geography"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Deck",
+      "b": "Quay",
+      "c": "Stern",
+      "d": "Bow",
+      "e": "Mast",
+      "correct": "Quay"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Assassinate",
+      "b": "Kill",
+      "c": "Kidnap",
+      "d": "Stab",
+      "e": "Murder",
+      "correct": "Kidnap"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Rat",
+      "b": "Squirrel",
+      "c": "Mongoose",
+      "d": "Mole",
+      "e": "Porcupine",
+      "correct": "Mongoose"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Skull",
+      "b": "Appendix",
+      "c": "Pelvis",
+      "d": "Fibula",
+      "e": "Vertebra",
+      "correct": "Appendix"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Canoe",
+      "b": "Igloo",
+      "c": "Yacht",
+      "d": "Dinghy",
+      "e": "Raft",
+      "correct": "Igloo"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Leone",
+      "b": "Dirham",
+      "c": "Baht",
+      "d": "Lempira",
+      "e": "Cortes",
+      "correct": "Cortes"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Brick",
+      "b": "Heart",
+      "c": "Bridge",
+      "d": "Spade",
+      "e": "Club",
+      "correct": "Brick"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Cataract",
+      "b": "Hypermetropia",
+      "c": "Trachoma",
+      "d": "Eczema",
+      "e": "Glaucoma",
+      "correct": "Eczema"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Radium",
+      "b": "Thorium",
+      "c": "Sodium",
+      "d": "Polonium",
+      "e": "Uranium",
+      "correct": "Sodium"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Hostel",
+      "b": "Hotel",
+      "c": "Inn",
+      "d": "Club",
+      "e": "Motel",
+      "correct": "Club"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Kennel",
+      "b": "House",
+      "c": "Stable",
+      "d": "Aviary",
+      "e": "Aquarium",
+      "correct": "House"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Neigh",
+      "b": "Roar",
+      "c": "Hiss",
+      "d": "Grunt",
+      "e": "Thump",
+      "correct": "Thump"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Seminar",
+      "b": "Semicolon",
+      "c": "Semifinal",
+      "d": "Semicircle",
+      "e": "Semitone",
+      "correct": "Seminar"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Venus",
+      "b": "Saturn",
+      "c": "Earth",
+      "d": "Mercury",
+      "e": "Neptune",
+      "correct": "Earth"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Ghosts",
+      "b": "Spirits",
+      "c": "Phantoms",
+      "d": "Skeletons",
+      "e": "Apparitions",
+      "correct": "Skeletons"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Wheat",
+      "b": "Mustard",
+      "c": "Rice",
+      "d": "Gram",
+      "e": "Peanut",
+      "correct": "Rice"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Pineapple",
+      "b": "Orange",
+      "c": "Malta",
+      "d": "Banana",
+      "e": "Lemon",
+      "correct": "Banana"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Goblin",
+      "b": "Goblet",
+      "c": "Imp",
+      "d": "Gnome",
+      "e": "Djinn",
+      "correct": "Goblet"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Laos",
+      "b": "India",
+      "c": "Nepal",
+      "d": "Afghanistan",
+      "e": "Bolivia",
+      "correct": "India"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Ear",
+      "b": "Lung",
+      "c": "Eye",
+      "d": "Heart",
+      "e": "Kidney",
+      "correct": "Heart"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Metre",
+      "b": "Furlong",
+      "c": "Yard",
+      "d": "Mile",
+      "e": "Acre",
+      "correct": "Acre"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Garo",
+      "b": "Khasi",
+      "c": "Kangra",
+      "d": "Jaintia",
+      "e": "Mizo",
+      "correct": "Kangra"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Pupil",
+      "b": "Iris",
+      "c": "Cornea",
+      "d": "Medulla",
+      "e": "Retina",
+      "correct": "Medulla"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Raniganj",
+      "b": "Jharia",
+      "c": "Singaren",
+      "d": "BardQa",
+      "e": "Baroda",
+      "correct": "Baroda"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Tailor",
+      "b": "Carpenter",
+      "c": "Blacksmith",
+      "d": "Barber",
+      "e": "Engineer",
+      "correct": "Barber"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Shoulder",
+      "b": "Foot",
+      "c": "Elbow",
+      "d": "Arm",
+      "e": "Fingers",
+      "correct": "Foot"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Nephrology",
+      "b": "Entomology",
+      "c": "Astrology",
+      "d": "Mycology",
+      "e": "Pathology",
+      "correct": "Astrology"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Whale",
+      "b": "Dolphin",
+      "c": "Shark",
+      "d": "Cod",
+      "e": "Starfish",
+      "correct": "Whale"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Cygnus",
+      "b": "Orion",
+      "c": "Scorpio",
+      "d": "Cassiopeia",
+      "e": "Vega",
+      "correct": "Vega"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Gorges",
+      "b": "Bars",
+      "c": "Canyons",
+      "d": "Meanders",
+      "e": "Rapids",
+      "correct": "Bars"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Indigo",
+      "b": "Orange",
+      "c": "Yellow",
+      "d": "Pink",
+      "e": "Green",
+      "correct": "Pink"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Goat",
+      "b": "Dog",
+      "c": "Sheep",
+      "d": "Cow",
+      "e": "Camel",
+      "correct": "Dog"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Faraday",
+      "b": "Newton",
+      "c": "Addison",
+      "d": "Marconi",
+      "e": "Beethovan",
+      "correct": "Beethovan"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Sial",
+      "b": "Mantle",
+      "c": "Core",
+      "d": "Sima",
+      "e": "Pengia",
+      "correct": "Pengia"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Magnalium",
+      "b": "Germanium",
+      "c": "Duralumin",
+      "d": "Bronze",
+      "e": "Brass",
+      "correct": "Germanium"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Phi",
+      "b": "Gamma",
+      "c": "Delta",
+      "d": "Peso",
+      "e": "Beta",
+      "correct": "Peso"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Garnet",
+      "b": "Ruby",
+      "c": "Graphite",
+      "d": "Emerald",
+      "e": "Topaz",
+      "correct": "Graphite"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Kwashiorkor",
+      "b": "Cretinism",
+      "c": "Marasmus",
+      "d": "Goitre",
+      "e": "Osteomalacia",
+      "correct": "Cretinism"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Inch",
+      "b": "Foot",
+      "c": "Yard",
+      "d": "Quart",
+      "e": "Metre",
+      "correct": "Quart"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "La pies",
+      "b": "Stalactites",
+      "c": "Cliffs",
+      "d": "Sinkholes",
+      "e": "Stalagmites",
+      "correct": "Cliffs"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Tortoise",
+      "b": "Snail",
+      "c": "Turtle",
+      "d": "Spider",
+      "e": "Oyster",
+      "correct": "Spider"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Grasslands",
+      "b": "Pampas",
+      "c": "Downs",
+      "d": "Prairies",
+      "e": "Savanna",
+      "correct": "Grasslands"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Cancel",
+      "b": "Change",
+      "c": "Repeal",
+      "d": "Revoke",
+      "e": "Rescind",
+      "correct": "Change"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "X-ray",
+      "b": "Telephone",
+      "c": "Radio",
+      "d": "Computer",
+      "e": "Television",
+      "correct": "X-ray"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Mustard",
+      "b": "Rapeseed",
+      "c": "Sesame",
+      "d": "Cashewnut",
+      "e": "Groundnut",
+      "correct": "Cashewnut"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Akbar",
+      "b": "Jahangir",
+      "c": "Shah Jahan",
+      "d": "Vikramaditya",
+      "e": "Aurangzeb",
+      "correct": "Vikramaditya"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Wise",
+      "b": "Gentle",
+      "c": "Honest",
+      "d": "Rude",
+      "e": "Arrogance",
+      "correct": "Arrogance"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Pituitary",
+      "b": "Pancreas",
+      "c": "Thalamus",
+      "d": "Adrenal",
+      "e": "Testis",
+      "correct": "Thalamus"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Beaker",
+      "b": "Glass",
+      "c": "Mug",
+      "d": "Saucer",
+      "e": "Cup",
+      "correct": "Saucer"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Pound",
+      "b": "Yen",
+      "c": "Ounce",
+      "d": "Franc",
+      "e": "Dollar",
+      "correct": "Ounce"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Doe",
+      "b": "Bitch",
+      "c": "Sorceress",
+      "d": "Drone",
+      "e": "Mare",
+      "correct": "Drone"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Virgo",
+      "b": "Pisces",
+      "c": "Sagittarius",
+      "d": "Cancer",
+      "e": "Orion",
+      "correct": "Orion"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Confucius",
+      "b": "Prophet",
+      "c": "Guru Gobind",
+      "d": "Moses",
+      "e": "Lao Tse",
+      "correct": "Guru Gobind"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Admiral",
+      "b": "Colonel",
+      "c": "Captain",
+      "d": "Commodore",
+      "e": "Lieutenant",
+      "correct": "Colonel"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Apsara",
+      "b": "Zerlina",
+      "c": "Purnima",
+      "d": "Cirus",
+      "e": "Apollo",
+      "correct": "Apollo"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Plassey",
+      "b": "Haldighati",
+      "c": "Panipat",
+      "d": "Sarnath",
+      "e": "Kurukshetra",
+      "correct": "Sarnath"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Dynamics",
+      "b": "Mechanics",
+      "c": "Electronics",
+      "d": "Optics",
+      "e": "Physics",
+      "correct": "Physics"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Hydrazine",
+      "b": "Warfarin",
+      "c": "Malathion",
+      "d": "Agrosan",
+      "e": "Sulphur",
+      "correct": "Hydrazine"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Tarapur",
+      "b": "Kota",
+      "c": "Kalpakkam",
+      "d": "Paradeep",
+      "e": "Narora",
+      "correct": "Paradeep"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Nun",
+      "b": "Knight",
+      "c": "Monk",
+      "d": "Priest",
+      "e": "Padre",
+      "correct": "Knight"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Dispur",
+      "b": "Pancyi",
+      "c": "Shimla",
+      "d": "Leh",
+      "e": "Aizawl",
+      "correct": "Leh"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Arc",
+      "b": "Diagonal",
+      "c": "Tangent",
+      "d": "Radius",
+      "e": "Diameter",
+      "correct": "Diagonal"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Birch",
+      "b": "Spruce",
+      "c": "Cedar",
+      "d": "Maple",
+      "e": "Ebony",
+      "correct": "Ebony"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Mettur",
+      "b": "Aswan",
+      "c": "Hirakud",
+      "d": "Sutlej",
+      "e": "Pony",
+      "correct": "Sutlej"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Bardoli",
+      "b": "Bhadravati",
+      "c": "Porbander",
+      "d": "Champaran",
+      "e": "Sabarmati",
+      "correct": "Bhadravati"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Epicentre",
+      "b": "Seismology",
+      "c": "Focus",
+      "d": "Crater",
+      "e": "Richter Scale",
+      "correct": "Crater"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Lima",
+      "b": "Algiers",
+      "c": "New York",
+      "d": "Tokyo",
+      "e": "Beijing",
+      "correct": "New York"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Potassium",
+      "b": "Silicon",
+      "c": "Zirconium",
+      "d": "Gallium",
+      "e": "Germanium",
+      "correct": "Potassium"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Tortoise",
+      "b": "Duck",
+      "c": "Snake",
+      "d": "Crow",
+      "e": "Whale",
+      "correct": "Whale"
+    });
+    array.push({
+      "qtext": "  Find the odd word/letter pair from the given alternatives",
+      "a": "Feathers",
+      "b": "Tentacles",
+      "c": "Scales",
+      "d": "Flagella",
+      "e": "Pseudopodia",
+      "correct": "Feathers"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Sleet",
+      "b": "Fog",
+      "c": "Hailstone",
+      "d": "Mist",
+      "e": "Vapour",
+      "correct": "Vapour"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Biscuits",
+      "b": "Chocolate",
+      "c": "Cake",
+      "d": "Pastry",
+      "e": "Bread",
+      "correct": "Chocolate"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Raid",
+      "b": "Attack",
+      "c": "Assault",
+      "d": "Ambush",
+      "e": "Defence",
+      "correct": "Defence"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Ant",
+      "b": "Bee",
+      "c": "Moth",
+      "d": "Spider",
+      "e": "Midge",
+      "correct": "Spider"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Axe",
+      "b": "Sword",
+      "c": "Knife",
+      "d": "Showel",
+      "e": "Saw",
+      "correct": "Showel"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Love",
+      "b": "Clasp",
+      "c": "Cuddle",
+      "d": "Nestle",
+      "e": "Caress",
+      "correct": "Love"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Blaze",
+      "b": "Glint",
+      "c": "Simmer",
+      "d": "Shimmer",
+      "e": "Glimmer",
+      "correct": "Simmer"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "December",
+      "b": "February",
+      "c": "March",
+      "d": "July",
+      "e": "May",
+      "correct": "February"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Grapes",
+      "b": "Pineapple",
+      "c": "Cashew",
+      "d": "Apple",
+      "e": "Orange",
+      "correct": "Cashew"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Uncle",
+      "b": "Nephew",
+      "c": "Brother",
+      "d": "Cousin",
+      "e": "Niece",
+      "correct": "Brother"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Pellagra",
+      "b": "Beriberi",
+      "c": "Scurvy",
+      "d": "Anaemia",
+      "e": "Goitre",
+      "correct": "Goitre"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Mercury",
+      "b": "Bromine",
+      "c": "Aluminium",
+      "d": "Sodium",
+      "e": "Titanium",
+      "correct": "Bromine"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Painter",
+      "b": "Canvas",
+      "c": "Brush",
+      "d": "Colour",
+      "e": "Palette",
+      "correct": "Painter"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "New Delhi",
+      "b": "Pondicherry",
+      "c": "Chandigarh",
+      "d": "Lucknow",
+      "e": "Lakshadweep",
+      "correct": "Lucknow"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Tomato",
+      "b": "Cucumber",
+      "c": "Peas",
+      "d": "Cabbage",
+      "e": "Potato",
+      "correct": "Potato"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Hydrogen",
+      "b": "Oxygen",
+      "c": "Iodine",
+      "d": "Nitrogen",
+      "e": "Chlorine",
+      "correct": "Iodine"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Table",
+      "b": "Cupboard",
+      "c": "Chair",
+      "d": "Sofa",
+      "e": "Paper weight",
+      "correct": "Paper weight"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Galileo",
+      "b": "Copernicus",
+      "c": "Columbus",
+      "d": "Bhaskara",
+      "e": "Aryabhatta",
+      "correct": "Columbus"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Sambhar",
+      "b": "Dal",
+      "c": "Baikal",
+      "d": "Siachen",
+      "e": "Chilka",
+      "correct": "Siachen"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Konark",
+      "b": "Madurai",
+      "c": "Ellora",
+      "d": "Khajuraho",
+      "e": "Dilwara",
+      "correct": "Ellora"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Keats",
+      "b": "Wordsworth",
+      "c": "Tolstoy",
+      "d": "Ghalib",
+      "e": "Tagore",
+      "correct": "Tolstoy"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Listen",
+      "b": "Swim",
+      "c": "Walk",
+      "d": "Climb",
+      "e": "Run",
+      "correct": "Listen"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Mussoorie",
+      "b": "Pahalgam",
+      "c": "Jaipur",
+      "d": "Daijeeling",
+      "e": "Manali",
+      "correct": "Jaipur"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Nerves",
+      "b": "Auricle",
+      "c": "Artery",
+      "d": "Valve",
+      "e": "Aorta",
+      "correct": "Nerves"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Rigveda",
+      "b": "Yajurveda",
+      "c": "Atharvaveda",
+      "d": "Ayurveda",
+      "e": "Samveda",
+      "correct": "Ayurveda"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Producer",
+      "b": "Director",
+      "c": "Investor",
+      "d": "Financier",
+      "e": "Entrepreneur",
+      "correct": "Director"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Arrow",
+      "b": "Missile",
+      "c": "Sword",
+      "d": "Bullet",
+      "e": "Spear",
+      "correct": "Sword"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Flute",
+      "b": "Guitar",
+      "c": "Sitar",
+      "d": "Violin",
+      "e": "Veena",
+      "correct": "Flute"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Screw",
+      "b": "Hammer",
+      "c": "Needle",
+      "d": "Pin",
+      "e": "Nail",
+      "correct": "Hammer"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Granite",
+      "b": "Lignite",
+      "c": "Peat",
+      "d": "Anthracite",
+      "e": "Bituminous",
+      "correct": "Granite"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Gasoline",
+      "b": "Methane",
+      "c": "Asphalt",
+      "d": "Paraffin wax",
+      "e": "Diesel",
+      "correct": "Methane"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Thermosphere",
+      "b": "Stratosphere",
+      "c": "Exosphere",
+      "d": "Ionospher",
+      "e": "Troposphere",
+      "correct": "Thermosphere"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Grass",
+      "b": "Amaranthus",
+      "c": "Oats",
+      "d": "Chenopodium",
+      "e": "Convolvulus",
+      "correct": "Oats"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Baboon",
+      "b": "Gibbon",
+      "c": "Chimpanzee",
+      "d": "Gorilla",
+      "e": "Jaguar",
+      "correct": "Jaguar"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Rival",
+      "b": "Spouse",
+      "c": "Partner",
+      "d": "Colleague",
+      "e": "Companion",
+      "correct": "Rival"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Sahara",
+      "b": "Thar",
+      "c": "Gobi",
+      "d": "Sunderban",
+      "e": "Kalahari",
+      "correct": "Sunderban"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Euphrates",
+      "b": "Hwang Ho",
+      "c": "Amazon",
+      "d": "Brahmaputra",
+      "e": "Indus",
+      "correct": "Amazon"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Polar bear",
+      "b": "Reindeer",
+      "c": "Yak",
+      "d": "Silver fox",
+      "e": "Leopard",
+      "correct": "Leopard"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Peak",
+      "b": "Mountain",
+      "c": "Hillock",
+      "d": "Mound",
+      "e": "Valley",
+      "correct": "Valley"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Santhals",
+      "b": "Khonds",
+      "c": "Bhotias",
+      "d": "Dogri",
+      "e": "Abors",
+      "correct": "Dogri"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Ode",
+      "b": "Lyric",
+      "c": "Sonnet",
+      "d": "Limerick",
+      "e": "Epic",
+      "correct": "Epic"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Hangar",
+      "b": "Platform",
+      "c": "Dock",
+      "d": "Park",
+      "e": "Bus stand",
+      "correct": "Park"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Treachery",
+      "b": "Fraud",
+      "c": "Deceit",
+      "d": "Swindle",
+      "e": "Morbid",
+      "correct": "Morbid"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Parrot",
+      "b": "Swan",
+      "c": "Vulture",
+      "d": "Sparrow",
+      "e": "Koel",
+      "correct": "Swan"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Ruffian",
+      "b": "Criminal",
+      "c": "Gangster",
+      "d": "Paragon",
+      "e": "Pirate",
+      "correct": "Paragon"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Cow",
+      "b": "Deer",
+      "c": "Donkey",
+      "d": "Rhinoceros",
+      "e": "Goat",
+      "correct": "Donkey"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Sepals",
+      "b": "Bud",
+      "c": "Filament",
+      "d": "Stamens",
+      "e": "Pistil",
+      "correct": "Bud"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Mandible",
+      "b": "Rib",
+      "c": "Sternum",
+      "d": "Ulna",
+      "e": "Pinna",
+      "correct": "Pinna"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Sucrose",
+      "b": "Ptyalin",
+      "c": "Amylase",
+      "d": "Pepsin",
+      "e": "Lipase",
+      "correct": "Sucrose"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Carrot",
+      "b": "Guava",
+      "c": "Tomato",
+      "d": "Pears",
+      "e": "Brinjal",
+      "correct": "Brinjal"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Thermometer",
+      "b": "Hygrometer",
+      "c": "Anemometer",
+      "d": "Seismograph",
+      "e": "Sphygmomanometer",
+      "correct": "Sphygmomanometer"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Cranium",
+      "b": "Tendron",
+      "c": "Diaphragm",
+      "d": "Rib cage",
+      "e": "Pericardium",
+      "correct": "Tendron"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Sheep",
+      "b": "Gazel",
+      "c": "Ibex",
+      "d": "Shrew",
+      "e": "Tapir",
+      "correct": "Gazel"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Cigar",
+      "b": "Cigarette",
+      "c": "Tobacco",
+      "d": "Pipe",
+      "e": "Hookah",
+      "correct": "Tobacco"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Island",
+      "b": "Coast",
+      "c": "Harbour",
+      "d": "Oasis",
+      "e": "Peninsula",
+      "correct": "Oasis"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Nail",
+      "b": "Feather",
+      "c": "Trunk",
+      "d": "Fir",
+      "e": "Tail",
+      "correct": "Fir"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Hepatitis",
+      "b": "Tetanus",
+      "c": "Cancer",
+      "d": "Conjunctivitis",
+      "e": "Measles",
+      "correct": "Tetanus"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Thiamine",
+      "b": "Niacin",
+      "c": "Trypsin",
+      "d": "Riboflavin",
+      "e": "Ascorbic acid",
+      "correct": "Trypsin"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Almond",
+      "b": "Turmeric",
+      "c": "Pepper",
+      "d": "Cuminseed",
+      "e": "Chillies",
+      "correct": "Almond"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Magazine",
+      "b": "Novel",
+      "c": "Periodical",
+      "d": "Journal",
+      "e": "Newspaper",
+      "correct": "Newspaper"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Stereo",
+      "b": "Transistor",
+      "c": "Television",
+      "d": "Radio",
+      "e": "Loudspeaker",
+      "correct": "Television"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Bake",
+      "b": "Peel",
+      "c": "Fry",
+      "d": "Boil",
+      "e": "Roast",
+      "correct": "Peel"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Nanak",
+      "b": "Christ",
+      "c": "Buddha",
+      "d": "Gandhi",
+      "e": "Mahavira",
+      "correct": "Gandhi"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Cliff",
+      "b": "Canyon",
+      "c": "Gulch",
+      "d": "Gorge",
+      "e": "Ravine",
+      "correct": "Cliff"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Fox",
+      "b": "Yak",
+      "c": "Bear",
+      "d": "Kangaroo",
+      "e": "Sheep",
+      "correct": "Kangaroo"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Oyster",
+      "b": "Whelk",
+      "c": "Scallop",
+      "d": "Mussel",
+      "e": "Clam",
+      "correct": "Scallop"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Reader",
+      "b": "Writer",
+      "c": "Printer",
+      "d": "Publisher",
+      "e": "Reporter",
+      "correct": "Reader"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Mew",
+      "b": "Howl",
+      "c": "Bark",
+      "d": "Grunt",
+      "e": "Shout",
+      "correct": "Shout"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Trigger",
+      "b": "Muzzle",
+      "c": "Pallet",
+      "d": "Barrel",
+      "e": "Bullet",
+      "correct": "Pallet"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Spade",
+      "b": "Spanner",
+      "c": "Shovel",
+      "d": "Rake",
+      "e": "Pick axe",
+      "correct": "Spanner"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Tiger",
+      "b": "Lion",
+      "c": "Fox",
+      "d": "Leopard",
+      "e": "Panther",
+      "correct": "Fox"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Birbal",
+      "b": "Abul Fazal",
+      "c": "Tansen",
+      "d": "Fail Ahmed",
+      "e": "Todar Mai",
+      "correct": "Fail Ahmed"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Jumping",
+      "b": "Running",
+      "c": "Sprinting",
+      "d": "Jogging",
+      "e": "Exercising",
+      "correct": "Exercising"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Madagascar",
+      "b": "Thailand",
+      "c": "Cuba",
+      "d": "Greenland",
+      "e": "Tasmania",
+      "correct": "Thailand"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Collection",
+      "b": "Compilation",
+      "c": "Cluster",
+      "d": "Assemblage",
+      "e": "Assortment",
+      "correct": "Cluster"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Capsicum",
+      "b": "Pineapple",
+      "c": "Cherry",
+      "d": "Strawberry",
+      "e": "Plum",
+      "correct": "Capsicum"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Odour",
+      "b": "Smell",
+      "c": "Foul",
+      "d": "Fragrance",
+      "e": "Incense",
+      "correct": "Foul"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Autocracy",
+      "b": "Bureaucracy",
+      "c": "Democracy",
+      "d": "Diplomacy",
+      "e": "Theocracy",
+      "correct": "Diplomacy"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Arhar",
+      "b": "Urad",
+      "c": "Moong",
+      "d": "Gram",
+      "e": "Jowar",
+      "correct": "Jowar"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Rhinoceros",
+      "b": "Lion",
+      "c": "Deer",
+      "d": "Ass",
+      "e": "Cow",
+      "correct": "Ass"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Stick",
+      "b": "Needle",
+      "c": "Thorn",
+      "d": "Pin",
+      "e": "Nail",
+      "correct": "Stick"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Month",
+      "b": "Year",
+      "c": "Fortnight",
+      "d": "Season",
+      "e": "Week",
+      "correct": "Season"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Taxi",
+      "b": "Phaeton",
+      "c": "Cart",
+      "d": "Rickshaw",
+      "e": "Tonga",
+      "correct": "Taxi"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Mother",
+      "b": "Friend",
+      "c": "Sister",
+      "d": "Father",
+      "e": "Brother",
+      "correct": "Friend"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Volga",
+      "b": "Nile",
+      "c": "Amazon",
+      "d": "Congo",
+      "e": "Niagara",
+      "correct": "Niagara"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Baghdad",
+      "b": "Beijing",
+      "c": "Delhi",
+      "d": "Pakistan",
+      "e": "Rangoon",
+      "correct": "Pakistan"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Courteous",
+      "b": "Humble",
+      "c": "Civil",
+      "d": "Polite",
+      "e": "Honest",
+      "correct": "Civil"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Coat",
+      "b": "Shirt",
+      "c": "Blouse",
+      "d": "Trousers",
+      "e": "Sweater",
+      "correct": "Trousers"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Calendar",
+      "b": "Year",
+      "c": "Date",
+      "d": "Month",
+      "e": "Day",
+      "correct": "Calendar"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Kanpur",
+      "b": "Allahabad",
+      "c": "Varanasi",
+      "d": "Mathura",
+      "e": "Haridwar",
+      "correct": "Mathura"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Mahavir",
+      "b": "Buddha",
+      "c": "Marx",
+      "d": "Jesus",
+      "e": "Gandhi",
+      "correct": "Marx"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Tulsidas",
+      "b": "Sheridan",
+      "c": "Kalidas",
+      "d": "Shakespeare",
+      "e": "Bernard Shaw",
+      "correct": "Tulsidas"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Record",
+      "b": "Shorthand",
+      "c": "Morse",
+      "d": "Codes",
+      "e": "Semaphore",
+      "correct": "Record"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Fish",
+      "b": "Scorpion",
+      "c": "Crab",
+      "d": "Octopus",
+      "e": "Crocodile",
+      "correct": "Scorpion"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Giyarat",
+      "b": "Maharashtra",
+      "c": "Uttar Pradesh",
+      "d": "West Bengal",
+      "e": "Kerala",
+      "correct": "Uttar Pradesh"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Actor",
+      "b": "Artist",
+      "c": "Musician",
+      "d": "Dancer",
+      "e": "Poet",
+      "correct": "Poet"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Engineer",
+      "b": "Architect",
+      "c": "Mechanic",
+      "d": "Mason",
+      "e": "Blacksmith",
+      "correct": "Mechanic"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Asia",
+      "b": "Argentina",
+      "c": "Africa",
+      "d": "Australia",
+      "e": "Antarctica",
+      "correct": "Argentina"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Coriander",
+      "b": "Jasmine",
+      "c": "Lotus",
+      "d": "Lily",
+      "e": "Rose",
+      "correct": "Coriander"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Swimming",
+      "b": "Diving",
+      "c": "Driving",
+      "d": "Sailing",
+      "e": "Fishing",
+      "correct": "Driving"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Cotton",
+      "b": "Jute",
+      "c": "Silk",
+      "d": "Nylon",
+      "e": "Wool",
+      "correct": "Nylon"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Mountain",
+      "b": "Valley",
+      "c": "Glacier",
+      "d": "Coast",
+      "e": "Ridge",
+      "correct": "Glacier"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Carrot",
+      "b": "Potato",
+      "c": "Ginger",
+      "d": "Beetroot",
+      "e": "Cabbage",
+      "correct": "Cabbage"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Kathakali",
+      "b": "Disco",
+      "c": "Garba",
+      "d": "Bhangra",
+      "e": "Kathak",
+      "correct": "Disco"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Moth",
+      "b": "Bee",
+      "c": "Lizard",
+      "d": "Aphid",
+      "e": "Cockroach",
+      "correct": "Lizard"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Sparrow",
+      "b": "Eagle",
+      "c": "Hawk",
+      "d": "Vulture",
+      "e": "Owl",
+      "correct": "Sparrow"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Anger",
+      "b": "Grief",
+      "c": "Humorous",
+      "d": "Kindness",
+      "e": "Joy",
+      "correct": "Humorous"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Vikramaditya",
+      "b": "Chandragupta",
+      "c": "Harshavardhana",
+      "d": "Chanakya",
+      "e": "Samudragupta",
+      "correct": "Chanakya"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Buffalo",
+      "b": "Llama",
+      "c": "Cow",
+      "d": "Goat",
+      "e": "Camel",
+      "correct": "Llama"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Crow",
+      "b": "Pigeon",
+      "c": "Parrot",
+      "d": "Butterfly",
+      "e": "Peacock",
+      "correct": "Butterfly"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Under",
+      "b": "Near",
+      "c": "Beside",
+      "d": "Above",
+      "e": "Where",
+      "correct": "Where"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Spectacles",
+      "b": "Goggles",
+      "c": "Binoculars",
+      "d": "Microphone",
+      "e": "Telescope",
+      "correct": "Microphone"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Sweep",
+      "b": "Wipe",
+      "c": "Scrub",
+      "d": "Wash",
+      "e": "Stain",
+      "correct": "Stain"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Snore",
+      "b": "Slumber",
+      "c": "Yawn",
+      "d": "Doze",
+      "e": "Dream",
+      "correct": "Yawn"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Taste",
+      "b": "Chew",
+      "c": "Swallow",
+      "d": "Gulp",
+      "e": "Lick",
+      "correct": "Taste"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Jordan",
+      "b": "Bhutan",
+      "c": "Turkey",
+      "d": "Norway",
+      "e": "Spain",
+      "correct": "Turkey"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Cot",
+      "b": "Sheet",
+      "c": "Quilt",
+      "d": "Pillow",
+      "e": "Blanket",
+      "correct": "Cot"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Antelope",
+      "b": "Kangaroo",
+      "c": "Hippopotamus",
+      "d": "Unicorn",
+      "e": "Rhinoceros",
+      "correct": "Unicorn"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Crane",
+      "b": "Flamingo",
+      "c": "Cuckoo",
+      "d": "Curlew",
+      "e": "Duck",
+      "correct": "Cuckoo"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Morarji Desai",
+      "b": "Jawaharlal Nehru",
+      "c": "Charan Singh",
+      "d": "Lai Bahadur",
+      "e": "Radhakrishnan",
+      "correct": "Radhakrishnan"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Mariana",
+      "b": "Nigar",
+      "c": "Angel",
+      "d": "Gersoppa",
+      "e": "Victoria",
+      "correct": "Mariana"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Flood",
+      "b": "Hurricane",
+      "c": "Avalanche",
+      "d": "Earthquake",
+      "e": "Explosion",
+      "correct": "Explosion"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "King",
+      "b": "Queen",
+      "c": "Bishop",
+      "d": "Minister",
+      "e": "Knight",
+      "correct": "Minister"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Tall",
+      "b": "Huge",
+      "c": "Thin",
+      "d": "Sharp",
+      "e": "Small",
+      "correct": "Sharp"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Coarse",
+      "b": "Unrefined",
+      "c": "Vulgar",
+      "d": "Oafish",
+      "e": "Blunt",
+      "correct": "Blunt"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Ram",
+      "b": "Scorpion",
+      "c": "Fish",
+      "d": "Cat",
+      "e": "Lion",
+      "correct": "Ram"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Gloomy",
+      "b": "Calm",
+      "c": "Dull",
+      "d": "Tense",
+      "e": "Distress",
+      "correct": "Distress"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Sensitive",
+      "b": "Sentimental",
+      "c": "Passionate",
+      "d": "Reasonable",
+      "e": "Sensational",
+      "correct": "Sensational"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Verse",
+      "b": "Rhyme",
+      "c": "Couplet",
+      "d": "Rhetoric",
+      "e": "Stanza",
+      "correct": "Rhetoric"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Aravalli hills",
+      "b": "Shivalik hills",
+      "c": "Mole hills",
+      "d": "Satpura hills",
+      "e": "Nilgiri hills",
+      "correct": "Mole hills"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Giraffe",
+      "b": "Hyena",
+      "c": "Deer",
+      "d": "Rhinoceros",
+      "e": "Zebra",
+      "correct": "Hyena"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Elephant",
+      "b": "Man",
+      "c": "Seal",
+      "d": "Hawk",
+      "e": "Whale",
+      "correct": "Hawk"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Mumbai",
+      "b": "Cochin",
+      "c": "Kandla",
+      "d": "Mysore",
+      "e": "Vishakhapatnam",
+      "correct": "Mysore"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Tricycle",
+      "b": "Trident",
+      "c": "Trifle",
+      "d": "Tricolour",
+      "e": "Trilogy",
+      "correct": "Trifle"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Japan",
+      "b": "India",
+      "c": "Sri Lanka",
+      "d": "New Zealand",
+      "e": "Malagasy",
+      "correct": "India"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Lymphocytes",
+      "b": "Plasma",
+      "c": "Fibrinogen",
+      "d": "Haemoglobin",
+      "e": "Pepsinogen",
+      "correct": "Pepsinogen"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Manipur",
+      "b": "Sikkim",
+      "c": "Maharashtra",
+      "d": "Haryana",
+      "e": "Lakshadweep",
+      "correct": "Lakshadweep"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Ranthambor",
+      "b": "Sunderban",
+      "c": "Kaziranga",
+      "d": "Ghana",
+      "e": "Corundum",
+      "correct": "Corundum"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Hindi",
+      "b": "Sindhi",
+      "c": "Urdu",
+      "d": "Oriya",
+      "e": "Giyarati",
+      "correct": "Urdu"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Bully",
+      "b": "Bunker",
+      "c": "Corner",
+      "d": "Dribble",
+      "e": "Scoop",
+      "correct": "Bunker"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Mongolia",
+      "b": "China",
+      "c": "Burma",
+      "d": "Afghanistan",
+      "e": "Bangladesh",
+      "correct": "Mongolia"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Wheat",
+      "b": "Paddy",
+      "c": "Jowar",
+      "d": "Mustard",
+      "correct": "Mustard"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Apple",
+      "b": "Mango",
+      "c": "Potato",
+      "d": "Orange",
+      "correct": "Potato"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Chair",
+      "b": "Bench",
+      "c": "Table",
+      "d": "Stool",
+      "correct": "Table"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Titan",
+      "b": "Mercury",
+      "c": "Earth",
+      "d": "Jupiter",
+      "correct": "Titan"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Walk",
+      "b": "Run",
+      "c": "Ride",
+      "d": "Crawl",
+      "correct": "Ride"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Bake",
+      "b": "Boil",
+      "c": "Freeze",
+      "d": "Simmer",
+      "correct": "Freeze"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Snake",
+      "b": "Whale",
+      "c": "Crocodile",
+      "d": "Lizard",
+      "correct": "Whale"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Gallon",
+      "b": "Ton",
+      "c": "Quintal",
+      "d": "Kilogram",
+      "correct": "Gallon"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Blade",
+      "b": "Axe",
+      "c": "Scissors",
+      "d": "Needle",
+      "correct": "Needle"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Kiwi",
+      "b": "Ostrich",
+      "c": "Eagle",
+      "d": "Penguin",
+      "correct": "Eagle"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Square",
+      "b": "Rectangle",
+      "c": "Triangle",
+      "d": "Cube",
+      "correct": "Cube"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Bomdila",
+      "b": "Lhasa",
+      "c": "Nathula",
+      "d": "Shipkila",
+      "correct": "Lhasa"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Breathing",
+      "b": "Swimming",
+      "c": "Dancing",
+      "d": "Playing",
+      "correct": "Breathing"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Teacher",
+      "b": "Principal",
+      "c": "Student",
+      "d": "Lecturer",
+      "correct": "Student"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Intimacy",
+      "b": "Enmity",
+      "c": "Attachment",
+      "d": "Friendship",
+      "correct": "Enmity"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Thyroxine",
+      "b": "Adrenalin",
+      "c": "Iodine",
+      "d": "Insulin",
+      "correct": "Iodine"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Brook",
+      "b": "Bridge",
+      "c": "Strerfm",
+      "d": "Canal",
+      "correct": "Bridge"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Fear",
+      "b": "Anger",
+      "c": "Sober",
+      "d": "Love",
+      "correct": "Sober"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Wages",
+      "b": "Honorarium",
+      "c": "Pocket money",
+      "d": "Salary",
+      "correct": "Pocket money"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Olympus",
+      "b": "Apollo",
+      "c": "Nataraj",
+      "d": "Diana",
+      "correct": "Diana"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Mansion",
+      "b": "Apartment",
+      "c": "Garage",
+      "d": "Villa",
+      "correct": "Garage"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Tiger",
+      "b": "Cow",
+      "c": "Cheetah",
+      "d": "Leopard",
+      "correct": "Cow"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Hypothesis",
+      "b": "Assumption",
+      "c": "Observation",
+      "d": "Experiment",
+      "correct": "Experiment"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Raft",
+      "b": "Chariot",
+      "c": "Sledge",
+      "d": "Cart",
+      "correct": "Raft"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Mermaid",
+      "b": "Sphinx",
+      "c": "Unicorn",
+      "d": "Dinosaur",
+      "correct": "Dinosaur"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Green",
+      "b": "Violet",
+      "c": "Red",
+      "d": "Yellow",
+      "correct": "Violet"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Lake",
+      "b": "River",
+      "c": "Winds",
+      "d": "Current",
+      "correct": "Lake"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Pharynx",
+      "b": "Bronchiole",
+      "c": "Auricle",
+      "d": "Alveoli",
+      "correct": "Auricle"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "oka",
+      "b": "Beauty",
+      "c": "Character",
+      "d": "Cuteness",
+      "correct": "Character"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Astonished",
+      "b": "Pleased",
+      "c": "Astounded",
+      "d": "Flabbergasted",
+      "correct": "Pleased"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Pantyi",
+      "b": "Bhopal",
+      "c": "Pune",
+      "d": "Shillong",
+      "correct": "Pune"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Ladder",
+      "b": "Staircase",
+      "c": "Bridge",
+      "d": "Escalator",
+      "correct": "Bridge"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Cockroach",
+      "b": "Roundworm",
+      "c": "Amoeba",
+      "d": "Frog",
+      "correct": "Amoeba"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Bromine",
+      "b": "Mercury",
+      "c": "Copper",
+      "d": "Silver",
+      "correct": "Bromine"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Barauni",
+      "b": "Trombay",
+      "c": "Neyveli",
+      "d": "Mettur",
+      "correct": "Mettur"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Discus",
+      "b": "Spear",
+      "c": "Javelin",
+      "d": "Hockey",
+      "correct": "Spear"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Lord Tennyson",
+      "b": "Lord Linlithgow",
+      "c": "Lord Dalhousie",
+      "d": "Lord Mountbatten",
+      "correct": "Lord Tennyson"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Owl",
+      "b": "Eagle",
+      "c": "Hawk",
+      "d": "Parrot",
+      "correct": "Parrot"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Archaeology",
+      "b": "Ecology",
+      "c": "Epigraphy",
+      "d": "Palaeontology",
+      "correct": "Ecology"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Deuce",
+      "b": "Pitch",
+      "c": "Crease",
+      "d": "Stump",
+      "correct": "Deuce"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Petticoats",
+      "b": "Trousers",
+      "c": "Skirts",
+      "d": "Loongis",
+      "correct": "Petticoats"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Pen",
+      "b": "Calculator",
+      "c": "Pencil",
+      "d": "Ink",
+      "correct": "Calculator"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Beaches",
+      "b": "Lagoons",
+      "c": "Bars",
+      "d": "Moraines",
+      "correct": "Moraines"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Ballot",
+      "b": "Manifesto",
+      "c": "Election",
+      "d": "Vote",
+      "correct": "Election"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Ruby",
+      "b": "Sapphire",
+      "c": "Granite",
+      "d": "Topaz",
+      "correct": "Granite"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Herb",
+      "b": "Flower",
+      "c": "Tree",
+      "d": "Shrub",
+      "correct": "Flower"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Niger",
+      "b": "Suez",
+      "c": "Mississippi",
+      "d": "Colorado",
+      "correct": "Suez"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Crimson",
+      "b": "Scarlet",
+      "c": "Vermillion",
+      "d": "Red",
+      "correct": "Red"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Circle",
+      "b": "Ellipse",
+      "c": "Sphere",
+      "d": "Cube",
+      "correct": "Cube"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Cheras",
+      "b": "Chandelas",
+      "c": "Pallavas",
+      "d": "Cholas",
+      "correct": "Chandelas"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Apple",
+      "b": "Mango",
+      "c": "Watermelon",
+      "d": "Guava",
+      "correct": "Watermelon"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Microscope",
+      "b": "Telescope",
+      "c": "Periscope",
+      "d": "Stethoscope",
+      "correct": "Stethoscope"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Advise",
+      "b": "Counsel",
+      "c": "Suggest",
+      "d": "Direct",
+      "correct": "Direct"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Almirah",
+      "b": "Rack",
+      "c": "Safe",
+      "d": "Cupboard",
+      "correct": "Rack"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Infant",
+      "b": "Cub",
+      "c": "Doe",
+      "d": "Kitten",
+      "correct": "Doe"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Lake",
+      "b": "Brook",
+      "c": "Stream",
+      "d": "River",
+      "correct": "Lake"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Rial",
+      "b": "Knesset",
+      "c": "Guilder",
+      "d": "Drachma",
+      "correct": "Knesset"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Ramayana",
+      "b": "Mahabharata",
+      "c": "Upnishad",
+      "d": "Panchatantra",
+      "correct": "Panchatantra"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Resume",
+      "b": "Admit",
+      "c": "Confess",
+      "d": "Depend",
+      "correct": "Depend"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Commander",
+      "b": "Commodore",
+      "c": "Brigadier",
+      "d": "Admiral",
+      "correct": "Brigadier"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Tempest",
+      "b": "Hurricane",
+      "c": "Cyclone",
+      "d": "Monsoon",
+      "correct": "Monsoon"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Donkey",
+      "b": "Camel",
+      "c": "Cow",
+      "d": "Mule",
+      "correct": "Cow"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Broker",
+      "b": "Salesman",
+      "c": "Customer",
+      "d": "Hawker",
+      "correct": "Customer"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Graphit",
+      "b": "Pearl",
+      "c": "Diamond",
+      "d": "Coal",
+      "correct": "Pearl"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Albatross",
+      "b": "Ostrich",
+      "c": "Pelican",
+      "d": "Penguin",
+      "correct": "Ostrich"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Faun",
+      "b": "Mermaid",
+      "c": "Minerva",
+      "d": "Sphinx",
+      "correct": "Minerva"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Piano",
+      "b": "Typewriter",
+      "c": "Computer",
+      "d": "Calculator",
+      "correct": "Piano"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Othello",
+      "b": "King Lear",
+      "c": "Oliver Twist",
+      "d": "Macbeth",
+      "correct": "Oliver Twist"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Mackenzie",
+      "b": "Yenisei",
+      "c": "Michigan",
+      "d": "Danube",
+      "correct": "Michigan"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Viscometer",
+      "b": "Anemometer",
+      "c": "Spectroscope",
+      "d": "Pyknometer",
+      "correct": "Anemometer"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Pageant",
+      "b": "View",
+      "c": "Display",
+      "d": "Spectacle",
+      "correct": "View"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Mahanadi",
+      "b": "Cauvery",
+      "c": "Narmada",
+      "d": "Krishna",
+      "correct": "Narmada"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Tellurium",
+      "b": "Francium",
+      "c": "Strontium",
+      "d": "Scandium",
+      "correct": "Tellurium"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Beaver",
+      "b": "Alpaca",
+      "c": "Walrus",
+      "d": "Koala",
+      "correct": "Walrus"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Mendicant",
+      "b": "Ascetic",
+      "c": "Pious",
+      "d": "Hermit",
+      "correct": "Pious"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Mercury",
+      "b": "Acetone",
+      "c": "Petrol",
+      "d": "Kerosene",
+      "correct": "Mercury"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Lamprey",
+      "b": "Salmon",
+      "c": "Rhea",
+      "d": "Trout",
+      "correct": "Rhea"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "TSangpo",
+      "b": "Hazaribagh",
+      "c": "Kanha",
+      "d": "Bandipur",
+      "correct": "TSangpo"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Disperse",
+      "b": "Aggregate",
+      "c": "Congregate",
+      "d": "Accumulate",
+      "correct": "Disperse"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Illusion",
+      "b": "Delusion",
+      "c": "Identification",
+      "d": "Hallucination",
+      "correct": "Identification"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Rain",
+      "b": "Mist",
+      "c": "Smoke",
+      "d": "Fog",
+      "correct": "Smoke"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Sugarcane",
+      "b": "Coffee",
+      "c": "Tobacco",
+      "d": "Rice",
+      "correct": "Rice"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Leprosy",
+      "b": "Influenza",
+      "c": "Typhoid",
+      "d": "Dysentry",
+      "correct": "Influenza"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Trivandrum",
+      "b": "Bangalore",
+      "c": "Bhubaneshwar",
+      "d": "Vijayawada",
+      "correct": "Vijayawada"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Censure",
+      "b": "Admonish",
+      "c": "Rebuke",
+      "d": "Retrieve",
+      "correct": "Retrieve"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Ear",
+      "b": "Nose",
+      "c": "Tongue",
+      "d": "Throat",
+      "correct": "Throat"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Buffalo",
+      "b": "Stag",
+      "c": "Camel",
+      "d": "Rhinoceros",
+      "correct": "Camel"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Fingers",
+      "b": "Palm",
+      "c": "Knee",
+      "d": "Wrist",
+      "correct": "Knee"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Correction",
+      "b": "Improvement",
+      "c": "Betterment",
+      "d": "Elevation",
+      "correct": "Elevation"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Molar",
+      "b": "Canine",
+      "c": "Enamel",
+      "d": "Incisors",
+      "correct": "Enamel"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Yuri Gagarin",
+      "b": "Rakesh Sharma",
+      "c": "Neil Armstrong",
+      "d": "Edmund Hillary",
+      "correct": "Edmund Hillary"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Nimitz",
+      "b": "Yamamoto",
+      "c": "Nelson",
+      "d": "Montgomery",
+      "correct": "Montgomery"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "V V Giri",
+      "b": "General Zia",
+      "c": "General Ershad",
+      "d": "Lai Bahadur Shastri",
+      "correct": "Lai Bahadur Shastri"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Himadri",
+      "b": "Shivalik",
+      "c": "Kandla",
+      "d": "Himachal",
+      "correct": "Kandla"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Mosses",
+      "b": "Lichens",
+      "c": "Ferns",
+      "d": "Cacti",
+      "correct": "Cacti"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Foggy",
+      "b": "Transparent",
+      "c": "Turbid",
+      "d": "Cloudy",
+      "correct": "Transparent"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Equity",
+      "b": "Fairness",
+      "c": "Partiality",
+      "d": "Justice",
+      "correct": "Partiality"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Wood",
+      "b": "Cork",
+      "c": "Stone",
+      "d": "Paper",
+      "correct": "Stone"
+    });
+    array.push({
+      "qtext": "Find the odd word/letter pair from the given alternatives",
+      "a": "Henri Becquerel",
+      "b": "Roentgen",
+      "c": "Madam Curie",
+      "d": "Einstein",
+      "correct": "Einstein"
+    });
+    array.push({
+      "qtext": " Find the odd word/letter pair from the given alternatives",
+      "a": "Tonne",
+      "b": "Pint",
+      "c": "Gallon",
+      "d": "Litre",
+      "correct": "Tonne"
+    });
+    
+  
+</script>
+</body>
+</html>
