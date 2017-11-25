@@ -1,0 +1,1194 @@
+<!DOCTYPE>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    
+
+    <style type="text/css">
+    /*primary color: #59c8fa*/    
+    *
+    {
+        font-family: "Roboto","sans-serif";
+          -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+    }   
+    body
+    {
+        margin: 0px; 
+        background: #fff;
+        overflow-x: hidden;
+    }
+    .shadow
+    {
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    }
+    .heading
+    {
+        text-align: center;
+        text-transform: uppercase;
+        color: #111;
+    }
+    .half_line
+    {
+        width: 50%;
+        height: 2px;
+        background: #59c8fa;
+        margin-left: 25%;
+        position:relative;
+    }
+    ._25_line
+    {
+        width: 25%;
+        height: 2px;
+        background: #59c8fa;
+        margin-left: 37.5%;
+        position:relative;
+    }
+
+    .list-container
+    {
+            text-align: center;
+            margin-top: 5%;
+    }
+    .option
+    {
+    padding: 2% 3% 2% 3%;
+    border-radius: 50px;
+    background: #ececec;
+    display: inline-table;
+    margin-top: 10%;
+    color: #111;
+    width: 80%;
+    max-width: 512;
+    }
+    .option>img
+    {
+    	height: 10px;
+	    width: 10px;
+	    margin-left: 5px;
+	    display: none;
+    }
+    .correct
+    {
+        border: 1px solid #4CAF50;
+    }
+    .wrong
+    {
+        border: 1px solid #e00d32;
+
+    }
+    
+    .explanation-holder
+    {
+        transition: 0.5s all cubic-bezier(.45,.64,.03,.98);
+        width: 100%;
+        height: 0px;
+        overflow-x: hidden;
+        overflow-y: auto;
+        margin-top: 5%;
+    }
+    .fab
+    {
+      position: absolute;
+      bottom: 2%;
+      right: 3%;
+      background: #59c8fa;
+      border-radius: 50px;
+      padding: 5px;
+    }
+    .background-banner
+    {
+        background: #fff;
+        transition: 0.5s all;
+        opacity: 0;
+    }
+    .content-holder
+    {
+    
+    }
+    .content-holder-inner
+    {
+        padding-top: 3%;
+        padding-bottom:3%;
+        overflow-y: auto;
+    }   
+    #root-word>span
+    {
+        line-height: 160%;
+        font-size: 20px;
+        margin-left: 1.5%;
+    }
+    select
+    {
+        width: 100%;
+        text-align-last: center;
+        background:#fff;
+        color: #111;
+        border: 2px solid #59c8fa;
+        padding: 1%;
+    }
+    #index-change-holder
+    {
+    position: absolute;
+    bottom: 1%;
+    text-align: center;
+    width: 50%;
+    left: 25%;
+    color: #59c8fa;
+    border-radius: 50px;
+    background: #1111110a;
+    }
+    #select-holder
+    {
+        position: absolute;
+        bottom: 14%;
+        left: 25%;
+        width: 50%;
+        display: none;
+    }
+    .main_board
+	{
+		background: #59c8fa;
+	    color: white;
+	    padding: 8% 0% 8% 0%;
+	    font-size: 1.5em;
+	}
+    
+    </style>
+</head>
+<body>
+	<div class="main_board">
+		<div class="heading" style="color: #fff;">Spellings</div>
+	</div>
+<div class="content-holder">
+    <div class="content-holder-inner ">
+        <div id="root-word" class="heading" style="margin-bottom: 3%;">qtext</div>
+        <div class="half_line"></div>
+        <div id=""></div>
+        <div class="list-container" id="options">
+            <div class="option" id="a"></div>
+
+        </div>
+    </div>
+</div>
+
+<div id="index-change-holder">
+</div>
+<div id="select-holder"></div>
+
+
+<script type="text/javascript">
+var currentPos;
+var isNewQuestion;
+document.addEventListener("DOMContentLoaded",function()
+{
+	 $.mobile.loading( "hide" );
+    $.mobile.loading().hide();
+  currentPos=lastPosition();
+  rule1(0);
+  createSelectIndex();
+  document.getElementById('index-change-holder').addEventListener('click',function()
+  {
+    
+    var div=document.getElementById('select-holder');
+    
+    if(div.style.display=="block")
+    {
+     div.style.display="none";   
+    }else
+    {
+     div.style.display="block";
+    }
+
+  });
+});
+
+function createSelectIndex(argument)
+{
+    var p=document.getElementById('select-holder');
+    var html="<select style='' id=selectIndex size=5 onchange=jumpToQuestion();>";
+    for (var i = 0; i < array.length; i++)
+    {
+        html+="<option value="+i+">"+(i+1)+"</option>";        
+    }
+    html+="</select>";
+    p.innerHTML=(html);    
+    document.getElementById('selectIndex').selectedIndex=currentPos;
+
+}
+function jumpToQuestion()
+{
+    var index=document.getElementById('selectIndex').value;
+    currentPos=parseInt(index);
+    document.getElementById('select-holder').style.display="none";
+    rule1(0);
+}
+
+function lastPosition()
+{
+  var i=0;
+  if(localStorage.index==undefined||localStorage.index==null)
+  { 
+    i=0;
+  }
+  else
+  {
+    i=parseInt(localStorage.index)
+    if(isNaN(i))
+        i=0;
+  }
+  return i;
+
+}
+function getNRandomInts(min,max,n)
+{
+    var randoms=[];
+    while(randoms.length!=n)
+    {
+        var num=getRandomInt(min,max);
+        if(randoms.indexOf(num)==-1)
+            randoms.push(num)
+    }
+    return randoms;
+}
+function hasDuplicates(arr)
+{
+  var sorted_arr = arr.slice().sort();
+  for (var i = 0; i < arr.length - 1; i++)
+  {
+      if (sorted_arr[i + 1] == sorted_arr[i])
+      {
+          return true;
+      }
+  }
+  return false;
+}
+function rule1(dir)
+{
+        
+        if(dir!=0)
+          textDir=dir;
+
+        currentPos=currentPos+dir;
+        if(currentPos<=0)
+          currentPos=0;
+        if(currentPos>=array.length)
+          currentPos=array.length-1;
+
+        console.log(dir,currentPos);
+
+        var object=array[currentPos];
+        var qtext=object.qtext.trim();
+        var options=[];
+        if('a' in object)if(object.a.length>0)options.push(object.a);
+        if('b' in object)if(object.b.length>0)options.push(object.b);
+        if('c' in object)if(object.c.length>0)options.push(object.c);
+        if('d' in object)if(object.d.length>0)options.push(object.d);
+        if('e' in object)if(object.e.length>0)options.push(object.e);
+
+        var correct=inflateCorrect(object.correct);
+        
+        //create json string
+        var tempArray=['a','b','c','d','e'];
+        document.getElementById("root-word").innerHTML=qtext;
+        var p=document.getElementById('options');
+        p.innerHTML="";
+        for (var i = 0; i < options.length; i++)
+        {            
+            var child=document.createElement('div');
+            child.setAttribute('class','option');
+            child.setAttribute('id',tempArray[i]);
+            child.setAttribute('data-userIndex',i);//0 based
+            child.setAttribute('data-correctIndex',correct);//0 based
+            child.setAttribute("onclick", "checkAnswer(event);");
+            child.innerHTML=options[i]+"<img src='wrong_image.png'>"+"<img  src='correct_image.png'>";
+            p.appendChild(child);
+
+        }
+        try
+        {
+            document.getElementById('selectIndex').selectedIndex=currentPos;
+        }catch(e){}
+
+        isNewQuestion=true;
+        localStorage.index=currentPos;
+        document.getElementById('index-change-holder').innerHTML=(currentPos+1)+"/"+array.length;
+        oldQtext=qtext;
+        
+
+}
+function inflateCorrect(correct)
+{
+    switch(correct)
+    {
+        case 1:
+        case "1":
+        case "A":
+        case "a":
+        return 0;
+
+        case 2:
+        case "2":
+        case "B":
+        case "b":
+        return 1;
+        
+        case 3:
+        case "3":
+        case "C":
+        case "c":
+        return 2;
+
+        case 4:
+        case "4":
+        case "D":
+        case "d":
+        return 3;
+        
+        case 5:
+        case "5":
+        case "E":
+        case "e":
+        return 4;
+
+    }
+}
+function checkAnswer(event)
+{
+    if(isNewQuestion)
+    {
+        isNewQuestion=false;
+        var p=document.getElementById('options').childNodes;
+        for (var i = 0; i < p.length; i++)
+        {
+            p[i].setAttribute('class','option');
+        }
+        var abcd=['a','b','c','d','e'];
+        var correctIndex=parseInt(event.target.getAttribute('data-correctIndex'));
+        //img 0 is wrong ,1 is correct
+        if(event.target.getAttribute('data-userIndex')==event.target.getAttribute('data-correctIndex'))
+        {
+            event.target.setAttribute("class","option correct");
+            event.target.getElementsByTagName('img')[1].style.display="inline-block";
+
+        }else
+        {
+            event.target.setAttribute("class","option wrong");
+            event.target.getElementsByTagName('img')[0].style.display="inline-block";
+            
+            document.getElementById(abcd[correctIndex]).setAttribute("class","option correct");
+            document.getElementById(abcd[correctIndex]).getElementsByTagName('img')[1].style.display="inline-block";
+
+        }
+    }
+}
+
+function getRandomInt(min, max)
+{
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+$('body').on('swipeleft swiperight',function(e)
+{
+  switch(e.type)
+  {
+    case "swipeleft":
+    rule1(1);
+    break;
+
+    case "swiperight":
+    rule1(-1);
+    break;
+  }    
+});
+
+
+
+var array=[];
+    
+
+array.push({
+        "qtext": "Find the correctly spelt word.",
+        "a": "(A)Chauffeure",
+        "b": "(B)Chauffeor",
+        "c": "(C)Chauffeur",
+        "d": "(D)Chaeuffeur",
+        "correct": "C",
+    });
+    array.push({
+        "qtext": "Find the correctly spelt word.",
+        "a": "(A)Chlorophyll",
+        "b": "(B)Chlorophyl",
+        "c": "(C)Chlorophell",
+        "d": "(D)Chlorophill",
+        "correct": "A",
+    });
+    array.push({
+        "qtext": "Find the correctly spelt word.",
+        "a": "(A)Commissionner",
+        "b": "(B)Commissioner",
+        "c": "(C)Comissioner",
+        "d": "(D)Commisioner",
+        "correct": "B",
+    });
+    array.push({
+        "qtext": "Find the correctly spelt word.",
+        "a": "(A)Carnivorus",
+        "b": "(B)Carnivrous",
+        "c": "(C)Carnevorous",
+        "d": "(D)Carnivorous",
+        "correct": "D",
+    });
+    array.push({
+        "qtext": "Find the correctly spelt word.",
+        "a": "(A)Collosal",
+        "b": "(B)Colossal",
+        "c": "(C)Colosal",
+        "d": "(D)Colosale",
+        "correct": "B",
+    });
+    array.push({
+        "qtext": "Find the correctly spelt word.",
+        "a": "(A)Commendant",
+        "b": "(B)Commandent",
+        "c": "(C)Commandant",
+        "d": "(D)Comandant",
+        "correct": "C",
+    });
+    array.push({
+        "qtext": "Find the correctly spelt word.",
+        "a": "(A)Cumpassion",
+        "b": "(B)Compassion",
+        "c": "(C)Compasion",
+        "d": "(D)Compastion",
+        "correct": "B",
+    });
+    array.push({
+        "qtext": "Find the correctly spelt word.",
+        "a": "(A)Cunvenience",
+        "b": "(B)Convenience",
+        "c": "(C)Convinience",
+        "d": "(D)Convenence",
+        "correct": "B",
+    });
+    array.push({
+        "qtext": "Find the correctly spelt word.",
+        "a": "(A)Corrooboration",
+        "b": "(B)Corroboraetion",
+        "c": "(C)Coroboration",
+        "d": "(D)Corroboration",
+        "correct": "D",
+    });
+    array.push({
+        "qtext": "Find the correctly spelt word.",
+        "a": "(A)Daniel",
+        "b": "(B)Danile",
+        "c": "(C)Daneil",
+        "d": "(D)Danniel",
+        "correct": "A",
+    });
+    array.push({
+        "qtext": "Find the correctly spelt word.",
+        "a": "(A)Detiriorate",
+        "b": "(B)Detereorate",
+        "c": "(C)Deteriorate",
+        "d": "(D)Daeteriorate",
+        "correct": "C",
+    });
+    array.push({
+        "qtext": "Find the correctly spelt word.",
+        "a": "(A)Daibites",
+        "b": "(B)Diabites",
+        "c": "(C)Daibetes",
+        "d": "(D)Diabetes",
+        "correct": "D",
+    });
+    array.push({
+        "qtext": "Find the correctly spelt word.",
+        "a": "(A)Diaphragm",
+        "b": "(B)Daiphragm",
+        "c": "(C)Diaphrgm",
+        "d": "(D)Diaphragam",
+        "correct": "A",
+    });
+    array.push({
+        "qtext": "Find the correctly spelt word.",
+        "a": "(A)Diarrhoae",
+        "b": "(B)Diarhoea",
+        "c": "(C)Dearrhoea",
+        "d": "(D)Diarrhoea",
+        "correct": "D",
+    });
+    array.push({
+        "qtext": "Find the correctly spelt word.",
+        "a": "(A)Desciplinary",
+        "b": "(B)Disciplinary",
+        "c": "(C)Disceplinary",
+        "d": "(D)Disciplenary",
+        "correct": "B",
+    });
+    array.push({
+        "qtext": "Find the correctly spelt word.",
+        "a": "(A)Dysentery",
+        "b": "(B)Dysintery",
+        "c": "(C)Dysentiry",
+        "d": "(D)Dysentary",
+        "correct": "A",
+    });
+    array.push({
+        "qtext": "Find the correctly spelt word.",
+        "a": "(A)Dyispepsia",
+        "b": "(B)Dyspepsea",
+        "c": "(C)Dyspepsia",
+        "d": "(D)Dyspipsia",
+        "correct": "C",
+    });
+    array.push({
+        "qtext": "Find the correctly spelt word.",
+        "a": "(A)Eczima",
+        "b": "(B)Ecgema",
+        "c": "(C)Eczema",
+        "d": "(D)Ecczema",
+        "correct": "C",
+    });
+    array.push({
+        "qtext": " Find the correctly spelt word.",
+        "a": "(A)Enveronment",
+        "b": "(B)Envirenment",
+        "c": "(C)Enviroment",
+        "d": "(D)Environment",
+        "correct": "D",
+    });
+    array.push({
+        "qtext": " Find the correctly spelt word.",
+        "a": "(A)Equilibrium",
+        "b": "(B)Equellibrium",
+        "c": "(C)Equillibrium",
+        "d": "(D)Equillibreum",
+        "correct": "A",
+    });
+    array.push({
+        "qtext": " Find the correctly spelt word.",
+        "a": "(A)Eucaliptus",
+        "b": "(B)Eucelyptus",
+        "c": "(C)Eucalyptus",
+        "d": "(D)Eucaleptus",
+        "correct": "C",
+    });
+    array.push({
+        "qtext": " Find the correctly spelt word.",
+        "a": "(A)Ecclesiastec",
+        "b": "(B)Ecclisiastic",
+        "c": "(C)Eclesiastic",
+        "d": "(D)Ecclesiastic",
+        "correct": "D",
+    });
+    array.push({
+        "qtext": " Find the correctly spelt word.",
+        "a": "(A)Emancipattion",
+        "b": "(B)Emancipation",
+        "c": "(C)Emencipation",
+        "d": "(D)Emancepation",
+        "correct": "B",
+    });
+    array.push({
+        "qtext": " Find the correctly spelt word.",
+        "a": "(A)Emberrassment",
+        "b": "(B)Embarassment",
+        "c": "(C)Embarrassment",
+        "d": "(D)Embarrasment",
+        "correct": "C",
+    });
+    array.push({
+        "qtext": " Find the correctly spelt word.",
+        "a": "(A)Equivecation",
+        "b": "(B)Equivocation",
+        "c": "(C)Equivacation",
+        "d": "(D)Equevocation",
+        "correct": "B",
+    });
+    array.push({
+        "qtext": " Find the correctly spelt word.",
+        "a": "(A)Eradication",
+        "b": "(B)Eradecation",
+        "c": "(C)Eraedication",
+        "d": "(D)Eardication",
+        "correct": "A",
+    });
+    array.push({
+        "qtext": " Find the correctly spelt word.",
+        "a": "(A)Espionege",
+        "b": "(B)Eespionage",
+        "c": "(C)Espionage",
+        "d": "(D)Espeonage",
+        "correct": "C",
+    });
+    array.push({
+        "qtext": " Find the correctly spelt word.",
+        "a": "(A)Etiquette",
+        "b": "(B)Etiquatte",
+        "c": "(C)Etiquete",
+        "d": "(D)Etequette",
+        "correct": "A",
+    });
+    array.push({
+        "qtext": " Find the correctly spelt word.",
+        "a": "(A)Exonaration",
+        "b": "(B)Exsoneration",
+        "c": "(C)Exoneration",
+        "d": "(D)Exoniration",
+        "correct": "C",
+    });
+    array.push({
+        "qtext": " Find the correctly spelt word.",
+        "a": "(A)Expedient",
+        "b": "(B)Exspedient",
+        "c": "(C)Expediant",
+        "d": "(D)Expedeent",
+        "correct": "A",
+    });
+    array.push({
+        "qtext": " Find the correctly spelt word.",
+        "a": "(A)Fahrenheit",
+        "b": "(B)Fahrenhiet",
+        "c": "(C)Faahrenheit",
+        "d": "(D)Fahennheit",
+        "correct": "A",
+    });
+    array.push({
+        "qtext": " Find the correctly spelt word.",
+        "a": "(A)Ferreous",
+        "b": "(B)Ferrous",
+        "c": "(C)Firrous",
+        "d": "(D)Ferous",
+        "correct": "B",
+    });
+    array.push({
+        "qtext": " Find the correctly spelt word.",
+        "a": "(A)Fermenttation",
+        "b": "(B)Fermintation",
+        "c": "(C)Fermentation",
+        "d": "(D)Farmentation",
+        "correct": "C",
+    });
+    array.push({
+        "qtext": " Find the correctly spelt word.",
+        "a": "(A)Garruelous",
+        "b": "(B)Garrulious",
+        "c": "(C)Garulous",
+        "d": "(D)Garrulous",
+        "correct": "D",
+    });
+    array.push({
+        "qtext": " Find the correctly spelt word.",
+        "a": "(A)Gonorrhea",
+        "b": "(B)Gonurrhoea",
+        "c": "(C)Gonorhoea",
+        "d": "(D)Gonorrhoea",
+        "correct": "D",
+    });
+    array.push({
+        "qtext": " Find the correctly spelt word.",
+        "a": "(A)Grasshoppar",
+        "b": "(B)Grasshopper",
+        "c": "(C)Grashopper",
+        "d": "(D)Grasshoper",
+        "correct": "B",
+    });
+    array.push({
+        "qtext": " Find the correctly spelt word.",
+        "a": "(A)Garrition",
+        "b": "(B)Garison",
+        "c": "(C)Garreson",
+        "d": "(D)Garrison",
+        "correct": "D",
+    });
+    array.push({
+        "qtext": " Find the correctly spelt word.",
+        "a": "(A)Girraffe",
+        "b": "(B)Geraffe",
+        "c": "(C)Giraffe",
+        "d": "(D)Girafe",
+        "correct": "C",
+    });
+    array.push({
+        "qtext": " Find the correctly spelt word.",
+        "a": "(A)Grandeur",
+        "b": "(B)Grander",
+        "c": "(C)Granduer",
+        "d": "(D)Grandiur",
+        "correct": "A",
+    });
+    array.push({
+        "qtext": " Find the correctly spelt word.",
+        "a": "(A)Ginaecology",
+        "b": "(B)Gynaecolgy",
+        "c": "(C)Gyneacology",
+        "d": "(D)Gynaecology",
+        "correct": "D",
+    });
+    array.push({
+        "qtext": " Find the correctly spelt word.",
+        "a": "(A)Harmonim",
+        "b": "(B)Harmoneum",
+        "c": "(C)Harmonium",
+        "d": "(D)Harrmonium",
+        "correct": "C",
+    });
+    array.push({
+        "qtext": " Find the correctly spelt word.",
+        "a": "(A)Heamoglobin",
+        "b": "(B)Haemoglobin",
+        "c": "(C)Haeimoglobin",
+        "d": "(D)Haemogloben",
+        "correct": "B",
+    });
+    array.push({
+        "qtext": " Find the correctly spelt word.",
+        "a": "(A)Haemorrhge",
+        "b": "(B)Haemorhage",
+        "c": "(C)Haemorrhage",
+        "d": "(D)Haimorrhage",
+        "correct": "C",
+    });
+    array.push({
+        "qtext": " Find the correctly spelt word.",
+        "a": "(A)Harppon",
+        "b": "(B)Harppoon",
+        "c": "(C)Harpon",
+        "d": "(D)Harpoon",
+        "correct": "D",
+    });
+    array.push({
+        "qtext": " Find the correctly spelt word.",
+        "a": "(A)Heridiatary",
+        "b": "(B)Hereditary",
+        "c": "(C)Hirediatary",
+        "d": "(D)Heredeatary",
+        "correct": "B",
+    });
+    array.push({
+        "qtext": " Find the correctly spelt word.",
+        "a": "(A)Heterodx",
+        "b": "(B)Hetreodox",
+        "c": "(C)Heterodox",
+        "d": "(D)Hiterodox",
+        "correct": "C",
+    });
+    array.push({
+        "qtext": " Find the correctly spelt word.",
+        "a": "(A)Hippopottamus",
+        "b": "(B)Heppopotamus",
+        "c": "(C)Hipopotamus",
+        "d": "(D)Hippopotamus",
+        "correct": "D",
+    });
+    array.push({
+        "qtext": " Find the correctly spelt word.",
+        "a": "(A)Herbivorus",
+        "b": "(B)Herbivorous",
+        "c": "(C)Hervivorous",
+        "d": "(D)Hirbivorous",
+        "correct": "B",
+    });
+    array.push({
+        "qtext": " Find the correctly spelt word.",
+        "a": "(A)Hardman",
+        "b": "(B)Hardsman",
+        "c": "(C)Herdman",
+        "d": "(D)Herdsman",
+        "correct": "D",
+    });
+    array.push({
+        "qtext": " Find the correctly spelt word.",
+        "a": "(A)Hygiene",
+        "b": "(B)Hygene",
+        "c": "(C)Higiene",
+        "d": "(D)Hygine",
+        "correct": "A",
+    });
+    array.push({
+        "qtext": " Find the correctly spelt word.",
+        "a": "(A)Hypermetorpia",
+        "b": "(B)Hypermetreopia",
+        "c": "(C)Hypermitropia",
+        "d": "(D)Hypermetropia",
+        "correct": "D",
+    });
+    array.push({
+        "qtext":"Which of the following spelling incorrect in the given context ?",
+        "a": "1) erratic",
+        "b": "2) diligent",
+        "c": "3) evence",
+        "d": "4) diabolical",
+        "e": "5) All are correct",
+        "correct": "3",
+    });
+    array.push({
+        "qtext":"Which of the following spelling incorrect in the given context ?",
+        "a": "1) diaspora",
+        "b": "2) debility",
+        "c": "3) delirious",
+        "d": "4) debut",
+        "e": "5) All are correct",
+        "correct": "5",
+    });
+    array.push({
+        "qtext":"Which of the following spelling incorrect in the given context ?",
+        "a": "1) naivete",
+        "b": "2) nuance",
+        "c": "3) peian",
+        "d": "4) progeny",
+        "e": "5) All are correct",
+        "correct": "3",
+    });
+    array.push({
+        "qtext":"Which of the following spelling incorrect in the given context ?",
+        "a": "1) nee",
+        "b": "2) pecilate",
+        "c": "3) peevish",
+        "d": "4) niche",
+        "e": "5) All are correct",
+        "correct": "2",
+    });
+    array.push({
+        "qtext":"Which of the following spelling incorrect in the given context ?",
+        "a": "1) mete",
+        "b": "2) muzzle",
+        "c": "3) juggle",
+        "d": "4) jaicose",
+        "e": "5) All are correct",
+        "correct": "4",
+    });
+    array.push({
+        "qtext":"Which of the following spelling incorrect in the given context ?",
+        "a": "1) maltreat",
+        "b": "2) mayhem",
+        "c": "3) lustre",
+        "d": "4) leway",
+        "e": "5) All are correct",
+        "correct": "4",
+    });
+    array.push({
+        "qtext":"Which of the following spelling incorrect in the given context ?",
+        "a": "1) handy",
+        "b": "2) impugn",
+        "c": "3) hiccup",
+        "d": "4) goery",
+        "e": "5) All are correct",
+        "correct": "4",
+    });
+    array.push({
+        "qtext":"Which of the following spelling incorrect in the given context ?",
+        "a": "1) ensconce",
+        "b": "2) exacerbate",
+        "c": "3) gruff",
+        "d": "4) grudge",
+        "e": "5) All are correct",
+        "correct": "5",
+    });
+    array.push({
+        "qtext":"Which of the following spelling incorrect in the given context ?",
+        "a": "1) exorcist",
+        "b": "2) feitish",
+        "c": "3) fervid",
+        "d": "4) gamut",
+        "e": "5) All are correct",
+        "correct": "2",
+    });
+    array.push({
+        "qtext":"Which of the following spelling incorrect in the given context ?",
+        "a": "1) doleful",
+        "b": "2) diatribe",
+        "c": "3) detente",
+        "d": "4) doyan",
+        "e": "5) All are correct",
+        "correct": "4",
+    });
+    
+    array.push({
+        "qtext":"Which of the following spelling incorrect in the given context ?",
+        "a": "1) Fauna",
+        "b": "2) facsimile",
+        "c": "3) epilogue",
+        "d": "4) alamanac",
+        "e": "5) All are correct",
+        "correct": "4",
+    });
+    array.push({
+        "qtext":"Which of the following spelling incorrect in the given context ?",
+        "a": "1) virtuoso",
+        "b": "2) lunar",
+        "c": "3) axiom",
+        "d": "4) potable",
+        "e": "5) All are correct",
+        "correct": "5",
+    });
+    array.push({
+        "qtext":"Which of the following spelling incorrect in the given context ?",
+        "a": "1) martyr",
+        "b": "2) heretic",
+        "c": "3) polyglot",
+        "d": "4) coquete",
+        "e": "5) All are correct",
+        "correct": "4",
+    });
+    array.push({
+        "qtext":"Which of the following spelling incorrect in the given context ?",
+        "a": "1) divergent",
+        "b": "2) symbolic",
+        "c": "3) chauveinist",
+        "d": "4) solidarity",
+        "e": "5) All are correct",
+        "correct": "3",
+    });
+    array.push({
+        "qtext":"Which of the following spelling incorrect in the given context ?",
+        "a": "1) egregious",
+        "b": "2) uttering",
+        "c": "3) patrirchal",
+        "d": "4) pronouncements",
+        "e": "5) All are correct",
+        "correct": "3",
+    });
+    array.push({
+        "qtext":"Which of the following spelling incorrect in the given context ?",
+        "a": "1) asunder",
+        "b": "2) elaborate",
+        "c": "3) irevocable",
+        "d": "4) sanction",
+        "e": "5) All are correct",
+        "correct": "3",
+    });
+    array.push({
+        "qtext":"Which of the following spelling incorrect in the given context ?",
+        "a": "1) canibal",
+        "b": "2) struck",
+        "c": "3) arbitration",
+        "d": "4) implicitly",
+        "e": "5) All are correct",
+        "correct": "1",
+    });
+    array.push({
+        "qtext":"Which of the following spelling incorrect in the given context ?",
+        "a": "1) debonair",
+        "b": "2) emigrant",
+        "c": "3) itinerant",
+        "d": "4) swashbuckler",
+        "e": "5) All are correct",
+        "correct": "5",
+    });
+    array.push({
+        "qtext":"Which of the following spelling incorrect in the given context ?",
+        "a": "1) decanter",
+        "b": "2) creche",
+        "c": "3) plebiscite",
+        "d": "4) regelia",
+        "e": "5) All are correct",
+        "correct": "4",
+    });
+    array.push({
+        "qtext":"Which of the following spelling incorrect in the given context ?",
+        "a": "1) sensual",
+        "b": "2) rein",
+        "c": "3) prey",
+        "d": "4) beatific",
+        "e": "5) All are correct",
+        "correct": "5",
+    });
+    array.push({
+        "qtext":"Which of the following spelling incorrect in the given context ?",
+        "a": "1) veneal",
+        "b": "2) arena",
+        "c": "3) cloakroom",
+        "d": "4) cage",
+        "e": "5) All are correct",
+        "correct": "1",
+    });
+    array.push({
+        "qtext":"Which of the following spelling incorrect in the given context ?",
+        "a": "1) eatable",
+        "b": "2) almanac",
+        "c": "3) teetotaller",
+        "d": "4) uxorious",
+        "e": "5) All are correct",
+        "correct": "5",
+    });
+    array.push({
+        "qtext":"Which of the following spelling incorrect in the given context ?",
+        "a": "1) convent",
+        "b": "2) sanaterium",
+        "c": "3) salutatorian",
+        "d": "4) tannery",
+        "e": "5) All are correct",
+        "correct": "2",
+    });
+    array.push({
+        "qtext":"Which of the following spelling incorrect in the given context ?",
+        "a": "1) aresenal",
+        "b": "2) apiary",
+        "c": "3) aviary",
+        "d": "4) aquarium",
+        "e": "5) All are correct",
+        "correct": "1",
+    });
+    array.push({
+        "qtext":"Which of the following spelling incorrect in the given context ?",
+        "a": "1) delegate",
+        "b": "2) soporific",
+        "c": "3) regalia",
+        "d": "4) kenel",
+        "e": "5) All are correct",
+        "correct": "4",
+    });
+    array.push({
+        "qtext":"Which of the following spelling incorrect in the given context ?",
+        "a": "1) thearchy",
+        "b": "2) autocracy",
+        "c": "3) prestigious",
+        "d": "4) compere",
+        "e": "5) All are correct",
+        "correct": "1",
+    });
+    array.push({
+        "qtext":"Which of the following spelling incorrect in the given context ?",
+        "a": "1) potable",
+        "b": "2) facsimile",
+        "c": "3) crusade",
+        "d": "4) pedantic",
+        "e": "5) All are correct",
+        "correct": "5",
+    });
+    array.push({
+        "qtext":"Which of the following spelling incorrect in the given context ?",
+        "a": "1) cleque",
+        "b": "2) bevy",
+        "c": "3) brood",
+        "d": "4) brace",
+        "e": "5) All are correct",
+        "correct": "1",
+    });
+    array.push({
+        "qtext":"Which of the following spelling incorrect in the given context ?",
+        "a": "1) barrage",
+        "b": "2) stream",
+        "c": "3) posse",
+        "d": "4) bolley",
+        "e": "5) All are correct",
+        "correct": "5",
+    });
+    array.push({
+        "qtext":"Which of the following spelling incorrect in the given context ?",
+        "a": "1) eugenics",
+        "b": "2) rhetoric",
+        "c": "3) homophobia",
+        "d": "4) ortheopy",
+        "e": "5) All are correct",
+        "correct": "5",
+    });
+    array.push({
+        "qtext":"Which of the following spelling incorrect in the given context ?",
+        "a": "1) reputation",
+        "b": "2) revelation",
+        "c": "3) appreciate",
+        "d": "4) reimburuse",
+        "e": "5) All are correct",
+        "correct": "4",
+    });
+    array.push({
+        "qtext":"Which of the following spelling incorrect in the given context ?",
+        "a": "1) Elaborate",
+        "b": "2) Collapse",
+        "c": "3) Anecdote",
+        "d": "4) remuneraition",
+        "e": "5) All are correct",
+        "correct": "4",
+    });
+    array.push({
+        "qtext":"Which of the following spelling incorrect in the given context ?",
+        "a": "1) subjugete",
+        "b": "2) Tenacious",
+        "c": "3) Contaminate",
+        "d": "4) Speculate",
+        "e": "5) All are correct",
+        "correct": "1",
+    });
+    array.push({
+        "qtext":"Which of the following spelling incorrect in the given context ?",
+        "a": "1) tame",
+        "b": "2) uncertain",
+        "c": "3) prehistric",
+        "d": "4) Conceive",
+        "e": "5) All are correct",
+        "correct": "3",
+    });
+    array.push({
+        "qtext":"Which of the following spelling incorrect in the given context ?",
+        "a": "1) Rival",
+        "b": "2) fasty",
+        "c": "3) competitor",
+        "d": "4) appearance",
+        "e": "5) All are correct",
+        "correct": "2",
+    });
+    array.push({
+        "qtext":"Which of the following spelling incorrect in the given context ?",
+        "a": "1) demytify",
+        "b": "2) Abridged",
+        "c": "3) redundant",
+        "d": "4) concise",
+        "e": "5) All are correct",
+        "correct": "1",
+    });
+    array.push({
+        "qtext":"Which of the following spelling incorrect in the given context ?",
+        "a": "1) somewhat",
+        "b": "2) Elegant",
+        "c": "3) falsfier",
+        "d": "4) unrefined",
+        "e": "5) All are correct",
+        "correct": "3",
+    });
+    array.push({
+        "qtext":"Which of the following spelling incorrect in the given context ?",
+        "a": "1) Incursion",
+        "b": "2) Indecerous",
+        "c": "3) Nadir",
+        "d": "4) passable",
+        "e": "5) All are correct",
+        "correct": "2",
+    });
+    array.push({
+        "qtext":"Which of the following spelling incorrect in the given context ?",
+        "a": "1) Alongside",
+        "b": "2) Adjacent",
+        "c": "3) remote",
+        "d": "4) Clientele",
+        "e": "5) All are correct",
+        "correct": "5",
+    });
+    array.push({
+        "qtext":"Which of the following spelling incorrect in the given context ?",
+        "a":" 1)Repentant",
+        "b": "2) Skimpy",
+        "c": "3) Sparse",
+        "d": "4) Sloth",
+        "e": "5) All are correct",
+        "correct": "5",
+    });
+
+    
+  
+</script>
+</body>
+</html>
