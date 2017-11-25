@@ -54,14 +54,14 @@
 }
     .option
     {
-      padding: 2% 3% 2% 3%;
-      background: #d3d3d3ad;
-      display: inline-table;
-      margin-top: 10%;
-      color: #111;
-      width: 80%;
-      max-width: 512;
-      text-align: left; 
+              padding: 2% 3% 2% 3%;
+    border-radius: 50px;
+    background: #ececec;
+    display: inline-table;
+    margin-top: 5%;
+    color: #1b1b1b;
+    width: 80%;
+    max-width: 600px;
     }
     
     .option>img
@@ -85,16 +85,7 @@
         padding-bottom:3%;
         overflow-y: auto;
     }   
-    #index-change-holder
-    {
-      display: inline-block;
-      text-align: center;
-      color: white;
-      background: #ffffff0a;
-      font-size: 15px;
-      padding: 3px 5px 3px 5px;
-      border: 2px solid #00000021;
-    }
+
     #select-holder
     {
       position: absolute;
@@ -117,27 +108,19 @@
 	 {
 		  background: #26C6DA;
 	    color: white;
-	    padding: 3% 0% 5% 0%;
-      text-align: center;
+    text-align: center;
+    position: relative;
+    height: 20%;
+    min-height: 70px;
+    max-height: 120px;
 	 }
   #root-word
   {
-    margin-bottom: 3%;
-    text-align: center;
+margin-bottom: 3%;
     color: #232323;
     letter-spacing: 1;
     word-spacing: 3px;
-    font-size: 1em;
-  }
-  #jump
-  {
-    display: inline-block;
-    text-align: center;
-    color: white;
-    background: #ffffff0a;
-    padding: 3px 5px 3px 5px;
-    border: 2px solid #00000021;
-    margin-left: 1%;
+    padding: 1% 2% 1% 2%;
   }
   .flex-container-center
   {
@@ -145,7 +128,9 @@
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    margin: 2%;
+    position: absolute;
+    bottom: 0px;
+    width: 100%;
   }
   #select-holder-parent
   {
@@ -157,19 +142,26 @@
     background: transparent;
     display: none;
   }
+   .small_button
+  {
+    color: white;
+    text-align: center;
+    background: rgba(224, 224, 224, 0.1);
+    display: inline-block;
+    padding: 5px 10px 5px 10px;
+    border: 1px solid rgba(255, 255, 255, 0.13);
+    margin-left: 5px;
+  }
     
     </style>
 </head>
 <body>
 	<div class="main_board">
 		<div id="topic" class="heading" style="color: #fff; font-size: 20px;">Sentence Improvement</div>
-  
-  <div class="flex-container-center">
-    <div id="index-change-holder"></div>
-    <div id="jump"><i style="font-size: 20px;" class="material-icons">redo</i></div>
-  </div>  
-    
-	
+    <div class="flex-container-center">
+      <div class="small_button" id="index-change-holder"></div>
+      <div class="small_button" id="jump"><i style="font-size: 20px;" class="material-icons">arrow_forward</i></div>
+    </div>  
   </div>
 <div class="content-holder">
     <div class="content-holder-inner ">
