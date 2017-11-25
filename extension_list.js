@@ -2,6 +2,12 @@
   "extensions": [
     
     {
+      "icon": "record_voice_over",
+      "icon_color": "#ff9486",
+      "title": "Change of Voice",
+      "subtitle": "Change of voice questions to practice",
+      "url": "https://hotdudehvfun.github.io/app_extensions/extension_changeofvoice.html"
+    },{
       "icon": "weekend",
       "icon_color": "#01b988",
       "title": "Odd One Out Words",
