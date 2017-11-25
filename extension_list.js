@@ -2,6 +2,12 @@
   "extensions": [
     
     {
+      "icon": "spellcheck",
+      "icon_color": "#59c8fa",
+      "title": "Spellings",
+      "subtitle": "find correct/incorrect spelling from the given options",
+      "url": "https://hotdudehvfun.github.io/app_extensions/extension_spellings.html"
+    },{
       "icon": "record_voice_over",
       "icon_color": "#ff9486",
       "title": "Change of Voice",
