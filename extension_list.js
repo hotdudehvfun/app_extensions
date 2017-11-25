@@ -5,7 +5,7 @@
       "icon": "build",
       "icon_color": "#26C6DA",
       "title": "Sentence Improvement",
-      "subtitle": "A part of sentence is highlighted, choose improvement from options",
+      "subtitle": "A part of sentence is highlighted, choose appropriate improvement from options",
       "url": "https://hotdudehvfun.github.io/app_extensions/extension_no_improvement.html"
     },{
       "icon": "spellcheck",
