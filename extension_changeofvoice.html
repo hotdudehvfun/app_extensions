@@ -1,0 +1,1440 @@
+<!DOCTYPE>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    
+
+    <style type="text/css">
+    /*primary color: #ff3b30*/    
+    *
+    {
+        font-family: "Roboto","sans-serif";
+          -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+    }   
+    body
+    {
+        margin: 0px; 
+        background: #fff;
+        overflow-x: hidden;
+    }
+    .shadow
+    {
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    }
+    .heading
+    {
+        text-align: center;
+        text-transform: uppercase;
+        color: #111;
+    }
+    .half_line
+    {
+        width: 50%;
+        height: 2px;
+        background: #ff3b30;
+        margin-left: 25%;
+        position:relative;
+    }
+    ._25_line
+    {
+        width: 25%;
+        height: 2px;
+        background: #ff3b30;
+        margin-left: 37.5%;
+        position:relative;
+    }
+
+    .list-container
+    {
+            text-align: center;
+            margin-top: 5%;
+    }
+    .option
+    {
+    padding: 2% 3% 2% 3%;
+    border-radius: 50px;
+    background: #ececec;
+    display: inline-table;
+    margin-top: 10%;
+    color: #111;
+    width: 80%;
+    max-width: 512;
+    }
+    .option>img
+    {
+    	height: 10px;
+	    width: 10px;
+	    margin-left: 5px;
+	    display: none;
+    }
+    .correct
+    {
+        border: 1px solid #4CAF50;
+    }
+    .wrong
+    {
+        border: 1px solid #e00d32;
+
+    }
+    
+    .explanation-holder
+    {
+        transition: 0.5s all cubic-bezier(.45,.64,.03,.98);
+        width: 100%;
+        height: 0px;
+        overflow-x: hidden;
+        overflow-y: auto;
+        margin-top: 5%;
+    }
+    .fab
+    {
+      position: absolute;
+      bottom: 2%;
+      right: 3%;
+      background: #ff3b30;
+      border-radius: 50px;
+      padding: 5px;
+    }
+    .background-banner
+    {
+        background: #fff;
+        transition: 0.5s all;
+        opacity: 0;
+    }
+    .content-holder
+    {
+    
+    }
+    .content-holder-inner
+    {
+        padding-top: 3%;
+        padding-bottom:3%;
+        overflow-y: auto;
+    }   
+    #root-word>span
+    {
+        line-height: 160%;
+        font-size: 20px;
+        margin-left: 1.5%;
+    }
+    select
+    {
+        width: 100%;
+        text-align-last: center;
+        background:#fff;
+        color: #111;
+        border: 2px solid #ff3b30;
+        padding: 1%;
+    }
+    #index-change-holder
+    {
+    position: absolute;
+    bottom: 1%;
+    text-align: center;
+    width: 50%;
+    left: 25%;
+    color: #ff3b30;
+    border-radius: 50px;
+    background: #1111110a;
+    }
+    #select-holder
+    {
+        position: absolute;
+        bottom: 14%;
+        left: 25%;
+        width: 50%;
+        display: none;
+    }
+    .main_board
+	{
+		background: linear-gradient(#ff9486,#ef3c6a);;
+	    color: white;
+	    padding: 8% 0% 8% 0%;
+	    font-size: 1.5em;
+	}
+    
+    </style>
+</head>
+<body>
+	<div class="main_board">
+		<div class="heading" style="color: #fff;">Change of Voice</div>
+	</div>
+<div class="content-holder">
+    <div class="content-holder-inner ">
+        <div id="root-word" class="heading" style="margin-bottom: 3%;">qtext</div>
+        <div class="half_line"></div>
+        <div id=""></div>
+        <div class="list-container" id="options">
+            <div class="option" id="a"></div>
+
+        </div>
+    </div>
+</div>
+
+<div id="index-change-holder">
+</div>
+<div id="select-holder"></div>
+
+
+<script type="text/javascript">
+var currentPos;
+var isNewQuestion;
+document.addEventListener("DOMContentLoaded",function()
+{
+	 $.mobile.loading( "hide" );
+    $.mobile.loading().hide();
+  currentPos=lastPosition();
+  rule1(0);
+  createSelectIndex();
+  document.getElementById('index-change-holder').addEventListener('click',function()
+  {
+    
+    var div=document.getElementById('select-holder');
+    
+    if(div.style.display=="block")
+    {
+     div.style.display="none";   
+    }else
+    {
+     div.style.display="block";
+    }
+
+  });
+});
+
+function createSelectIndex(argument)
+{
+    var p=document.getElementById('select-holder');
+    var html="<select style='' id=selectIndex size=5 onchange=jumpToQuestion();>";
+    for (var i = 0; i < array.length; i++)
+    {
+        html+="<option value="+i+">"+(i+1)+"</option>";        
+    }
+    html+="</select>";
+    p.innerHTML=(html);    
+    document.getElementById('selectIndex').selectedIndex=currentPos;
+
+}
+function jumpToQuestion()
+{
+    var index=document.getElementById('selectIndex').value;
+    currentPos=parseInt(index);
+    document.getElementById('select-holder').style.display="none";
+    rule1(0);
+}
+
+function lastPosition()
+{
+  var i=0;
+  if(localStorage.index==undefined||localStorage.index==null)
+  { 
+    i=0;
+  }
+  else
+  {
+    i=parseInt(localStorage.index)
+    if(isNaN(i))
+        i=0;
+  }
+  return i;
+
+}
+function getNRandomInts(min,max,n)
+{
+    var randoms=[];
+    while(randoms.length!=n)
+    {
+        var num=getRandomInt(min,max);
+        if(randoms.indexOf(num)==-1)
+            randoms.push(num)
+    }
+    return randoms;
+}
+function hasDuplicates(arr)
+{
+  var sorted_arr = arr.slice().sort();
+  for (var i = 0; i < arr.length - 1; i++)
+  {
+      if (sorted_arr[i + 1] == sorted_arr[i])
+      {
+          return true;
+      }
+  }
+  return false;
+}
+function rule1(dir)
+{
+        
+        if(dir!=0)
+          textDir=dir;
+
+        currentPos=currentPos+dir;
+        if(currentPos<=0)
+          currentPos=0;
+        if(currentPos>=array.length)
+          currentPos=array.length-1;
+
+        console.log(dir,currentPos);
+
+        var object=array[currentPos];
+        var qtext=object.qtext.trim();
+        var options=[];
+        'a' in object?options.push(object.a):false;
+        'b' in object?options.push(object.b):false;
+        'c' in object?options.push(object.c):false;
+        'd' in object?options.push(object.d):false;
+        'e' in object?options.push(object.e):false;
+
+        var correct=inflateCorrect(object.correct);
+        
+        //create json string
+        var tempArray=['a','b','c','d','e'];
+        document.getElementById("root-word").innerHTML=qtext;
+        var p=document.getElementById('options');
+        p.innerHTML="";
+        for (var i = 0; i < options.length; i++)
+        {            
+            var child=document.createElement('div');
+            child.setAttribute('class','option');
+            child.setAttribute('id',tempArray[i]);
+            child.setAttribute('data-userIndex',i);//0 based
+            child.setAttribute('data-correctIndex',correct);//0 based
+            child.setAttribute("onclick", "checkAnswer(event);");
+            child.innerHTML=options[i]+"<img src='wrong_image.png'>"+"<img  src='correct_image.png'>";
+            p.appendChild(child);
+
+        }
+        try
+        {
+            document.getElementById('selectIndex').selectedIndex=currentPos;
+        }catch(e){}
+
+        isNewQuestion=true;
+        localStorage.index=currentPos;
+        document.getElementById('index-change-holder').innerHTML=(currentPos+1)+"/"+array.length;
+        oldQtext=qtext;
+        
+
+}
+function inflateCorrect(correct)
+{
+    switch(correct)
+    {
+        case 1:
+        case "1":
+        case "A":
+        case "a":
+        return 0;
+
+        case 2:
+        case "2":
+        case "B":
+        case "b":
+        return 1;
+        
+        case 3:
+        case "3":
+        case "C":
+        case "c":
+        return 2;
+
+        case 4:
+        case "4":
+        case "D":
+        case "d":
+        return 3;
+        
+        case 5:
+        case "5":
+        case "E":
+        case "e":
+        return 4;
+
+    }
+}
+function checkAnswer(event)
+{
+    if(isNewQuestion)
+    {
+        isNewQuestion=false;
+        var p=document.getElementById('options').childNodes;
+        for (var i = 0; i < p.length; i++)
+        {
+            p[i].setAttribute('class','option');
+        }
+        var abcd=['a','b','c','d','e'];
+        var correctIndex=parseInt(event.target.getAttribute('data-correctIndex'));
+        //img 0 is wrong ,1 is correct
+        if(event.target.getAttribute('data-userIndex')==event.target.getAttribute('data-correctIndex'))
+        {
+            event.target.setAttribute("class","option correct");
+            event.target.getElementsByTagName('img')[1].style.display="inline-block";
+
+        }else
+        {
+            event.target.setAttribute("class","option wrong");
+            event.target.getElementsByTagName('img')[0].style.display="inline-block";
+            
+            document.getElementById(abcd[correctIndex]).setAttribute("class","option correct");
+            document.getElementById(abcd[correctIndex]).getElementsByTagName('img')[1].style.display="inline-block";
+
+        }
+    }
+}
+
+function getRandomInt(min, max)
+{
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+$('body').on('swipeleft swiperight',function(e)
+{
+  switch(e.type)
+  {
+    case "swipeleft":
+    rule1(1);
+    break;
+
+    case "swiperight":
+    rule1(-1);
+    break;
+  }    
+});
+
+
+
+var array=[];
+    
+
+array.push({
+    "qtext": " Sahil sharma makes tea.",
+    "a": "(A)Tea is made by Sahil sharma.",
+    "b": "(B)Tea is made by the Sahil sharma.",
+    "c": "(C)Tea was made by Sahil sharma.",
+    "d": "(D)Tea has made by Sahil sharma.",
+    "correct": "A",
+});
+array.push({
+    "qtext": " My father loves me.",
+    "a": "(A)I loved my father.",
+    "b": "(B)I was loved by my father.",
+    "c": "(C)I were loved by my father.",
+    "d": "(D)I am loved by my father.",
+    "correct": "D",
+});
+array.push({
+    "qtext": " We hate him.",
+    "a": "(A)He has hated by us.",
+    "b": "(B)He is hated by us.",
+    "c": "(C)He was hated by us.",
+    "d": "(D)He will hated by us.",
+    "correct": "B",
+});
+array.push({
+    "qtext": " Savita does not like me.",
+    "a": "(A)I am not like by Savita.",
+    "b": "(B)I am not liked by Savita.",
+    "c": "(C)I was not liked by Savita.",
+    "d": "(D)I were not liked by Savita.",
+    "correct": "B",
+});
+array.push({
+    "qtext": " He is making a film.",
+    "a": "(A)A film is made by him.",
+    "b": "(B)A film had being made by him.",
+    "c": "(C)A film is being made by him.",
+    "d": "(D)A film has being made by him.",
+    "correct": "C",
+});
+array.push({
+    "qtext": " Shivu is singing a song.",
+    "a": "(A)A song has been being sung by Shivu.",
+    "b": "(B)A song is sung by Shivu.",
+    "c": "(C)A song has being sung by Shivu.",
+    "d": "(D)A song is being sung by Shivu.",
+    "correct": "D",
+});
+array.push({
+    "qtext": " My friends are watching the match.",
+    "a": "(A)The match is watched by my friends.",
+    "b": "(B)The match had being watched by my friends.",
+    "c": "(C)The match is being watched by my friends.",
+    "d": "(D)The match has being watched by my friends.",
+    "correct": "C",
+});
+array.push({
+    "qtext": " My mother is cooking food.",
+    "a": "(A)Food is being cooked by my mother.",
+    "b": "(B)Food has been cooked by my mother.",
+    "c": "(C)Food was being cooked by my mother.",
+    "d": "(D)Food is being cook by my mother.",
+    "correct": "A",
+});
+array.push({
+    "qtext": " They are not playing the game.",
+    "a": "(A)The game has not being played by them.",
+    "b": "(B)The game is not being played by them.",
+    "c": "(C)The game is being not played by them.",
+    "d": "(D)The game has being not played by them.",
+    "correct": "B",
+});
+array.push({
+    "qtext": " My father has solved this matter.",
+    "a": "(A)This matter have been solved by my father.",
+    "b": "(B)This matter is solved by my father.",
+    "c": "(C)This matter has been solved by my father.",
+    "d": "(D)This matter had been solved by my father.",
+    "correct": "C",
+});
+array.push({
+    "qtext": " Priyanka has written these notes.",
+    "a": "(A)These notes are written by Priyanka.",
+    "b": "(B)These notes has been written by Priyanka.",
+    "c": "(C)These notes have been written by Priyanka.",
+    "d": "(D)These notes had been written by Priyanka.",
+    "correct": "C",
+});
+array.push({
+    "qtext": " Someone has stolen his book.",
+    "a": "(A)His book is been stolen.",
+    "b": "(B)His book has been stolen.",
+    "c": "(C)His book is stolen. ",
+    "d": "(D)His book has stolen.",
+    "correct": "B",
+});
+array.push({
+    "qtext": " I have given him a perfume.",
+    "a": "(A)A perfume have been given to him by me.",
+    "b": "(B)A perfume has been given to him by me.",
+    "c": "(C)A perfume had been given to him by me.",
+    "d": "(D)A perfume was given to him by me.",
+    "correct": "B",
+});
+array.push({
+    "qtext": " He stole that watch.",
+    "a": "(A)That watch was stolen by him.",
+    "b": "(B)That watch stolen by him.",
+    "c": "(C)That watch stole by him.",
+    "d": "(D)That watch had stolen by him.",
+    "correct": "A",
+});
+array.push({
+    "qtext": " Sahil spoke the lie.",
+    "a": "(A)The lie was spoke by Sahil.",
+    "b": "(B)The lie spoken by Sahil.",
+    "c": "(C)Lie was spoken by Sahil.",
+    "d": "(D)The lie was spoken by Sahil.",
+    "correct": "D",
+});
+array.push({
+    "qtext": " Thief killed him.",
+    "a": "(A)He was kill by the thief.",
+    "b": "(B)He killed by the thief.",
+    "c": "(C)He was killed by the thief.",
+    "d": "(D)He was killed.",
+    "correct": "C",
+});
+array.push({
+    "qtext": " The police caught the culprit.",
+    "a": "(A)The culprit were caught be the police.",
+    "b": "(B)The culprit was caught be the police.",
+    "c": "(C)The culprit caught be the police.",
+    "d": "(D)The culprit had caught be the police.",
+    "correct": "B",
+});
+array.push({
+    "qtext": " He was writing a love letter.",
+    "a": "(A)A love letter had being written by him.",
+    "b": "(B)A love letter being written by him.",
+    "c": "(C)A love letter was written by him.",
+    "d": "(D)A love letter was being written by him.",
+    "correct": "D",
+});
+array.push({
+    "qtext": " The farmer was ploughing the fields.",
+    "a": "(A)The fields was being ploughed by the farmer.",
+    "b": "(B)The fields were being ploughed by the farmer.",
+    "c": "(C)The fields were ploughed by the farmer.",
+    "d": "(D)The fields were being ploughed by farmer.",
+    "correct": "B",
+});
+array.push({
+    "qtext": " Sita was reading the Gita.",
+    "a": "(A)The Gita was being read by Sita.",
+    "b": "(B)The Gita were being read by Sita.",
+    "c": "(C)Gita was being read by Sita.",
+    "d": "(D)The Gita was read by Sita.",
+    "correct": "A",
+});
+array.push({
+    "qtext": " He had written a poem.",
+    "a": "(A)A poem has written by him.",
+    "b": "(B)A poem had written by him.",
+    "c": "(C)A poem had been written by him.",
+    "d": "(D)A poem has been written by him.",
+    "correct": "C",
+});
+array.push({
+    "qtext": " They had not done their tasks.",
+    "a": "(A)Their tasks had not been done.",
+    "b": "(B)Their tasks had been not done.",
+    "c": "(C)Their tasks have not been done.",
+    "d": "(D)Their tasks have been not done.",
+    "correct": "A",
+});
+array.push({
+    "qtext": " Somebody had already adopted him.",
+    "a": "(A)He have been already adopted.",
+    "b": "(B)He had already been adopted.",
+    "c": "(C)He had already adopted.",
+    "d": "(D)He has been already adopted.",
+    "correct": "B",
+});
+array.push({
+    "qtext": " Rahul will pass the message.",
+    "a": "(A)The message will passed by Rahul.",
+    "b": "(B)The message would be passed by Rahul.",
+    "c": "(C)The message will pass by Rahul.",
+    "d": "(D)The message will be passed by Rahul.",
+    "correct": "D",
+});
+array.push({
+    "qtext": " He will hate me.",
+    "a": "(A)I would be hated by him.",
+    "b": "(B)I will be hated by him.",
+    "c": "(C)I will hated by him.",
+    "d": "(D)I will be hate by him.",
+    "correct": "B",
+});
+array.push({
+    "qtext": " The police will have caught the culprit.",
+    "a": "(A)The culprit will have caught by the police.",
+    "b": "(B)The culprit have been caught by the police.",
+    "c": "(C)The culprit will have been caught by the police.",
+    "d": "(D)The culprit would have been caught by the police.",
+    "correct": "C",
+});
+array.push({
+    "qtext": " Sunder will have closed the door.",
+    "a": "(A)The door would have closed by Sunder.",
+    "b": "(B)The door would have been closed by Sunder.",
+    "c": "(C)The door will have been closed by Sunder.",
+    "d": "(D)The door will have closed by Sunder.",
+    "correct": "C",
+});
+array.push({
+    "qtext": " I must help him.",
+    "a": "(A)He must helped by me.",
+    "b": "(B)I must held him.",
+    "c": "(C)He must get help from me.",
+    "d": "(D)He must be helped by me.",
+    "correct": "D",
+});
+array.push({
+    "qtext": " He can speak French.",
+    "a": "(A)French can spoken by him.",
+    "b": "(B)French can be spoke by him.",
+    "c": "(C)French can be spoken by him.",
+    "d": "(D)French could be spoken by him.",
+    "correct": "C",
+});
+array.push({
+    "qtext": " They may win the battle.",
+    "a": "(A)The battle may be win.",
+    "b": "(B)The battle may be won.",
+    "c": "(C)The battle may be won by them.",
+    "d": "(D)The battle may won.",
+    "correct": "B",
+});
+array.push({
+    "qtext": " Nobody can catch him.",
+    "a": "(A)He can not be caught.",
+    "b": "(B)He can not caught.",
+    "c": "(C)He could not be cought.",
+    "d": "(D)He could not cought.",
+    "correct": "A",
+});
+array.push({
+    "qtext": " We must have obeyed our teachers.",
+    "a": "(A)Our teachers might have obeyed.",
+    "b": "(B)Our teachers might have been obeyed.",
+    "c": "(C)Our teachers must have been obeyed.",
+    "d": "(D)Our teachers must have obeyed.",
+    "correct": "C",
+});
+array.push({
+    "qtext": " Rahul mush have done that task.",
+    "a": "(A)That task must had been done by Rahul.",
+    "b": "(B)That task must have been done by Rahul.",
+    "c": "(C)That task must have done by Rahul.",
+    "d": "(D)That task must have been did by Rahul.",
+    "correct": "B",
+});
+array.push({
+    "qtext": " We ought to have saved our environment.",
+    "a": "(A)Our environment ought to had been saved.",
+    "b": "(B)Our environment ought to have been save.",
+    "c": "(C)Our environment ought to have been saved. ",
+    "d": "(D)Our environment ought to have saved.",
+    "correct": "C",
+});
+array.push({
+    "qtext": " There is no book to read.",
+    "a": "(A)To be read there is no book.",
+    "b": "(B)To read there is no book.",
+    "c": "(C)There is no book to read.",
+    "d": "(D)There is no book to be read.",
+    "correct": "D",
+});
+array.push({
+    "qtext": " There is nothing to do.",
+    "a": "(A)There was nothing to be done.",
+    "b": "(B)There is nothing to be done.",
+    "c": "(C)There is nothing to done.",
+    "d": "(D)There is no thing to do.",
+    "correct": "B",
+});
+array.push({
+    "qtext": " It is time to prepare for the game trails.",
+    "a": "(A)It is time to prepared for the game trails.",
+    "b": "(B)It is time to be prepared for the game trails.",
+    "c": "(C)It is time for the game trails to prepared.",
+    "d": "(D)It is time for the game trails to be prepared.",
+    "correct": "D",
+});
+array.push({
+    "qtext": " It is time to learn English.",
+    "a": "(A)It is time to be learnt English.",
+    "b": "(B)It is time for English to be learnt.",
+    "c": "(C)It is time for English to learnt.",
+    "d": "(D)It is time to be learn English.",
+    "correct": "B",
+});
+array.push({
+    "qtext": " It is time to do our business.",
+    "a": "(A)It is time for our business to be done.",
+    "b": "(B)It is time to our business to be done.",
+    "c": "(C)It is time our business to be done.",
+    "d": "(D)It is time for our business be done.",
+    "correct": "A",
+});
+array.push({
+    "qtext": " He like people to respect him.",
+    "a": "(A)He like respect.",
+    "b": "(B)He likes to be respected.",
+    "c": "(C)He like to be respected.",
+    "d": "(D)He want to be respected.",
+    "correct": "C",
+});
+array.push({
+    "qtext": " Rahul has to see it or to believe it.",
+    "a": "(A)It has to be saw or to be believe by Rahul.",
+    "b": "(B)It has to be seen or to believe by Rahul.",
+    "c": "(C)It has to be seen or to be believe by Rahul.",
+    "d": "(D)It has to be seen or to be believe by Rahul.",
+    "correct": "C",
+});
+array.push({
+    "qtext": " Switch on the cooler.",
+    "a": "(A)Let cooler be switch on.",
+    "b": "(B)Switch on the cooler please.",
+    "c": "(C)Let cooler be switched on.",
+    "d": "(D)Let the cooler be switched on.",
+    "correct": "D",
+});
+array.push({
+    "qtext": " Bring the bottle of juice.",
+    "a": "(A)Let a bottle of juice be brought.",
+    "b": "(B)Let bottle of juice be brought.",
+    "c": "(C)Let a bottle of juice brought.",
+    "d": "(D)Let a bottle of juice be bring.",
+    "correct": "A",
+});
+array.push({
+    "qtext": " Don't insult the deaf man.",
+    "a": "(A)Let the deaf man not be insult.",
+    "b": "(B)Let the deaf man not be insulted.",
+    "c": "(C)Let the deaf man not insulted.",
+    "d": "(D)Let deaf man not be insulted.",
+    "correct": "B",
+});
+array.push({
+    "qtext": " Don't touch the fence.",
+    "a": "(A)Let the fence not be touch.",
+    "b": "(B)Let the fence not be touched.",
+    "c": "(C)Let the fence not touched.",
+    "d": "(D)Let the fence to not be touched.",
+    "correct": "B",
+});
+array.push({
+    "qtext": " Help the poor.",
+    "a": "(A)The poor should helped.",
+    "b": "(B)We should help poor.",
+    "c": "(C)Let the poor be helped.",
+    "d": "(D)The poor should be helped.",
+    "correct": "D",
+});
+array.push({
+    "qtext": " Respect your neighbours. ",
+    "a": "(A)Your neighbours should respected.",
+    "b": "(B)Your neighbours should be respected.",
+    "c": "(C)Let neighbours be respected.",
+    "d": "(D)Let neighbours respected.",
+    "correct": "B",
+});
+array.push({
+    "qtext": " Please give me a pen.",
+    "a": "(A)You are ordered to give me a pen.",
+    "b": "(B)You are ought to give me a pen.",
+    "c": "(C)You are requested to give me pen.",
+    "d": "(D)You are requested to give me a pen.",
+    "correct": "D",
+});
+array.push({
+    "qtext": " Please tell me something.",
+    "a": "(A)You are requested to tell me something.",
+    "b": "(B)You are requested tell me something.",
+    "c": "(C)You are requested to tell something.",
+    "d": "(D)You are request to tell me something.",
+    "correct": "A",
+});
+array.push({
+    "qtext": " Let me do this task.",
+    "a": "(A)Let this task be did be me.",
+    "b": "(B)Let this task done be me.",
+    "c": "(C)Let this task be done be me.",
+    "d": "(D)Let this task be do be me.",
+    "correct": "C",
+});
+array.push({
+    "qtext": " Let him do this work.",
+    "a": "(A)This work let done by him.",
+    "b": "(B)Let this task done be me.",
+    "c": "(C)This work let be done by him.",
+    "d": "(D)Let this work be done by him.",
+    "correct": "D",
+});
+array.push({
+    "qtext": " Let us play.",
+    "a": "(A)It is suggested that we could play.",
+    "b": "(B)It is suggested that we should play.",
+    "c": "(C)It is suggested to play.",
+    "d": "(D)No change",
+    "correct": "B",
+});
+array.push({
+    "qtext": " Let us sing.",
+    "a": "(A)It is suggested, we should sing.",
+    "b": "(B)It is suggested to sing.",
+    "c": "(C)It is suggested that we could sing.",
+    "d": "(D)It is suggested that we should sing.",
+    "correct": "D",
+});
+array.push({
+    "qtext": " Sit down.",
+    "a": "(A)You are requested to sit down.",
+    "b": "(B)You are ordered to site down.",
+    "c": "(C)You are told to sit down.",
+    "d": "(D)No change.",
+    "correct": "B",
+});
+array.push({
+    "qtext": " Did he buy a car ?",
+    "a": "(A)Was a car bought by him.",
+    "b": "(B)Did car bought by him.",
+    "c": "(C)Did a car bought by him.",
+    "d": "(D)Were a car bought by him.",
+    "correct": "A",
+});
+array.push({
+    "qtext": " Will nobody help the Sheetal ?",
+    "a": "(A)Will the Sheetal not be helped ? ",
+    "b": "(B)Will the Sheetal not helped ? ",
+    "c": "(C)Will the Sheetal not be help ? ",
+    "d": "(D)Will Sheetal not be helped ? ",
+    "correct": "A",
+});
+array.push({
+    "qtext": " Why does he beat his brother ?",
+    "a": "(A)Why he beaten his brother  ?",
+    "b": "(B)Why his brother beaten by him ?",
+    "c": "(C)Why is his brother beat by him ?",
+    "d": "(D)Why is his brother beaten by him ?",
+    "correct": "D",
+});
+array.push({
+    "qtext": " Where do they buy the utensils ?",
+    "a": "(A)Where did the utensils bought ?",
+    "b": "(B)Where was the utensils bought ?",
+    "c": "(C)Where are the utensils bought ?",
+    "d": "(D)Where were the utensils bought ?",
+    "correct": "C",
+});
+array.push({
+    "qtext": " Who taught you English ?",
+    "a": "(A)By who were you taught English.",
+    "b": "(B)By which were you taught English.",
+    "c": "(C)By whom you were taught English ?",
+    "d": "(D)By whom were you taught English ?",
+    "correct": "D",
+});
+array.push({
+    "qtext": " Who wrote this book ?",
+    "a": "(A)By whom is this book written ?",
+    "b": "(B)By whom was this book written ?",
+    "c": "(C)By who was this book written ?",
+    "d": "(D)By whom were this book written ?",
+    "correct": "B",
+});
+array.push({
+    "qtext": " Who wrote this noble ?",
+    "a": "(A)By whom has been this noble written ?",
+    "b": "(B)By whom had this noble written ?",
+    "c": "(C)By whom was this noble written ?",
+    "d": "(D)By whom this noble was written ?",
+    "correct": "C",
+});
+array.push({
+    "qtext": " He arrived at the conclusion.",
+    "a": "(A)The conclusion was arrived at by him.",
+    "b": "(B)The conclusion arrived at by him.",
+    "c": "(C)The conclusion had arrived at by him.",
+    "d": "(D)The conclusion have arrived at by him.",
+    "correct": "A",
+});
+array.push({
+    "qtext": " Mr. Sharma knows me.",
+    "a": "(A)I am known for Mr. Sharma.",
+    "b": "(B)I am known with Mr. Sharma.",
+    "c": "(C)I am known at Mr. Sharma.",
+    "d": "(D)I am known to Mr. Sharma.",
+    "correct": "D",
+});
+array.push({
+    "qtext": " His hard work satisfied me. ",
+    "a": "(A)I was satisfied for his hard work.",
+    "b": "(B)I was satisfied by his hard work.",
+    "c": "(C)I was satisfied with his hard work.",
+    "d": "(D)I was satisfied at his hard work.",
+    "correct": "C",
+});
+array.push({
+    "qtext": " His behaviour surprised me.",
+    "a": "(A)I was surprised for his behaviour.",
+    "b": "(B)I was surprised at his behaviour.",
+    "c": "(C)I was surprised with his behaviour.",
+    "d": "(D)I was surprised on his behaviour.",
+    "correct": "B",
+});
+array.push({
+    "qtext": " We crowned him leader.",
+    "a": "(A)He had crowned leader.",
+    "b": "(B)He crown leader.",
+    "c": "(C)He was crowned leader.",
+    "d": "(D)He crowned leader.",
+    "correct": "C",
+});
+array.push({
+    "qtext": " Rahul made her laugh.",
+    "a": "(A)She had made to laugh by Rahul.",
+    "b": "(B)She was made for laugh by Rahul.",
+    "c": "(C)She was made to laugh by Rahul.",
+    "d": "(D)She was made laugh by Rahul.",
+    "correct": "C",
+});
+array.push({
+    "qtext": " He asked me what my post was.",
+    "a": "(A)I get asked what my post was.",
+    "b": "(B)I could asked what my post was.",
+    "c": "(C)I was asked what my post was.",
+    "d": "(D)I had asked what my post was.",
+    "correct": "C",
+});
+array.push({
+    "qtext": " I asked Susheela why she was sad.",
+    "a": "(A)Susheela was asked by me that why she was sad.",
+    "b": "(B)Susheela was asked by me why she was sad.",
+    "c": "(C)Susheela was asked that why she was sad.",
+    "d": "(D)Susheela was asked why she was sad.",
+    "correct": "D",
+});
+array.push({
+    "qtext": " He displeased Mr. Mathur.",
+    "a": "(A)Mr. Mathur was displeased on him.",
+    "b": "(B)Mr. Mathur was displeased for him.",
+    "c": "(C)Mr. Mathur was displeased at him.",
+    "d": "(D)Mr. Mathur was displeased with him.",
+    "correct": "D",
+});
+array.push({
+    "qtext": " Please keep quiet.",
+    "a": "(A)You are told for keep quiet.",
+    "b": "(B)You are requested to keep quiet.",
+    "c": "(C)You are requested for keep quiet.",
+    "d": "(D)You are told to keep quiet.",
+    "correct": "B",
+});
+array.push({
+    "qtext": " She wants that she should be respected.",
+    "a": "(A)She wanted to respected.",
+    "b": "(B)She wants to respected.",
+    "c": "(C)She wanted to be respected.",
+    "d": "(D)She wants to be respected.",
+    "correct": "D",
+});
+array.push({
+    "qtext": " He found the student guilty.",
+    "a": "(A)The student was found to be guilty by him.",
+    "b": "(B)The student was found guilty by him.",
+    "c": "(C)The student was found to guilty by him.",
+    "d": "(D)The student found to be guilty by him.",
+    "correct": "A",
+});
+array.push({
+    "qtext": " Darjeeling grows tea.",
+    "a": "(A)Tea is grown in Darjeeling.",
+    "b": "(B)Tea grows in Darjeeling.",
+    "c": "(C)Tea is being grown in Darjeeling.",
+    "d": "(D)Let the tea be grown in Darjeeling.",
+    "correct": "A",
+});
+array.push({
+    "qtext": " After driving Professor Jones to the museum she dropped him at his hotel.",
+    "a": "(A)After she was driven Professor Jones to the museum she had dropped him at his hotel.",
+    "b": "(B)After she had driven Professor Jones to the museum she had dropped him at his hotel.",
+    "c": "(C)Professor Jones was being driven dropped at his hotel.",
+    "d": "(D)After being driven to the museum, Professor Jones was dropped at his hotel.",
+    "correct": "D",
+});
+array.push({
+    "qtext": " Who is creating this mess?",
+    "a": "(A)By whom this mess is being created?",
+    "b": "(B)By whom is this mess being created? ",
+    "c": "(C)Who has been created this mess?",
+    "d": "(D)By whom has this mess been created?",
+    "correct": "B",
+});
+array.push({
+    "qtext": "Our task had been completed before sunset.\n",
+    "a": "(A)We completed our task before sunset.",
+    "b": "(B)We have completed our task before sunset.",
+    "c": "(C)We complete our task before sunset.",
+    "d": "(D)We had completed our task before sunset.",
+    "correct": "4",
+});
+array.push({
+    "qtext": "The boy laughed at the beggar.\n",
+    "a": "(A)The beggar was laughed by the boy.",
+    "b": "(B)The beggar was being laughed by the boy.",
+    "c": "(C)The beggar was being laughed at by the boy.",
+    "d": "(D)The beggar was laughed at by the boy.",
+    "correct": "4",
+});
+array.push({
+    "qtext": "The boys were playing Cricket.\n\t\n",
+    "a": "(A)Cricket had been played by the boys.",
+    "b": "(B)Cricket has been played by the boys.",
+    "c": "(C)Cricket was played by the boys.",
+    "d": "(D)Cricket was being played by the boys.",
+    "correct": "4",
+});
+array.push({
+    "qtext": "They drew a circle in the morning.\n",
+    "a": "(A)A circle was being drawn by them in the morning.",
+    "b": "(B)A circle was drawn by them in the morning.",
+    "c": "(C)In the morning a circle have been drawn by them.",
+    "d": "(D)A circle has been drawing since morning.",
+    "correct": "2",
+});
+array.push({
+    "qtext": "They will demolish the entire block.\n",
+    "a": "(A)The entire block is being demolished.",
+    "b": "(B)The block may be demolished entirely.",
+    "c": "(C)The entire block will have to be demolished by the",
+    "d": "(D)The entire block will be demolished.",
+    "correct": "4",
+});
+array.push({
+    "qtext": "The burglar destroyed several items in the room. Even the carpet has been torn.\n",
+    "a": "(A)Several items destroyed in the room by the burglar. Even the carpet he has torn.",
+    "b": "(B)Several items in the room were destroyed by the burglar. Even the carpet was torn.",
+    "c": "(C)Including the carpet, several items in the room have been torn by the burglar.",
+    "d": "(D)The burglar, being destroyed several items in the room, also carpet has torn.",
+    "correct": "2",
+});
+array.push({
+    "qtext": "We must respect the elders.\n",
+    "a": "(A)The elders deserve respect from us.",
+    "b": "(B)The elders must be respected.",
+    "c": "(C)The elders must respected.",
+    "d": "(D)Respect the elders we must.",
+    "correct": "2",
+});
+array.push({
+    "qtext": "We have warned you.\n",
+    "a": "(A)You have been warned.",
+    "b": "(B)We have you warned.",
+    "c": "(C)Warned you have been.",
+    "d": "(D)Have you been warned.",
+    "correct": "1",
+});
+array.push({
+    "qtext": "Has anybody answered your question?\n\t\n",
+    "a": "(A)Your question has been answered?",
+    "b": "(B)Anybody has answered your question?",
+    "c": "(C)Has your question been answered?",
+    "d": "(D)Have you answered your question?",
+    "correct": "3",
+});
+array.push({
+    "qtext": "The shopkeeper lowered the prices.\n",
+    "a": "(A)The prices lowered by shopkeeper.",
+    "b": "(B)The prices were lowered by shopkeeper.",
+    "c": "(C)Down went prices.",
+    "d": "(D)The shopkeeper got down the prices.",
+    "correct": "2",
+});
+array.push({
+    "qtext": "The government has launched a massive tribal welfare programme in Jharkhand.\n\n",
+    "a": "(A)A massive tribal welfare programme is launched by the government in Jharkhand.",
+    "b": "(B)A massive tribal welfare programme has been launched by the government in Jharkhand.",
+    "c": "(C)Jharkhand government has launched a massive tribal welfare programme.",
+    "d": "(D)The government in Jharkhand has launched a massive tribal welfare programme.",
+    "correct": "2",
+});
+array.push({
+    "qtext": "One must keep one's promises.\n",
+    "a": "(A)One's promises are kept.",
+    "b": "(B)Ones promises must kept.",
+    "c": "(C)Ones promises were kept.",
+    "d": "(D)One's promises must be kept.",
+    "correct": "4",
+});
+array.push({
+    "qtext": "The government has not approved the new drug for sale.\n",
+    "a": "(A)The government approval for the sale of the new drug has not been given.",
+    "b": "(B)The new drug has not been approved for sale by the government.",
+    "c": "(C)For the sale of the new drug we have not been given the approval.",
+    "d": "(D)The new drug was not approved by the government.",
+    "correct": "2",
+});
+array.push({
+    "qtext": "They have published all the details of the invention.\n\n",
+    "a": "(A)All the details of the invention have been published by them.",
+    "b": "(B)The publication of the details of invention was done by them.",
+    "c": "(C)All the details have been invented by the publishers.",
+    "d": "(D)All the inventions have been detailed by them.",
+    "correct": "1",
+});
+array.push({
+    "qtext": "The manager could not accept the union leader's proposals.\n\n\t\n",
+    "a": "(A)The union leader's proposals could not be accepted by the manager.",
+    "b": "(B)The union leader's proposals were not accepted by the manager.",
+    "c": "(C)The union leader's proposals will not be accepted by the manager.",
+    "d": "(D)The union leader's proposals would not be accepted by the manager.",
+    "correct": "1",
+});
+array.push({
+    "qtext": "Prepare yourself for the worst.\n\t\n",
+    "a": "(A)You be prepared for the worst.",
+    "b": "(B)The worst should be prepared by yourself.",
+    "c": "(C)Be prepared for the worst.",
+    "d": "(D)For the worst, preparation should be made by you.",
+    "correct": "3",
+});
+array.push({
+    "qtext": "He teaches us grammar.\n",
+    "a": "(A)Grammar was taught to us by him.",
+    "b": "(B)We are taught grammar by him.",
+    "c": "(C)Grammar will be taught to us by him.",
+    "d": "(D)We were teached grammar by him.",
+    "correct": "2",
+});
+array.push({
+    "qtext": "Please shut the door and go to sleep.\n",
+    "a": "(A)The door is to be shut and you are to go to sleep.",
+    "b": "(B)Let the door to be shut and you be asleep.",
+    "c": "(C)You are requested to shut the door and go to sleep.",
+    "d": "(D)The door is to be shut and you are requested to sleep.",
+    "correct": "3",
+});
+array.push({
+    "qtext": "It is impossible to do this.\n",
+    "a": "(A)Doing this is impossible.",
+    "b": "(B)This is impossible to be done.",
+    "c": "(C)This must not be done.",
+    "d": "(D)This can't be done.",
+    "correct": "2",
+});
+array.push({
+    "qtext": "We must take care of all living species on earth.\n",
+    "a": "(A)All living species on earth must be taken care of by us.",
+    "b": "(B)All living species on earth must taken care of by us.",
+    "c": "(C)All living species on Earth had been taken care of by us.",
+    "d": "(D)All living species on earth will be taken care of by us.",
+    "correct": "1",
+});
+array.push({
+    "qtext": "Someone has lit the fire.\n",
+    "a": "(A)The fire was lit by someone.",
+    "b": "(B)You are requested to light the fire by someone.",
+    "c": "(C)The fire has been lit by someone.",
+    "d": "(D)The fire had been lit by someone.",
+    "correct": "3",
+});
+array.push({
+    "qtext": "You surprise me.\n\n",
+    "a": "(A)I am to be surprised.",
+    "b": "(B)You surprised.",
+    "c": "(C)I am surprised at you.",
+    "d": "(D)He is surprised.",
+    "correct": "3",
+});
+array.push({
+    "qtext": "The boy killed the snake with a stick.\n",
+    "a": "(A)The snake was killed by the boys with a stick.",
+    "b": "(B)A stick was killed by the boys with a snake.",
+    "c": "(C)A snake with stick was killed by the boy.",
+    "d": "(D)A snake is killed by the boy with a stick.",
+    "correct": "1",
+});
+array.push({
+    "qtext": "Let me do this.\n\t\n",
+    "a": "(A)Let us do this.",
+    "b": "(B)This is to be done by me.",
+    "c": "(C)Let this be done by me.",
+    "d": "(D)Let I do this.",
+    "correct": "3",
+});
+array.push({
+    "qtext": "The tiger caught a fox.\n\t\n",
+    "a": "(A)A fox has been caught by the tiger.",
+    "b": "(B)A fox was caught by the tiger.",
+    "c": "(C)A fox is caught by the tiger.",
+    "d": "(D)A fox had been caught by the tiger.",
+    "correct": "2",
+});
+array.push({
+    "qtext": "This shirt cannot be worn by me any longer.\n",
+    "a": "(A)I cannot wear this shirt any longer.",
+    "b": "(B)Wearing of this shirt any longer is not possible.",
+    "c": "(C)This shirt is too worn out any longer.",
+    "d": "(D)This worn out shirt cannot be worn any longer.",
+    "correct": "1",
+});
+array.push({
+    "qtext": "Lion does not eat grass, however hungry he may be.\n",
+    "a": "(A)Grass is not eaten by a lion, however hungry he may be.",
+    "b": "(B)Grass was being not eaten by a lion, however hungry he may be.",
+    "c": "(C)Grass is eaten not by a lion, however hungry he may be.",
+    "d": "(D)Grass is not being eaten by a lion, however hungry he may be.",
+    "correct": "1",
+});
+array.push({
+    "qtext": "Someone saw him picking up a gun.\n",
+    "a": "(A)He was seen pick up a gun by someone.",
+    "b": "(B)He was seen picking up a gun by someone.",
+    "c": "(C)He is seen picking up a gun by someone.",
+    "d": "(D)He was seen by someone pick a gun.",
+    "correct": "2",
+});
+array.push({
+    "qtext": "He was obliged to resign.\n\t\n",
+    "a": "(A)He was make to resign.",
+    "b": "(B)To resign was his obligation.",
+    "c": "(C)Circumstances obliged him to resign.",
+    "d": "(D)Registration obliged him.",
+    "correct": "3",
+});
+array.push({
+    "qtext": "Why did you not agree to my proposal?\n",
+    "a": "(A)Why was my proposal not agreed to?",
+    "b": "(B)Why was my proposal not agreed by you?",
+    "c": "(C)Why my proposal was not agreed to by you?",
+    "d": "(D)Why was my proposal not agreed to by you?",
+    "correct": "2",
+});
+array.push({
+    "qtext": "Do you understand what I mean?\n",
+    "a": "(A)What I mean is that understood by you?",
+    "b": "(B)Was what I mean understood by you?",
+    "c": "(C)Is what I mean is understood by you?",
+    "d": "(D)What I mean is understood by you?",
+    "correct": "4",
+});
+array.push({
+    "qtext": "Whom does he look for?\n",
+    "a": "(A)Whom he is looked after for?",
+    "b": "(B)Who is looked after for him?",
+    "c": "(C)Who is looked for by him?",
+    "d": "(D)Whom he looked after by?",
+    "correct": "3",
+});
+array.push({
+    "qtext": "They say that you did that.\n",
+    "a": "(A)You are told to do that.",
+    "b": "(B)You are advised to do that.",
+    "c": "(C)You did that said by them.",
+    "d": "(D)You are said to have done that.",
+    "correct": "4",
+});
+array.push({
+    "qtext": "I am doing sums.\n",
+    "a": "(A)Sums are done by me.",
+    "b": "(B)Sums are being done by me.",
+    "c": "(C)I must be doing the sum.",
+    "d": "(D)Sums must be done by me.",
+    "correct": "2",
+});
+array.push({
+    "qtext": "The noise of traffic kept me awake.\n\t\n",
+    "a": "(A)I was kept awake by the noise of the traffic.",
+    "b": "(B)The traffic kept me awake by noise.",
+    "c": "(C)I kept myself awake due to the noise of the traffi",
+    "d": "(D)I remained awake by the noise of the traffic.",
+    "correct": "1",
+});
+array.push({
+    "qtext": "He was congratulated by his teacher on his brilliant success in the recent examination.\n",
+    "a": "(A)He congratulated his teacher on his brilliant success in the examination.",
+    "b": "(B)His teacher congratulated him for his brilliant success in the recent examination.",
+    "c": "(C)His teacher congratulated him on his brilliant success in the examination.",
+    "d": "(D)His teacher congratulated him.",
+    "correct": "2",
+});
+array.push({
+    "qtext": "People speak English all over the world.\n",
+    "a": "(A)English is spoken all over the world.",
+    "b": "(B)English was spoken all over the world.",
+    "c": "(C)English was spoken by people.",
+    "d": "(D)English is spoken by people.",
+    "correct": "1",
+});
+array.push({
+    "qtext": "Who gave you permission to enter?\n",
+    "a": "(A)By whom were you given permission to enter?",
+    "b": "(B)By whom was you given permission to enter?",
+    "c": "(C)By whom you were given permission to enter?",
+    "d": "(D)By whom were given you permission to enter?",
+    "correct": "3",
+});
+array.push({
+    "qtext": "The principal has granted him a scholarship.\n",
+    "a": "(A)A scholarship has granted to him by the principal.",
+    "b": "(B)He has been granted a scholarship by the Principal",
+    "c": "(C)He has granted a scholarship by the Principal.",
+    "d": "(D)A scholarship was granted to him by the principal.",
+    "correct": "2",
+});
+array.push({
+    "qtext": "Before festivals the shops are thronged with men, women and children making various purchase.\n",
+    "a": "(A)During festival people throng the shops.",
+    "b": "(B)Men, women and children throng the shops before festival making various purchases.",
+    "c": "(C)Men, women and children make purchases during festivals.",
+    "d": "(D)The shops are thronged by people making purchases.",
+    "correct": "2",
+});
+array.push({
+    "qtext": "The accounted took the money from the customer.\n",
+    "a": "(A)The money is taken from the customer by the accountant.",
+    "b": "(B)The money was taken from the customer by the accountant.",
+    "c": "(C)The customer was taken the money by the accountant.",
+    "d": "(D)The money had been taken from the customer by the accountant.",
+    "correct": "3",
+});
+array.push({
+    "qtext": "The peon refused him admittance.\n\n",
+    "a": "(A)He was refused admittance by the peon.",
+    "b": "(B)Admittance is refused to him by the peon.",
+    "c": "(C)Admittance was refused by the peon to him.",
+    "d": "(D)Admittance is refused him by the peon.",
+    "correct": "1",
+});
+array.push({
+    "qtext": "The boy has rung the bell.\n",
+    "a": "(A)The bell has been rung by the boy.",
+    "b": "(B)The bell was being rung by the boy.",
+    "c": "(C)The bell was rung by the boy.",
+    "d": "(D)The bell has been being rung by the boy.",
+    "correct": "1",
+});
+array.push({
+    "qtext": "They made him a king.\n",
+    "a": "(A)A king has been made by him.",
+    "b": "(B)He was made a king by them.",
+    "c": "(C)They have been made king by him.",
+    "d": "(D)He has been made a king by them.",
+    "correct": "2",
+});
+array.push({
+    "qtext": "Circumstances will oblige me to go.",
+    "a": "(A)I will oblige the circumstances and go.",
+    "b": "(B)I shall be obliged to go by the circumstances.",
+    "c": "(C)Under the circumstances, I should go.",
+    "d": "(D)I shall be obliged by the circumstances to go.",
+    "correct": "3",
+});
+array.push({
+    "qtext": "Don't laugh at me.\n",
+    "a": "(A)Let me be laughed at.",
+    "b": "(B)Let be me not laughed at.",
+    "c": "(C)I am laughed at.",
+    "d": "(D)Let me not laughed at.",
+    "correct": "4",
+});
+array.push({
+    "qtext": "Our colleague was given a gift when she retired.\n",
+    "a": "(A)Our colleague gave us a gift when she retired.",
+    "b": "(B)Our colleague was given us a gift when she retired",
+    "c": "(C)A gift was given to our colleage when she retired.",
+    "d": "(D)We gave our colleague a gift when she retired.",
+    "correct": "4",
+});
+array.push({
+    "qtext": "I don't like people keeping me waiting.",
+    "a": "(A)I don't like people were kept me waiting.",
+    "b": "(B)I don't like people are kept waiting.",
+    "c": "(C)I don't like being kept waiting.",
+    "d": "(D)I don't like people are being kept waiting.",
+    "correct": "4",
+});
+array.push({
+    "qtext": "Has a dog ever bitten you?\n",
+    "a": "(A)Has a dog ever bites you?",
+    "b": "(B)Have you ever being bitten by a dog?",
+    "c": "(C)Are you bitten by a dog?",
+    "d": "(D)Have you ever been bitten by a dog?",
+    "correct": "4",
+});
+array.push({
+    "qtext": "The king gave him a reward.\n",
+    "a": "(A)He was given by the king a reward.",
+    "b": "(B)He was given a reward by the king.",
+    "c": "(C)He were given a reward by the king.",
+    "d": "(D)A reward was given by him to the king.",
+    "correct": "2",
+});
+array.push({
+    "qtext": "RAJAT WRITES A LETTER.",
+    "a": "(A)A letter wrote by Rajat.",
+    "b": "(B)A letter was to be written by Rajat.",
+    "c": "(C)A letter is written by Rajat.",
+    "d": "(D)A letter is to be written by Rajat.",
+    "correct": "3",
+});
+    
+  
+</script>
+</body>
+</html>
