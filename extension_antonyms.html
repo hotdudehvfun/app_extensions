@@ -223,6 +223,7 @@ function createSelectIndex(argument)
     for (var i = 0; i < array.length; i++)
     {
       var child=document.createElement('div');
+      child.setAttribute('id','select-holder-item'+i);
       child.setAttribute('data-pos',i);
       child.innerHTML=(i+1);
       child.setAttribute('onclick','jumpToQuestion(event)');
@@ -235,10 +236,7 @@ function createSelectIndex(argument)
 }
 function jumpToQuestion(event)
 {
-    
-    document.getElementsByClassName('selected')[0].setAttribute('class','');
     var pos=event.target.getAttribute('data-pos');
-    event.target.setAttribute('class','selected');
     currentPos=parseInt(pos);
     document.getElementById('select-holder-parent').style.display="none";
     rule1(0);
@@ -349,7 +347,10 @@ function rule1(dir)
         document.getElementById('d').setAttribute("class", "option" );
         try
         {
-            document.getElementById('selectIndex').selectedIndex=currentPos;
+            var lastSelectedItem=document.getElementsByClassName('selected')[0];
+            if(lastSelectedItem!=undefined)
+                  lastSelectedItem.setAttribute('class','');
+            document.getElementById('select-holder-item'+currentPos).setAttribute('class','selected');
         }catch(e){}
 
         isNewQuestion=true;
