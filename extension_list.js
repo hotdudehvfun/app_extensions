@@ -2,6 +2,12 @@
   "extensions": [
     
     {
+      "icon": "bug_report",
+      "icon_color": "#31d46b",
+      "title": "Spotting Errors",
+      "subtitle": "Find out if there is any grammatical error in the given sentence.",
+      "url": "https://hotdudehvfun.github.io/app_extensions/extension_spotting_errors.html"
+    },{
       "icon": "build",
       "icon_color": "#26C6DA",
       "title": "Sentence Improvement",
