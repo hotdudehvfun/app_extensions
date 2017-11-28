@@ -2,7 +2,7 @@ function addRippleEffect(event)
 {
     var p=event.target;
     var ripple=null;
-    var duration=300;
+    var duration=400;
     for (var i = 0; i < p.children.length; i++)
     {
         if(p.children[i].getAttribute('data-tag')=="ripple")
@@ -25,14 +25,17 @@ function addRippleEffect(event)
     ripple.style.borderRadius="10px";
     ripple.style.background="rgba(0,0,0,0.1)";
     ripple.style.position="absolute";
-    ripple.style.left=event.pageX - p.offsetLeft;
-    ripple.style.top=event.pageY - p.offsetTop;
+    //console.log(event,p.getBoundingClientRect());
+    
+
+    ripple.style.left=event.offsetX;
+    ripple.style.top=event.offsetY;
     ripple.style.opacity=1;
     ripple.style.transition=(duration/1000)+"s all";
 
     setTimeout(function()
     {
-       ripple.style.transform="scale(30,30)";
+       ripple.style.transform="scale(30)";
        ripple.style.opacity=1; 
     },10);
 
@@ -128,7 +131,7 @@ function detectswipe(ele,func)
     swipe_det.sY = t.screenY;
   },true);
   ele.addEventListener('touchmove',function(e){
-    e.preventDefault();
+    //e.preventDefault();
     var t = e.touches[0];
     swipe_det.eX = t.screenX; 
     swipe_det.eY = t.screenY;    
@@ -152,4 +155,12 @@ function detectswipe(ele,func)
         swipe_det.sX = 0; swipe_det.sY = 0; swipe_det.eX = 0; swipe_det.eY = 0;
     }
   },true); 
+}
+
+
+
+
+function setPrimaryColor(color)
+{
+    document.getElementsByClassName('header_board')[0].style.background=color;
 }
