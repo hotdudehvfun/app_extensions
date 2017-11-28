@@ -1,8 +1,25 @@
 function addRippleEffect(event)
 {
     var p=event.target;
-    var ripple=document.createElement('div');
-    var duration=500;
+    var ripple=null;
+    var duration=300;
+    for (var i = 0; i < p.children.length; i++)
+    {
+        if(p.children[i].getAttribute('data-tag')=="ripple")
+        {
+            ripple=p.children[i];
+            break;
+        }
+    }
+
+    if(ripple==null)
+    {
+        ripple=document.createElement('div');
+        ripple.setAttribute('data-tag','ripple');
+        p.appendChild(ripple);
+    }
+    //reset ripple
+    ripple.style.transition="0s all";
     ripple.style.width="10px";
     ripple.style.height="10px";
     ripple.style.borderRadius="10px";
@@ -12,22 +29,23 @@ function addRippleEffect(event)
     ripple.style.top=event.pageY - p.offsetTop;
     ripple.style.opacity=1;
     ripple.style.transition=(duration/1000)+"s all";
-    p.appendChild(ripple);
+
     setTimeout(function()
     {
        ripple.style.transform="scale(30,30)";
        ripple.style.opacity=1; 
-    },0.1);
+    },10);
 
-    //remove ripple
     setTimeout(function()
     {
-       ripple.style.opacity=0;
+        ripple.style.opacity=0;
     },duration);
+    
     setTimeout(function()
     {
-       p.removeChild(ripple);
-    },duration*2);
+        ripple.style.transition="0s all";
+        ripple.style.transform="scale(0,0)";        
+    },duration+10);
 }
 function inflateCorrect(correct)
 {
@@ -126,7 +144,7 @@ function detectswipe(ele,func)
       if(swipe_det.eY > swipe_det.sY) direc = "down";
       else direc = "up";
     }
-    console.log(direc);
+    // console.log(direc);
     if(direc!="")
     {
         func(direc);
