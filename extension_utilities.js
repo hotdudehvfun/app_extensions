@@ -37,7 +37,7 @@ function addRippleEffect(event)
     {
        ripple.style.transform="scale(30)";
        ripple.style.opacity=1; 
-    },10);
+    },5);
 
     setTimeout(function()
     {
@@ -47,7 +47,7 @@ function addRippleEffect(event)
     setTimeout(function()
     {
         ripple.style.transition="0s all";
-        ripple.style.transform="scale(0,0)";        
+        ripple.style.transform="scale(0)";        
     },duration+10);
 }
 function inflateCorrect(correct)

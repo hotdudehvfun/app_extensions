@@ -55,7 +55,6 @@
         font-size: calc(14px + .5vw);
         overflow: hidden;
         min-height: 20px;
-        margin-left: calc(5% - 5px);
     }
     .option>img
     {
