@@ -23,7 +23,7 @@ function addRippleEffect(event)
     ripple.style.width="10px";
     ripple.style.height="10px";
     ripple.style.borderRadius="10px";
-    ripple.style.background="rgba(0,0,0,0.1)";
+    ripple.style.background="rgba(150, 150, 150, 0.18)";
     ripple.style.position="absolute";
     //console.log(event,p.getBoundingClientRect());
     
