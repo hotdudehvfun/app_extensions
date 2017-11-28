@@ -7,20 +7,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-    <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <script type="text/javascript" src="extension_utilities.js"></script>
 
     <style type="text/css">
-    /*primary color: #31d46b*/    
+    /*primary color: #31d46b*/
     *
     {
         font-family: "Roboto","sans-serif";
-            user-select: none; 
+        user-select: none;
+        touch-action: none;
     }   
     body
     {
         margin: 0px; 
-        background: #fff;
+        background: #f5f5f5d6;
         overflow-x: hidden;
     }
     .half_line
@@ -46,80 +46,27 @@
             justify-content: center;
             align-items: center;
     }
-    /* Material style */
-.list-container>button {
-    border: none;
-    cursor: pointer;
-    color: black;
-    padding: 3% 1%;
-    border-radius: 2px;
-    box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.20);
-    background: #cccccc;
-    margin-top: 3%;
-    font-size: 1.1em;
-    -webkit-font-smoothing: antialiased;
-    width: 90%;
-    text-align: left;
-}
-.list-container>button>img
+    .option
+    {
+        border: none;
+        color: black;
+        padding: 3% 1%;
+        border-radius: 2px;
+        box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.10);
+        background: #fff;
+        margin-top: 3%;
+        width: 90%;
+        text-align: left;
+        font-size: calc(12px + .5vw);
+        position: relative;
+        overflow: hidden;
+    }
+    .option>img
     {
         height: 10px;
         width: 10px;
         margin-left: 5px;
         display: none;
-    }
-
-/* Ripple magic */
-.list-container>button{
-  position: relative;
-  overflow: hidden;
-}
-
-.list-container>button:after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 5px;
-  height: 5px;
-  background: rgba(255, 255, 255, .5);
-  opacity: 0;
-  border-radius: 100%;
-  transform: scale(1, 1) translate(-50%);
-  transform-origin: 50% 50%;
-}
-
-@keyframes ripple {
-  0% {
-    transform: scale(0, 0);
-    opacity: 1;
-  }
-  20% {
-    transform: scale(25, 25);
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-    transform: scale(40, 40);
-  }
-}
-
-button:focus:not(:active)::after {
-  animation: ripple 1s ease-out;
-}
-
-    .option
-    {
-    padding: 2% 3% 2% 3%;
-    border-radius: 50px;
-    background: #ececec;
-    display: inline-table;
-    margin-top: 5%;
-    color: #1b1b1b;
-    width: 80%;
-    max-width: 600px;
-    position: relative;
-
     }
     .correct
     {
@@ -171,7 +118,7 @@ button:focus:not(:active)::after {
     letter-spacing: 1;
     word-spacing: 3px;
     padding: 1% 2% 1% 2%;
-    font-size: 1.2em;
+    font-size: calc(12px + .5vw);
   }
   .flex-container-center
   {
@@ -199,19 +146,25 @@ button:focus:not(:active)::after {
     text-align: center;
     background: rgba(224, 224, 224, 0.1);
     display: inline-block;
-    padding: 5px 10px 5px 10px;
+    padding: 5px 10px;
     border: 1px solid rgba(255, 255, 255, 0.13);
     margin-left: 5px;
+  }
+  #topic
+  {
+      color: #fff;
+      font-size: calc(18px + 0.5vw);
+      padding-top: 8px;
   }
     
     </style>
 </head>
 <body>
 	<div class="main_board">
-		<div id="topic" class="heading" style="color: #fff; font-size: 20px;">Spotting Errors</div>
+		<div id="topic" >Spotting Errors</div>
     <div class="flex-container-center">
-      <div class="small_button" id="index-change-holder"></div>
-      <div class="small_button" id="jump"><i style="font-size: 20px;" class="material-icons">arrow_forward</i></div>
+      <div class="small_button" id="index-change-holder" style="font-size: calc(10px + 0.5vw);"></div>
+      <div class="small_button" id="jump"><i style="font-size: calc(12.5px + 0.5vw);" class="material-icons">arrow_forward</i></div>
     </div>  
   </div>
 <div class="content-holder">
@@ -228,15 +181,24 @@ button:focus:not(:active)::after {
 <div id="select-holder-parent">
   <div id="select-holder"></div>
 </div>
-
-
 <script type="text/javascript">
 var currentPos;
 var isNewQuestion;
 document.addEventListener("DOMContentLoaded",function()
 {
-	 $.mobile.loading( "hide" );
-    $.mobile.loading().hide();
+    //swipe detect
+    detectswipe(document.getElementsByTagName('body')[0],function(direction)
+    {
+        switch(direction)
+        {
+            case "left":
+                rule1(+1);
+                break;
+            case "right":
+                rule1(-1);
+                break;
+        }
+    });
   currentPos=lastPosition();
   rule1(0);
   createSelectIndex();
@@ -306,30 +268,6 @@ function savePosition()
   var key=document.getElementById('topic').innerHTML.trim();
   localStorage.setItem(key,currentPos);  
 }
-
-function getNRandomInts(min,max,n)
-{
-    var randoms=[];
-    while(randoms.length!=n)
-    {
-        var num=getRandomInt(min,max);
-        if(randoms.indexOf(num)==-1)
-            randoms.push(num)
-    }
-    return randoms;
-}
-function hasDuplicates(arr)
-{
-  var sorted_arr = arr.slice().sort();
-  for (var i = 0; i < arr.length - 1; i++)
-  {
-      if (sorted_arr[i + 1] == sorted_arr[i])
-      {
-          return true;
-      }
-  }
-  return false;
-}
 function rule1(dir)
 {
         
@@ -362,7 +300,8 @@ function rule1(dir)
         p.innerHTML="";
         for (var i = 0; i < options.length; i++)
         {            
-            var child=document.createElement('button');
+            var child=document.createElement('div');
+            child.setAttribute('class','option');
             child.setAttribute('id',tempArray[i]);
             child.setAttribute('data-userIndex',i);//0 based
             child.setAttribute('data-correctIndex',correct);//0 based
@@ -385,42 +324,7 @@ function rule1(dir)
         
 
 }
-function inflateCorrect(correct)
-{
-    switch(correct)
-    {
-        case 1:
-        case "1":
-        case "A":
-        case "a":
-        return 0;
 
-        case 2:
-        case "2":
-        case "B":
-        case "b":
-        return 1;
-        
-        case 3:
-        case "3":
-        case "C":
-        case "c":
-        return 2;
-
-        case 4:
-        case "4":
-        case "D":
-        case "d":
-        return 3;
-        
-        case 5:
-        case "5":
-        case "E":
-        case "e":
-        return 4;
-
-    }
-}
 function checkAnswer(event)
 {
     if(isNewQuestion)
@@ -448,25 +352,8 @@ function checkAnswer(event)
 
         }
     }
-}
-
-function getRandomInt(min, max)
-{
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-$('body').on('swipeleft swiperight',function(e)
-{
-  switch(e.type)
-  {
-    case "swipeleft":
-    rule1(1);
-    break;
-
-    case "swiperight":
-    rule1(-1);
-    break;
-  }    
-});
+    addRippleEffect(event);
+};
 
 
 
