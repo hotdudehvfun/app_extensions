@@ -40,6 +40,7 @@
     }
     .option
     {
+        border: 1px solid white;
         position: relative;
         color: black;
         padding-top: calc(10px + 2vh);
@@ -51,7 +52,7 @@
         margin-top: calc(10px + .5vh);
         width: 90%;
         text-align: left;
-        font-size: calc(12px + .5vw);
+        font-size: calc(14px + .5vw);
         overflow: hidden;
         min-height: 20px;
         margin-left: calc(5% - 5px);
@@ -106,7 +107,7 @@
     color: #232323;
     letter-spacing: 1;
     word-spacing: 3px;
-    font-size: calc(12px + .5vw);
+    font-size: calc(15px + .5vw);
   }
   .header_board_button_container
   {
@@ -138,10 +139,19 @@
     border: 1px solid rgba(255, 255, 255, 0.13);
     margin-left: 5px;
   }
+  #index-change-holder
+  {
+    font-size: calc(14px + 0.5vw);
+  }
+  #jump>i
+  {
+    font-size: calc(18px + 0.5vw);
+  }
+
   #topic
   {
       color: #fff;
-      font-size: calc(18px + 0.5vw);
+      font-size: calc(20px + 0.5vw);
       padding-top: 8px;
   }
   .content_holder
