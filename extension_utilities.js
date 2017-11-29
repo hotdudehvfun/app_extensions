@@ -30,7 +30,7 @@ function addRippleEffect(event) {
     ripple.style.transition = (duration / 1000) + "s all";
 
     setTimeout(function() {
-        ripple.style.transform = "scale(30)";
+        ripple.style.transform = "scale3d(30,30,30)";
         ripple.style.opacity = 1;
     }, 5);
 
@@ -40,7 +40,7 @@ function addRippleEffect(event) {
 
     setTimeout(function() {
         ripple.style.transition = "0s all";
-        ripple.style.transform = "scale(0)";
+        ripple.style.transform = "scale3d(0,0,0)";
     }, duration + 10);
 }
 
