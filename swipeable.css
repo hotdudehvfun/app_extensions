@@ -1,0 +1,17 @@
+.animate {
+    transition: transform 0.3s ease-out;
+}
+
+.tab_holder {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    overflow-x: hidden;
+    position: relative;
+}
+
+.tab_item {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+}
