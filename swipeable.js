@@ -20,7 +20,7 @@ function jumpToTab(position) //1 based
         var x = 0;
         for (var i = 0; i < tabs.length; i++)
         {
-            tabs[i].style.transform = "translate(" + (x) + "px,0px)";
+            tabs[i].style.transform = "translate3d(" + (x) + "px,0px,0px)";
             tabsX[i] = x;
             getData(tabs[i], i);
             x += width;
@@ -32,7 +32,7 @@ function jumpToTab(position) //1 based
         var x = -width;
         for (var i = 0; i < tabs.length; i++)
         {
-            tabs[i].style.transform = "translate(" + (x) + "px,0px)";
+            tabs[i].style.transform = "translate3d(" + (x) + "px,0px,0px)";
             tabsX[i] = x;
             getData(tabs[i], position - 2 + i);
             x += width;
@@ -44,7 +44,7 @@ function jumpToTab(position) //1 based
         var x = -width * 2;
         for (var i = 0; i < tabs.length; i++)
         {
-            tabs[i].style.transform = "translate(" + (x) + "px,0px)";
+            tabs[i].style.transform = "translate3d(" + (x) + "px,0px,0px)";
             tabsX[i] = x;
             getData(tabs[i], position - 3 + i);
             x += width;
@@ -65,7 +65,7 @@ function initSwipeTabs(getData, len, onSwipe)
     var x = 0;
     for (var i = 0; i < tabs.length; i++)
     {
-        tabs[i].style.transform = "translate(" + (x) + "px,0px)";
+        tabs[i].style.transform = "translate3d(" + (x) + "px,0px,0px)";
         tabsX[i] = x;
         getData(tabs[i], i);
         x += width;
@@ -124,7 +124,7 @@ function move(event)
         allowUpdate = true;
         for (var i = 0; i < tabs.length; i++)
         {
-            tabs[i].style.transform = "translate(" + (tabsX[i] - movex) + "px,0px)";
+            tabs[i].style.transform = "translate3d(" + (tabsX[i] - movex) + "px,0px,0px)";
         }
     }
 }
@@ -142,7 +142,7 @@ function end(event, getData, onSwipe)
             for (var i = 0; i < tabs.length; i++)
             {
                 tabs[i].setAttribute('class', 'tab_item animate');
-                tabs[i].style.transform = "translate(" + (tabsX[i] + (width * direction * -1)) + "px,0px)";
+                tabs[i].style.transform = "translate3d(" + (tabsX[i] + (width * direction * -1)) + "px,0px,0px)";
                 tabsX[i] += (width * direction * -1);
             }
             for (var i = 0; i < tabsX.length; i++)
@@ -153,7 +153,7 @@ function end(event, getData, onSwipe)
                     //shift this tab to last
                     tabsX[i] = width * 1;
                     tabs[i].setAttribute('class', 'tab_item');
-                    tabs[i].style.transform = "translate(" + (tabsX[i]) + "px,0px)";
+                    tabs[i].style.transform = "translate3d(" + (tabsX[i]) + "px,0px,0px)";
 
                     //update this tab content
                     getData(tabs[i], current_position); //current position is 1 based
@@ -165,7 +165,7 @@ function end(event, getData, onSwipe)
                     //shift this tab to first 
                     tabsX[i] = width * -1;
                     tabs[i].setAttribute('class', 'tab_item');
-                    tabs[i].style.transform = "translate(" + (tabsX[i]) + "px,0px)";
+                    tabs[i].style.transform = "translate3d(" + (tabsX[i]) + "px,0px,0px)";
 
                     //update this tab content
                     getData(tabs[i], current_position - 2); //current position is 1 based
@@ -179,7 +179,7 @@ function end(event, getData, onSwipe)
             for (var i = 0; i < tabs.length; i++)
             {
                 tabs[i].setAttribute('class', 'tab_item animate');
-                tabs[i].style.transform = "translate(" + (tabsX[i]) + "px,0px)";
+                tabs[i].style.transform = "translate3d(" + (tabsX[i]) + "px,0px,0px)";
             }
         }
     }
