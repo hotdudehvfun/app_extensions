@@ -1,0 +1,616 @@
+<!DOCTYPE>
+<html>
+
+<head>
+    <title></title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <style type="text/css">
+    /*primary color: #4CD964*/
+
+    * {
+        font-family: "HelveticaNeue-UltraLight", "Segoe UI", "Roboto Light", sans-serif;
+        user-select: none;
+    }
+
+    table {
+        border-collapse: collapse;
+        border: 1px solid #4CD964;
+        border-radius: 3px;
+    }
+
+    th,
+    td {}
+
+    th {
+        font-weight: normal;
+        -webkit-font-smoothing: antialiased;
+        padding: 1em;
+        color: rgba(0, 0, 0, 0.45);
+        text-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
+        font-size: 1.5em;
+    }
+
+    td {
+        color: #111;
+        padding: 0.7em 1em 0.7em 1.15em;
+    }
+
+    tr {
+        -webkit-transition: background 0.3s, box-shadow 0.3s;
+        -moz-transition: background 0.3s, box-shadow 0.3s;
+        transition: background 0.3s, box-shadow 0.3s;
+    }
+
+    body {
+        margin: 0px;
+        overflow-x: hidden;
+    }
+
+    .heading {
+        color: #888888;
+        text-align: center;
+    }
+
+    .half_line {
+        width: 50%;
+        height: 2px;
+        background: #4CD964;
+        margin-left: 25%;
+        position: relative;
+    }
+
+    ._25_line {
+        width: 25%;
+        height: 2px;
+        background: #4CD964;
+        margin-left: 37.5%;
+        position: relative;
+    }
+
+    #qtext {
+        text-align: center;
+        margin-top: 5%;
+        padding: 0% 2% 0% 2%;
+        line-height: 160%;
+    }
+
+    .option {
+        padding: 2% 3% 2% 3%;
+        border-radius: 50px;
+        background: #ececec;
+        display: inline-table;
+        margin-top: 5%;
+        margin-left: 10%;
+        margin-right: 10%;
+        color: #111;
+        width: 30%;
+        max-width: 200px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .option>img {
+        height: 10px;
+        width: 10px;
+        margin-left: 5px;
+        display: none;
+    }
+
+    .correct {
+        border: 1px solid #9C0;
+    }
+
+    .wrong {
+        border: 1px solid #ec7964;
+    }
+
+    .option-container {
+        display: block;
+        text-align: center;
+    }
+
+    #explanation-holder {
+        transition: 0.5s all cubic-bezier(.45, .64, .03, .98);
+        width: 94%;
+        margin-top: 5%;
+        padding: 0% 3% 0% 3%;
+        text-align: center;
+        overflow: hidden;
+    }
+
+    #explanation-holder>span {
+        border: 1px solid gray;
+        padding-left: 2px;
+        padding-right: 2px;
+    }
+
+    #canvas {
+        background: white;
+    }
+    </style>
+</head>
+
+<body id="body">
+    <h3 class="heading">Missing Number Inside Circle</h3>
+    <div class="half_line"></div>
+    <canvas id="canvas"></canvas>
+    <div class="option-container" id="option-container">
+        <!-- <div onclick="checkAnswer(e)" id="a" class="option">1</div>
+    <div onclick="checkAnswer(e)" id="b" class="option">2</div>
+    <div onclick="checkAnswer(e)" id="c" class="option">3</div>
+    <div onclick="checkAnswer(e)" id="d" class="option">4</div>   -->
+    </div>
+    <div id="explanation-holder"></div>
+    <script type="text/javascript">
+    var canvas, context;
+    var isNewQuestion;
+    var abcde = ["a", "b", "c", "d", "e"];
+    var starting_sector_angle;
+    var primes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97, 101, 103, 107, 109, 113, 127, 131, 137, 139, 149, 151, 157, 163, 167, 173, 179, 181, 191, 193, 197, 199, 211, 223, 227, 229, 233, 239, 241, 251, 257, 263, 269, 271, 277, 281, 283, 293, 307, 311, 313, 317, 331, 337, 347, 349, 353, 359, 367, 373, 379, 383, 389, 397, 401, 409, 419, 421, 431, 433, 439, 443, 449, 457, 461, 463, 467, 479, 487, 491, 499, 503, 509, 521, 523, 541, 547, 557, 563, 569, 571, 577, 587, 593, 599, 601, 607, 613, 617, 619, 631, 641, 643, 647, 653, 659, 661, 673, 677, 683, 691, 701, 709, 719, 727, 733, 739, 743, 751, 757, 761, 769, 773, 787, 797, 809, 811, 821, 823, 827, 829, 839, 853, 857, 859, 863, 877, 881, 883, 887, 907, 911, 919, 929, 937, 941, 947, 953, 967, 971, 977, 983, 991, 997];
+    document.addEventListener('DOMContentLoaded', function()
+    {
+        initCanvas();
+        detectswipe(document.getElementById('body'), function(dir)
+        {
+            if (dir == "right" || dir == "left")
+                generateRandomRule();
+        });
+    });
+
+    function getCanvasHeight()
+    {
+        if (window.innerWidth < window.innerHeight)
+        {
+            return window.innerHeight * 0.4;
+        }
+
+        return window.innerHeight * 0.5;
+    }
+
+    function initCanvas()
+    {
+        canvas = document.getElementById('canvas');
+        canvas.width = window.innerWidth;
+        canvas.height = getCanvasHeight();
+        context = canvas.getContext('2d');
+        if (context != null || context != undefined)
+        {
+            generateRandomRule();
+        } else
+        {
+            alert('canvas not supported');
+        }
+    }
+
+    function getRandomInt(min, max)
+    {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function generateRandomRule()
+    {
+        rule1();
+    }
+
+    function rule1()
+    {
+        // >rule 1:series clockwise
+        //   >addition +-const done
+        //   >squares +- const done
+        //   >cubes +-const  done
+        //   >fibonacci done
+        //   >prime series done
+        //---------------------------------------
+        // >rule 2:constant addition or multiplication rules 
+        // >[+/*] 1+2+3+4=5+6+7+8 = CONST done
+        // >[+/*] 1+2+8+7=3+4+5+6 = CONST done
+        // >[+/*] alternates 1+3+5+7=2+4+6+8 = CONST done
+        // >[+/*] opposite 1+5=2+6=3+7=4+8 = CONST done
+        // >[+/*] 1+8=4+5, 2+3=7+6 = CONST 
+        // >[+/*] 1+2=6+5, 8+7=3+4  = CONST
+
+        var number_of_chords = 8;
+        var array = [];
+        var question_mark_index;
+        var explanation = "";
+
+        var selectSubRule = getRandomInt(1, 11);
+        starting_sector_angle = -67.5 + ((360 / 8) * getRandomInt(0, number_of_chords));
+        switch (selectSubRule)
+        {
+            case 1:
+                //addition rule
+                array[0] = getRandomInt(2, 100);
+                var constant = getRandomInt(1, 20);
+                var constant_helper = getRandomInt(0, 5);
+                explanation = "This is a addition series. Start series with " + array[0] + " ";
+                for (var i = 1; i < number_of_chords; i++)
+                {
+                    array[i] = array[i - 1] + constant;
+                    explanation += "<br>Add " + constant + " to " + array[i - 1] + " to get " + array[i];
+                    explanation += "<br> add " + constant_helper + " to " + constant;
+                    constant = constant + constant_helper;
+                }
+                question_mark_index = getRandomInt(0, array.length - 1);
+                document.getElementById('explanation-holder').innerHTML = explanation;
+                break;
+            case 2:
+                //squares rule
+                var base_number = getRandomInt(1, 10);
+                array[0] = base_number * base_number;
+                var constant = getRandomInt(1, 5);
+                explanation = "This is a square series. Start series with square of " + base_number + " =" + array[0];
+                for (var i = 1; i < number_of_chords; i++)
+                {
+
+                    explanation += "<br>Add " + constant + " to " + base_number + " to get " + (base_number + constant);
+                    base_number += constant;
+                    array[i] = base_number * base_number;
+                    explanation += "<br>Now square " + base_number + " to get " + array[i];
+                }
+                question_mark_index = getRandomInt(0, array.length - 1);
+                document.getElementById('explanation-holder').innerHTML = explanation;
+                break;
+
+            case 3:
+                //advance squares rule            
+                var base_number = getRandomInt(1, 10);
+                var base_number_helper = getRandomInt(1, 3);
+                var square_number_helper = getRandomInt(1, 3);
+                var operation = "add " + square_number_helper;
+                if (Math.random() > 0.5)
+                {
+                    operation = "subtract " + square_number_helper;
+                    square_number_helper *= -1;
+                }
+                array[0] = (base_number * base_number) + square_number_helper;
+                explanation = "This is an advance square series.";
+                explanation += "<br> In this series we have a <span>Base number</span> and two constant numbers. Let say <span>A</span> and <span>B</span>";
+                explanation += "<br> Add constant A to square of Base number and use constant B to get new base number";
+
+
+                explanation += "<br> Start series with square of " + base_number + " and " + operation + " to get " + array[0];
+                for (var i = 1; i < number_of_chords; i++)
+                {
+
+                    explanation += "<br>Add " + base_number_helper + " to " + base_number + " to get " + (base_number + base_number_helper);
+                    base_number += base_number_helper;
+                    array[i] = (base_number * base_number) + square_number_helper;
+                    explanation += "<br> Now, square " + base_number + " and " + operation + " to get <span>" + array[i] + "</span>";
+                }
+                question_mark_index = getRandomInt(0, array.length - 1);
+                document.getElementById('explanation-holder').innerHTML = explanation;
+                break;
+
+            case 4:
+                //cube rule
+                var base_number = getRandomInt(1, 10);
+                array[0] = base_number * base_number * base_number;
+                var constant = getRandomInt(1, 2);
+                explanation = "This is a cube series. Start series with cube of " + base_number + " =" + array[0];
+                for (var i = 1; i < number_of_chords; i++)
+                {
+
+                    explanation += "<br>Add " + constant + " to " + base_number + " to get " + (base_number + constant);
+                    base_number += constant;
+                    array[i] = base_number * base_number * base_number;
+                    explanation += "<br>Now cube  " + base_number + " to get " + array[i];
+                }
+                question_mark_index = getRandomInt(0, array.length - 1);
+                document.getElementById('explanation-holder').innerHTML = explanation;
+                break;
+            case 5:
+                //advance cube rule            
+                var base_number = getRandomInt(1, 5);
+                var base_number_helper = getRandomInt(1, 3);
+                var square_number_helper = getRandomInt(1, 3);
+                var operation = "add " + square_number_helper;
+                if (Math.random() > 0.5)
+                {
+                    operation = "subtract " + square_number_helper;
+                    square_number_helper *= -1;
+                }
+                array[0] = (base_number * base_number) + square_number_helper;
+                explanation = "This is an advance cube series.";
+                explanation += "<br> In this series we have a <span>Base number</span> and two constant numbers. Let say <span>A</span> and <span>B</span>";
+                explanation += "<br> Add constant A to cube of Base number and use constant B to get new base number";
+
+
+                explanation += "<br> Start series with cube of " + base_number + " and " + operation + " to get " + array[0];
+                for (var i = 1; i < number_of_chords; i++)
+                {
+                    explanation += "<br>Add " + base_number_helper + " to " + base_number + " to get " + (base_number + base_number_helper);
+                    base_number += base_number_helper;
+                    array[i] = (base_number * base_number * base_number) + square_number_helper;
+                    explanation += "<br> Now, cube " + base_number + " and " + operation + " to get <span>" + array[i] + "</span>";
+                }
+                question_mark_index = getRandomInt(0, array.length - 1);
+                document.getElementById('explanation-holder').innerHTML = explanation;
+                break;
+
+            case 6:
+                //fibonacci rule
+                array[0] = getRandomInt(1, 20);
+                array[1] = getRandomInt(1, 20);
+                explanation = "This is a series similar to fibonacci series. Start series with " + array[0] + " and " + array[1];
+                for (var i = 2; i < number_of_chords; i++)
+                {
+                    array[i] = array[i - 1] + array[i - 2];
+                    explanation += "<br>Add " + array[i - 1] + " to " + array[i - 2] + " to get " + array[i];
+                }
+                question_mark_index = getRandomInt(0, array.length - 1);
+                document.getElementById('explanation-holder').innerHTML = explanation;
+                break;
+            case 7:
+                //prime number series
+                var starting_pos = getRandomInt(0, primes.length - number_of_chords - 1);
+                array = primes.slice(starting_pos, starting_pos + number_of_chords);
+                explanation = "This is a prime number series. Start series with " + array[0] + " and next number is next prime number";
+                question_mark_index = getRandomInt(0, array.length - 1);
+                document.getElementById('explanation-holder').innerHTML = explanation;
+                break;
+
+            case 8:
+                // >[+/*] 1+2+3+4=5+6+7+8 = CONST upper lower
+                // or
+                // >[+/*] 1+2+8+7=3+4+5+6 = CONST left right
+
+                var constant = getRandomInt(20, 40) * 4;
+                var avg = constant / 4;
+                var temp1 = getRandomInt(1, 5);
+                var temp2 = getRandomInt(5, 10);
+                array[0] = avg + temp1;
+                array[1] = avg - temp1;
+                array[2] = avg + temp2;
+                array[3] = avg - temp2;
+                array.sort(function() {
+                    return Math.random() > 0.5;
+                });
+
+                var temp1 = getRandomInt(1, 5);
+                var temp2 = getRandomInt(5, 10);
+                array[4] = array[0] + temp1;
+                array[5] = array[1] - temp1;
+                array[6] = array[2] + temp2;
+                array[7] = array[3] - temp2;
+
+                if (Math.random() > 0.5)
+                {
+                    explanation = "In this case total sum of upper half and lower half numbers is same";
+                    explanation += "<br> Sum of " + array[0] + "+" + array[1] + "+" + array[2] + "+" + array[3] + "=" + (array[0] + array[1] + array[2] + array[3]);
+                    explanation += "<br> Sum of " + array[4] + "+" + array[5] + "+" + array[6] + "+" + array[7] + "=" + (array[4] + array[5] + array[6] + array[7]);
+                    starting_sector_angle = -22.5 * 7;
+                } else
+                {
+                    explanation = "In this case total sum of left half and right half numbers is same";
+                    explanation += "<br> Sum of " + array[0] + "+" + array[1] + "+" + array[2] + "+" + array[3] + "=" + (array[0] + array[1] + array[2] + array[3]);
+                    explanation += "<br> Sum of " + array[4] + "+" + array[5] + "+" + array[6] + "+" + array[7] + "=" + (array[4] + array[5] + array[6] + array[7]);
+                    starting_sector_angle = -22.5 * 11;
+                }
+
+                question_mark_index = getRandomInt(0, array.length - 1);
+                document.getElementById('explanation-holder').innerHTML = explanation;
+                break;
+            case 9:
+                //>[+/*] alternates 1+3+5+7=2+4+6+8 = CONST
+
+                var constant = getRandomInt(20, 40) * 4;
+                var avg = constant / 4;
+                var temp1 = getRandomInt(1, 5);
+                var temp2 = getRandomInt(5, 10);
+                array[0] = avg + temp1;
+                array[2] = avg - temp1;
+                array[4] = avg + temp2;
+                array[6] = avg - temp2;
+
+                var temp1 = getRandomInt(1, 5);
+                var temp2 = getRandomInt(5, 10);
+                array[1] = array[0] + temp1;
+                array[3] = array[2] - temp1;
+                array[5] = array[4] + temp2;
+                array[7] = array[6] - temp2;
+
+                explanation = "In this case total sum of alternate numbers are same";
+                explanation += "<br> Sum of " + array[0] + "+" + array[2] + "+" + array[4] + "+" + array[6] + "=" + (array[0] + array[2] + array[4] + array[6]);
+                explanation += "<br> Sum of " + array[1] + "+" + array[3] + "+" + array[5] + "+" + array[7] + "=" + (array[1] + array[3] + array[5] + array[7]);
+                starting_sector_angle = -22.5 * 7;
+                question_mark_index = getRandomInt(0, array.length - 1);
+                document.getElementById('explanation-holder').innerHTML = explanation;
+                break;
+            case 10:
+                //opposite 1+5=2+6=3+7=4+8 = CONST
+                var constant = getRandomInt(20, 80);
+                array = getNRandomInts(5, constant, 4);
+                array[4] = constant - array[0];
+                array[5] = constant - array[1];
+                array[6] = constant - array[2];
+                array[7] = constant - array[3];
+
+                explanation = "In this case  sum of all opposite numbers are same";
+                explanation += "<br> Sum of " + array[0] + "+" + array[4] + "=" + (array[0] + array[4]);
+                explanation += "<br> Sum of " + array[5] + "+" + array[1] + "=" + (array[5] + array[1]);
+                explanation += "<br> Sum of " + array[6] + "+" + array[2] + "=" + (array[6] + array[2]);
+                explanation += "<br> Sum of " + array[7] + "+" + array[3] + "=" + (array[7] + array[3]);
+
+
+                question_mark_index = getRandomInt(0, array.length - 1);
+                document.getElementById('explanation-holder').innerHTML = explanation;
+                break;
+            case 11:
+                // >[+/*] 1+8,4+5, 2+3,7+6 = CONST 
+                // >[+/*] 1+2=6+5, 8+7=3+4  = CONST
+
+                var constant = getRandomInt(20, 80);
+                var temp = getNRandomInts(5, constant - 10, 4);
+                array[0] = temp[0];
+                array[4] = temp[1];
+                array[2] = temp[2];
+                array[5] = temp[3];
+
+                array[7] = constant - array[0];
+                array[3] = constant - array[4];
+                array[1] = constant - array[2];
+                array[6] = constant - array[5];
+                explanation = "Sum of two numbers from left right top and bottom are equal";
+                if (Math.random() > 0.5)
+                {
+
+                    starting_sector_angle = -22.5 * 7;
+                } else
+                {
+                    starting_sector_angle = -22.5 * 3;
+                }
+                explanation += "<br> Sum of " + array[7] + "+" + array[0] + "=" + (array[7] + array[0]);
+                explanation += "<br> Sum of " + array[3] + "+" + array[4] + "=" + (array[3] + array[4]);
+                explanation += "<br> Sum of " + array[1] + "+" + array[2] + "=" + (array[1] + array[2]);
+                explanation += "<br> Sum of " + array[6] + "+" + array[5] + "=" + (array[6] + array[5]);
+                question_mark_index = getRandomInt(0, array.length - 1);
+                document.getElementById('explanation-holder').innerHTML = explanation;
+                break;
+
+        }
+        drawQuestionWithoutInsideCircle(number_of_chords, array, question_mark_index);
+
+    }
+
+    function drawQuestionWithoutInsideCircle(number_of_chords, array, question_mark_index)
+    {
+
+        var radius = canvas.width < canvas.height ? canvas.width : canvas.height;
+        radius *= 0.35;
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        context.translate(0.5, 0.5);
+        context.strokeStyle = "#4CD964";
+        context.beginPath();
+        context.arc(canvas.width / 2, canvas.height / 2, radius, 0, 2 * Math.PI);
+        context.closePath();
+        context.stroke();
+
+        //draw cords
+        var tempAngle = -90;
+        for (var i = 0; i < number_of_chords; i++)
+        {
+            var x, y;
+            context.beginPath();
+            context.moveTo(canvas.width / 2, canvas.height / 2);
+            x = Math.cos(tempAngle * Math.PI / 180) * radius;
+            x += canvas.width / 2;
+            y = Math.sin(tempAngle * Math.PI / 180) * radius;
+            y += canvas.height / 2;
+            context.lineTo(x, y);
+            context.closePath();
+            tempAngle += (360 / 8);
+            context.stroke();
+        }
+        //draw digits
+        context.textAlign = "center";
+        context.fillStyle="#111";
+        context.font = radius * 0.18 + "px sans-serif";
+        var tempAngle = starting_sector_angle;
+        for (var i = 0; i < number_of_chords; i++)
+        {
+            var x, y;
+            x = Math.cos(tempAngle * Math.PI / 180) * radius * 0.7;
+            x += canvas.width / 2;
+            y = Math.sin(tempAngle * Math.PI / 180) * radius * 0.7;
+            y += canvas.height / 2;
+            if (i == question_mark_index)
+                context.fillText("?", x, y);
+            else
+                context.fillText(array[i] + "", x, y);
+            tempAngle += (360 / 8);
+        }
+
+
+
+
+
+
+        //highlight question mark
+        var qStartAngle=starting_sector_angle+(question_mark_index*45)-22.5,qEndAngle=qStartAngle+45;
+        context.fillStyle="rgba(76, 217, 100,0.2)";
+        context.beginPath();
+        context.moveTo(canvas.width/2,canvas.height/2);
+        context.arc(canvas.width / 2, canvas.height / 2, radius, qStartAngle*Math.PI/180,qEndAngle*Math.PI/180);
+        context.closePath();
+        context.fill();
+
+
+        //setup options
+        isNewQuestion = true;
+        var answer = array[question_mark_index];
+        var option_array = [];
+        option_array.push(answer - 1);
+        option_array.push(answer + 1);
+        option_array.push(answer + 2);
+        option_array.push(answer - 2);
+
+        var answer_index = getRandomInt(0, 3);
+        option_array.sort(function() {
+            return Math.random() > 0.5
+        });
+        option_array[answer_index] = answer;
+
+        var parent = document.getElementById('option-container');
+        parent.innerHTML = "";
+        for (var i = 0; i < option_array.length; i++)
+        {
+            var child = document.createElement('div');
+            child.setAttribute('class', 'option');
+            child.setAttribute('id', abcde[i]);
+
+            child.innerHTML = option_array[i] + "<img src='wrong_image.png'>" + "<img  src='correct_image.png'>";
+            child.setAttribute('data-user_index', i);
+            child.setAttribute('data-correct_index', answer_index);
+            child.addEventListener('click', function(e) {
+                checkAnswer(e);
+            });
+            parent.appendChild(child);
+        }
+        document.getElementById('explanation-holder').style.transform = "scale(0)";
+    }
+
+    function getH(id)
+    {
+        return document.getElementById(id).offsetHeight;
+    }
+
+    function checkAnswer(e)
+    {
+        if (isNewQuestion)
+        {
+
+            isNewQuestion = false;
+            document.getElementById('explanation-holder').style.transform = "scale(1)";
+            var user_index = parseInt(e.target.getAttribute('data-user_index'));
+            var correctIndex = parseInt(e.target.getAttribute('data-correct_index'));
+
+            document.getElementById('a').setAttribute("class", "option");
+            document.getElementById('b').setAttribute("class", "option");
+            document.getElementById('c').setAttribute("class", "option");
+            document.getElementById('d').setAttribute("class", "option");
+            //img 0 is wrong ,1 is correct
+            if (user_index == correctIndex)
+            {
+                document.getElementById(abcde[user_index]).setAttribute("class", "option correct");
+                document.getElementById(abcde[user_index]).getElementsByTagName('img')[1].style.display = "inline-block";
+
+            } else
+            {
+                document.getElementById(abcde[user_index]).setAttribute("class", "option wrong");
+                document.getElementById(abcde[user_index]).getElementsByTagName('img')[0].style.display = "inline-block";
+
+                document.getElementById(abcde[correctIndex]).setAttribute("class", "option correct");
+                document.getElementById(abcde[correctIndex]).getElementsByTagName('img')[1].style.display = "inline-block";
+
+            }
+        }
+        addRippleEffect(e);
+    }
+    </script>
+    <script type="text/javascript" src="extension_utilities.js"></script>
+</body>
+
+</html>

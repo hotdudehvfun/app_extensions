@@ -16,8 +16,8 @@ function addRippleEffect(event) {
     }
     //reset ripple
     ripple.style.transition = "0s all";
-    ripple.style.width = "10px";
-    ripple.style.height = "10px";
+    ripple.style.width = "5px";
+    ripple.style.height = "5px";
     ripple.style.borderRadius = "10px";
     ripple.style.background = "rgba(150, 150, 150, 0.18)";
     ripple.style.position = "absolute";
