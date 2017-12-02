@@ -483,6 +483,8 @@
         var radius = canvas.width < canvas.height ? canvas.width : canvas.height;
         radius *= 0.35;
         context.lineWidth=2.5;
+        context.lineJoin = 'round';
+        context.lineCap = 'round';
         context.clearRect(0, 0, canvas.width, canvas.height);
         context.strokeStyle = "#009688";
         context.beginPath();
