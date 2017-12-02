@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <style type="text/css">
-    /*primary color: #4CD964*/
+    /*primary color: #009688*/
 
     * {
         font-family: "HelveticaNeue-UltraLight", "Segoe UI", "Roboto Light", sans-serif;
@@ -16,7 +16,7 @@
 
     table {
         border-collapse: collapse;
-        border: 1px solid #4CD964;
+        border: 1px solid #009688;
         border-radius: 3px;
     }
 
@@ -56,7 +56,7 @@
     .half_line {
         width: 50%;
         height: 2px;
-        background: #4CD964;
+        background: #009688;
         margin-left: 25%;
         position: relative;
     }
@@ -64,7 +64,7 @@
     ._25_line {
         width: 25%;
         height: 2px;
-        background: #4CD964;
+        background: #009688;
         margin-left: 37.5%;
         position: relative;
     }
@@ -161,12 +161,14 @@
 
     function getCanvasHeight()
     {
+        var h;
         if (window.innerWidth < window.innerHeight)
         {
-            return window.innerHeight * 0.4;
-        }
+            h=window.innerHeight * 0.6;
+        }else
+        h=window.innerHeight * 0.8;
 
-        return window.innerHeight * 0.5;
+        return h<200?200:h;
     }
 
     function initCanvas()
@@ -482,7 +484,7 @@
         radius *= 0.35;
         context.clearRect(0, 0, canvas.width, canvas.height);
         context.translate(0.5, 0.5);
-        context.strokeStyle = "#4CD964";
+        context.strokeStyle = "#009688";
         context.beginPath();
         context.arc(canvas.width / 2, canvas.height / 2, radius, 0, 2 * Math.PI);
         context.closePath();
@@ -530,7 +532,7 @@
 
         //highlight question mark
         var qStartAngle=starting_sector_angle+(question_mark_index*45)-22.5,qEndAngle=qStartAngle+45;
-        context.fillStyle="rgba(76, 217, 100,0.2)";
+        context.fillStyle="rgba(0, 150, 136,0.3)";
         context.beginPath();
         context.moveTo(canvas.width/2,canvas.height/2);
         context.arc(canvas.width / 2, canvas.height / 2, radius, qStartAngle*Math.PI/180,qEndAngle*Math.PI/180);
