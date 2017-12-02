@@ -482,13 +482,14 @@
 
         var radius = canvas.width < canvas.height ? canvas.width : canvas.height;
         radius *= 0.35;
+        context.lineWidth=2.5;
         context.clearRect(0, 0, canvas.width, canvas.height);
-        context.translate(0.5, 0.5);
         context.strokeStyle = "#009688";
         context.beginPath();
         context.arc(canvas.width / 2, canvas.height / 2, radius, 0, 2 * Math.PI);
         context.closePath();
         context.stroke();
+
 
         //draw cords
         var tempAngle = -90;
