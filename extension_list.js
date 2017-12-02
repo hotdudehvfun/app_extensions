@@ -2,6 +2,12 @@
   "extensions": [
     
     {
+      "icon": "help_outline",
+      "icon_color": "#009688",
+      "title": "Missing Number inside Circle",
+      "subtitle": "Analyze the patter and find missing number in a circle",
+      "url": "https://hotdudehvfun.github.io/app_extensions/extension_missing_number_inside_circle.html"
+    },{
       "icon": "bug_report",
       "icon_color": "#31d46b",
       "title": "Spotting Errors",
