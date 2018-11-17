@@ -53,7 +53,7 @@ function updateNumbers(shouldAnimate)
 		num1=getRandom(12,20);
 
 	if(!isNum2Freezed)
-		num2=getRandom(12,20);
+		num2=getRandom(3,30);
 
 	var num3=num1*num2;
 
