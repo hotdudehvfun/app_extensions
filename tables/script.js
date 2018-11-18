@@ -46,14 +46,26 @@ function getRandom(min,max)
 
 var timerId=null;
 var isNum1Freezed=false,isNum2Freezed=false;
-var num1,num2;
+var num1=12,num2=3;
 function updateNumbers(shouldAnimate)
 {
 	if(!isNum1Freezed)
-		num1=getRandom(12,20);
+	{
+		num1++;
+		if (num1>29)
+		{
+			num1=12;
+		}
+	}
 
 	if(!isNum2Freezed)
-		num2=getRandom(3,30);
+	{
+		num2++;
+		if (num2>=29)
+		{
+			num2=3;
+		}
+	}
 
 	var num3=num1*num2;
 
