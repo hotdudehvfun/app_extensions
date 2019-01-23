@@ -1,0 +1,234 @@
+<html><head>
+	<title>Idioms</title>
+		<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+    <script type="text/javascript" src="hammer.js"></script>
+<style type="text/css">
+
+	/*colorPrimary:#747474*/
+@font-face
+{
+	font-family: MyFont;
+	src: url(font.ttf);
+}
+*
+{
+	font-family: MyFont;
+}
+body
+{
+	color: black;
+	background: rgba(234, 234, 234, 0.15);
+}
+.heading
+    {
+    	text-align: center;
+    }
+    .half_line
+    {
+			width: 80%;
+height: 2px;
+background: #747474;
+margin: auto;
+position: relative;
+    }
+    ._25_line
+    {
+    	width: 25%;
+    	height: 2px;
+    	background: #747474;
+    	margin-left: 37.5%;
+    	position:relative;
+    }
+
+    .qtext
+    {
+    	padding: 0% 2% 0% 2%;
+    	line-height: 160%;
+    	text-transform: uppercase;
+    }
+    .option
+    {
+	    padding: 2% 3% 2% 3%;
+	    border-radius: 50px;
+	    background: #ececec;
+	    display: inline-table;
+	    margin-top: 5%;
+	    margin-left: 10%;
+	    margin-right: 10%;
+	    color: #111;
+	    width: 30%;
+	    max-width: 200px;
+	    transition: 0.5s all;
+	}
+	.correct
+	{
+		background: #9C0;
+		color: white;
+	}
+	.wrong
+	{
+		background: #ec7964;
+		color: white;
+	}
+    .option-container
+    {
+    	    text-align: center;
+    		margin-top: 5%;
+    }
+    .explanation-holder
+    {
+transition: 0.5s all cubic-bezier(.45,.64,.03,.98);
+    width: 94%;
+    height: 0px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    margin-top: 5%;
+    padding: 0% 3% 0% 3%;
+    }
+    .fab
+    {
+	margin: 0px;
+    background: #747474;
+    color: white;
+    width: initial;
+    border-radius: 50px;
+    padding: 10%;
+    display: inline-block;
+    box-shadow: 1px 1px 1px rgba(130, 130, 130, 0.51);
+    }
+.data
+{
+    text-transform: lowercase;
+    font-style:italic;
+    padding-left: 5%;
+}
+.feed-holder-outer
+{
+	padding: 0% 2% 0% 2%;
+    display: flex;
+    flex-direction: column;
+}
+.feed-holder-inner
+{
+	background: white;
+    margin-top: 3%;
+    border-radius: 0.5%;
+    padding-top:2%;
+    padding-bottom: 2%;
+    transition: 0.5s all;
+    opacity: 0;
+}
+.line
+{
+	width: 75%;
+    height: 1px;
+    background: #c3c3c3;
+    margin-left: 25%;
+    margin-top: 3%;
+}
+</style>
+</head>
+<body id="body">
+<h2 class="heading">One Word Substitute</h2>
+<div class="half_line"></div>
+<div style="text-align: center;">
+<div id="page-text" class="option" style="
+    font-size: 98%;
+    text-align: center;
+    width: 50%;
+    margin-left: 20%;
+    margin-right: 20%;
+">Page 2 of 100</div>
+</div>
+<div class="feed-holder-outer" id="feed-holder-outer">
+</div>
+<script type="text/javascript">
+
+document.addEventListener('click',function(){
+	getNewData(1);
+});
+
+	var pos;
+	var fatc=new Array();
+	fatc.push({value:"#1abc9c"});
+	fatc.push({value:"#40d47e"});
+	fatc.push({value:"#3498db"});
+	fatc.push({value:"#9b59b6"});
+	fatc.push({value:"#16a085"});
+	fatc.push({value:"#27ae60"});
+	fatc.push({value:"#2980b9"});
+	fatc.push({value:"#8e44ad"});
+	fatc.push({value:"#f1c40f"});
+	fatc.push({value:"#e67e22"});
+	fatc.push({value:"#e74c3c"});
+	fatc.push({value:"#f39c12"});
+	fatc.push({value:"#d35400"});
+	fatc.push({value:"#c0392b"});
+window.onload=start;
+var startPos=0,len=10;
+function start()
+{
+	showCards(startPos,len);
+}
+function getNewData(dir)
+{
+		startPos+=len*dir;
+		if ((startPos>=list.length) || (startPos+len>=list.length))
+		{
+			startPos-=len*dir;
+		}else
+		{
+			showCards(startPos,len);
+		}
+	}
+function showCards(start,len)
+{
+	try {
+
+			var parent=document.getElementById('feed-holder-outer');
+			var html="";
+			var t=0.1,step=0.2;
+			var end=start+len;
+			for (var i = start; i < end; i++)
+			{
+				var string=list[i].split("#");
+				var qtext=string[0].trim();
+				var answer=string[1].trim();
+				html+="<div class=feed-holder-inner style='transition:"+t+"s'>";
+				html+="<div class=qtext>"+qtext+"</div>";
+				html+="<div class=data>"+answer+"</div>";
+				html+="<div class=line></div>";
+				html+="</div>";
+				t+=step;
+			}
+			parent.innerHTML=html;
+			setTimeout(function()
+			{
+				var cards=document.getElementsByClassName("feed-holder-inner");
+				for(var i=0;i<cards.length;i++)
+				{
+					cards[i].style.opacity=1;
+				}
+			},100);
+
+			document.getElementById('page-text').innerHTML="Page "+parseInt((start/len)+1)+" of "+parseInt(list.length/len);
+	} catch (e)
+	{
+
+	} finally {
+
+	}
+}
+new Hammer(document.getElementsByTagName('body')[0]).on('swipeleft swiperight', function(ev)
+{
+	console.log(ev.type);
+	if(ev.type=="swipeleft")
+		getNewData(1);
+	else
+		getNewData(-1);
+});
+var list=["One who is not sure about God’s existence#Agnostic","A person who deliberately sets fire to a building#Arsonist","One who does a thing for pleasure and not as a profession#Amateur","One who can use either hand with ease#Ambidextrous","One who makes an official examination of accounts#Auditor","A person who believes in or tries to bring about a state of lawlessness#Anarchist","A person who has changed his faith#Apostate","One who does not believe in the existence of God#Atheist","A person appointed by two parties to solve a dispute#Arbitrator","One who leads an austere life#Ascetic","One who does a thing for pleasure and not as a profession#Amateur","One who can either hand with ease#Ambidextrous","An unconventional style of living#Bohemian","One who is bad in spellings#Cacographer","One who feeds on human flesh#Cannibal","A person who is blindly devoted to an idea/ A person displaying aggressive or exaggerated patriotism#Chauvinist","A critical judge of any art and craft#Connoisseur","Persons living at the same time#Contemporaries","One who is recovering health after illness#Convalescent","A girl/woman who flirts with man#Coquette","A person who regards the whole world as his country#Cosmopolitan","One who is a centre of attraction#Cynosure","One who sneers at the beliefs of others#Cynic","A leader or orator who espoused the cause of the common people#Demagogue","A person having a sophisticated charm#Debonair","A leader who sways his followers by his oratory#Demagogue","A dabbler (not serious) in art, science and literature#Dilettante","One who is for pleasure of eating and drinking#Epicure","One who often talks of his achievements#Egotist","Someone who leaves one country to settle in another#Emigrant","A man who is womanish in his habits#Effeminate","One hard to please (very selective in his habits)#Fastidious","One who runs away from justice#Fugitive","One who is filled with excessive enthusiasm in religious matters#Fanatic","One who believes in fate#Fatalist","A lover of good food#Gourmand","Conferred as an honour#Honorary","A person who acts against religion#Heretic","A person of intellectual or erudite tastes#Highbrow","A patient with imaginary symptoms and ailments#Hypochondriac","A person who is controlled by wife#Henpeck","One who shows sustained enthusiastic action with unflagging vitality#Indefatigable","Someone who attacks cherished ideas or traditional institutions#Iconoclast","One who does not express himself freely#Introvert","Who behaves without moral principles#Immoral","A person who is incapable of being tampered with#Impregnable","One who is unable to pay his debts#Insolvent","A person who is mentally ill#Lunatic","A person who dislikes humankind and avoids human society#Misanthrope","A person who primarily concerned with making money at the expense of ethics#Mercenary","Someone in love with himself#Narcissist","One who collect coins as hobby#Numismatist","A person who likes or admires women#Philogynist","A lover of mankind#Philanthropist","A person who speaks more than one language#Polyglot","One who lives in solitude#Recluse","Someone who walks in sleep#Somnambulist","A person who is indifferent to the pains and pleasures of life#Stoic","A scolding nagging bad-tempered woman#Termagant","A person who shows a great or excessive fondness for one’s wife#Uxorious","One who possesses outstanding technical ability in a particular art or field#Virtuoso","A group of guns or missile launchers operated together at one place#Battery","A large bundle bound for storage or transport#Bale","A large gathering of people of a particular type#Bevy","An arrangement of flowers that is usually given as a present#Bouquet","A family of young animals#Brood","A group of things that have been hidden in a secret place#Cache","A group of people, typically with vehicles or animals travelling together#Caravan","A closed political meeting#Caucus","An exclusive circle of people with a common purpose#Clique","A group of followers hired to applaud at a performance#Claque","A series of stars#Constellation","A funeral procession#Cortege","A group of worshippers#Congregation","A herd or flock of animals being driven in a body#Drove","A small fleet of ships or boats#Flotilla","A small growth of trees without underbrush#Grove","A community of people smaller than a village#Hamlet","A group of cattle or sheep or other domestic mammals#Herd","A large group of people#Horde","A temporary police force#Posse","A large number of fish swimming together#Shoal","A strong and fast-moving stream of water or other liquid#Torrent","The medieval forerunner of chemistry#Alchemy","A person who presents a radio/television programme#Anchor","One who studies the evolution of mankind#Anthropologist","A person who is trained to travel in a spacecraft#Astronaut","The scientific study of the physiology, structure, genetics, ecology, distribution, classification, and economic importance of plants#Botany","A person who draws or produces maps#Cartographer","A person who writes beautiful writing#Calligrapher","A person who composes the sequence of steps and moves for a performance of dance#Choreographer","A person employed to drive a private or hired car#Chauffeur","A person who introduces the performers or contestants in a variety show#Compere","A keeper or custodian of a museum or other collection#Curator","The branch of biology concerned with cyclical physiological phenomena#Chronobiology","A secret or disguised way of writing#Cypher","The study of statistics#Demography","The use of the fingers and hands to communicate and convey ideas#Dactylology","A person who sells and arranges cut flowers#Florist","A line of descent traced continuously from an ancestor#Genealogy","The therapeutic use of sunlight#Heliotherapy","The art or practice of garden cultivation and management#Horticulture","One who supervises in the examination hall#Invigilator","The theory or philosophy of law#Jurisprudence","A person who compiles dictionaries#Lexicographer","The scientific study of the structure and diseases of teeth#Odontology","One who presents a radio programme#Radio Jockey","The art of effective or persuasive speaking or writing#Rhetoric","The branch of science concerned with the origin, structure, and composition of rocks#Petrology","One who study the elections and trends in voting#Psephologist","An artist who makes sculptures.#Sculptor","The scientific study of the behaviour, structure, physiology, classification, and distribution of animals#Zoology","A collection of historical documents or records providing information about a place, institution, or group of people#Archives","A large cage, building, or enclosure for keeping birds in#Aviary","A building where animals are butchered#Abattoir","A place where bees are kept; a collection of beehives#Apiary","A building containing tanks of live fish of different species#Aquarium","A place or scene of activity, debate, or conflict#Arena","A collection of weapons and military equipment#Arsenal","An institution for the care of people who are mentally ill#Asylum","A hole or tunnel dug by a small animal, especially a rabbit, as a dwelling#Burrow","A collection of items of the same type stored in a hidden or inaccessible place#Cache","A public room or building where gambling games are played#Casino","A large burial ground, especially one not in a churchyard#Cemetery","A room in a public building where outdoor clothes or luggage may be left#Cloakroom","A place where a dead person’s body is cremated#Crematorium","a Christian community of nuns living together under monastic vows#Convent","Nursery where babies and young children are cared for during the working day#Creche","A stoppered glass container into which wine or spirit is decanted#Decanter","A large bedroom for a number of people in a school or institution#Dormitory","The nest of a squirrel, typically in the form of a mass of twigs in a tree#Drey","A room or building equipped for gymnastics, games, and other physical exercise#Gymnasium","A storehouse for threshed grain#Granary","A large building with an extensive floor area, typically for housing aircraft.#Hangar","A box or cage, typically with a wire mesh front, for keeping rabbits or other small domesticated animals#Hutch","A place in a large institution for the care of those who are ill#Infirmary","A small shelter for a dog#Kennel","A place where wild animal live#Lair","A place where coins, medals, or tokens are made#Mint","A collection of wild animals kept in captivity for exhibition#Menagerie","A building or buildings occupied by a community of monks living under religious vows#Monastery","A place where bodies are kept for identification#Morgue","A piece of enclosed land planted with fruit trees#Orchard","A large natural or artificial lake used as a source of water supply#Reservoir","A small kitchen or room at the back of a house used for washing dishes and another dirty household work#Scullery","A close-fitting cover for the blade of a knife or sword#Sheath","A room or building for sick children in a boarding school#Sanatorium","A place where animal hides are tanned#Tannery","A large, tall cupboard in which clothes may be hung or stored#Wardrobe","A state of disorder due to absence or non-recognition of authority or other controlling systems#Anarchy","A form of government in which power is held by the nobility#Aristocracy","A system of government by one person with absolute power#Autocracy","A self-governing country or region#Autonomy","A system of government in which most of the important decisions are taken by state officials rather than by elected representatives#Bureaucracy","A system of government by the whole population or all the eligible members of a state, typically through elected representatives#Democracy","A state, society, or group governed by old people#Gerontocracy","A state or country run by the worst, least qualified, or most unscrupulous citizens#Kakistocracy","Government by new or inexperienced hands#Neocracy","Government by the populace#Ochlocracy","A small group of people having control of a country or organization#Oligarchy","Government by the wealthy#Plutocracy","Government not connected with religious or spiritual matters#Secular","A form of government with a monarch at the head#Monarchy","A political system based on government of men by God#Thearchy","An extreme or irrational fear of heights#Acrophobia","An irrational fear of fresh air or drafts of air#Aerophobia","Fear of being egotistical, being alone or isolated#Autophobia","A phobia of pain#Algophobia","An abnormal fear of heights#Altophobia","An emotional disorder characterized by an obsessive desire to lose weight by refusing to eat#Anorexia","An extreme or irrational fear of open or public places#Agoraphobia","An abnormal and persistent fear of depths#Bathophobia","Fear or hatred of books#Bibliophobia","Fear of ugliness and things that are ugly#Cacophobia","A dislike of being in the centre#Centrophobia","An extreme fear about beauty#Cellophobia","Fear of time#Chronophobia","Fear of dogs#Cynophobia","An extreme or irrational fear of confined places#Claustrophobia","A delusion of being possessed by evil spirits#Demonomania","An abnormal and persistent fear of drinking alcohol#Dipsophobia","An abnormal and persistent fear of work or finding employment#Ergophobia","Fear of getting married, being in a relationship, or commitment#Gamophobia","Physical or psychological fear of sexual relations or sexual intercourse#Genophobia","Fear of old age#Geraphobia","Fear of knowledge#Gnosiophobia","Fear of women#Gynaephobia","Fear of writing or handwriting#Graphophobia","An irrational and intense fear of travel#Hodophobia","An excessive fear or aversion to obtaining pleasure#Hedonophobia","Fear of disease#Haemetophobia","An obsessive fear of words#Logophobia","An extreme fear of wind or drafts#Menemophobia","An extreme or irrational fear of the night or of darkness#Nyctophobia","Fear of medication#Pharamacophobia","Fear of death#Thanatophobia","Extreme superstition regarding the number thirteen#Triskaidekaphobia","A solemn procession, especially for a funeral#Cortege","A poem of serious reflection, typically a lament for the dead#Elegy","A phrase or form of words written in memory of a person who has died#Epitaph","Killing of one’s son or daughter#Filicide","Destruction or abortion of a fetus#Foeticide","Killing of one’s brother or sister#Fratricide","Killing of a large group of people#Genocide","Killing of one person by another#Homicide","Killing of infants#Infanticide","Burial of a corpse in a grave or tomb#Interment","Killing of one’s mother#Matricide","A room or building in which dead bodies are kept#Mortuary","A news article that reports the recent death of a person#Obituary","Killing of a parent or other near relative#Parricide","Killing of one’s father#Patricide","An examination of a dead body to determine the cause of death#Postmortem","Action of killing a king#Regicide","Killing of one’s sister#Sororicide","Act of intentionally causing one’s own death#Suicide","Killing of one’s wife#Uxoricide","The branch of physics concerned with the properties of sound#Acoustics","The sound of Alligators#Bellow","The sound of Deers#Bell","The sound of Crows#Caw","The sound of Geese#Cackle","The sound of Hens#Cluck","The sound of Dolphins#Click","The sound of Frogs#Croak","The sound of Crickets#Creak","The sound of Monkeys#Gibber","The sound of Camels#Grunt","The sound of Owls#Hoot","The sound of Penguins#Honk","The sound of Cattle#Moo","The sound of Horses#Neigh","The sound of Nightingales#Pipe","The sound of Ducks#Quack","The sound of Parrots#Screech","The sound of Rats#Squeak","The sound of Birds#Twitter","The sound of Elephants#Trumpet","The sound of Mosquitoes#Whine"];
+</script>
+
+</body></html>
