@@ -6,7 +6,7 @@
       "icon_color": "#747474",
       "title": "One Word Substitution",
       "subtitle": "List of one word substitution",
-      "url": "https://hotdudehvfun.github.io/app_extensions/extension_missing_number_inside_circle.html"
+      "url": "https://hotdudehvfun.github.io/app_extensions/extension_one_words_html.html"
     },{
       "icon": "help_outline",
       "icon_color": "#8BC34A",
