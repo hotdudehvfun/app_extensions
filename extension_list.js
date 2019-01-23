@@ -3,7 +3,7 @@
     
     {
       "icon": "help_outline",
-      "icon_color": "#009688",
+      "icon_color": "#8BC34A",
       "title": "Missing Number inside Circle",
       "subtitle": "Analyze the patter and find missing number in a circle",
       "url": "https://hotdudehvfun.github.io/app_extensions/extension_missing_number_inside_circle.html"
