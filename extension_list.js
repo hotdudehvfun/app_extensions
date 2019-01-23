@@ -2,6 +2,12 @@
   "extensions": [
     
     {
+      "icon": "rowing",
+      "icon_color": "#747474",
+      "title": "One Word Substitution",
+      "subtitle": "List of one word substitution",
+      "url": "https://hotdudehvfun.github.io/app_extensions/extension_missing_number_inside_circle.html"
+    },{
       "icon": "help_outline",
       "icon_color": "#8BC34A",
       "title": "Missing Number inside Circle",
